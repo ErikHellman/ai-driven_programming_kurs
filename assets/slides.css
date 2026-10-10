@@ -411,3 +411,7 @@ body.show-notes .notes-box { display: block; }
 .deck .app .diff .btns span { border: 1px solid var(--line); border-radius: 8px; padding: 2px 10px; background: #fff; }
 .deck .app .diff .btns .ok { background: var(--leaf); color: #fff; border-color: var(--leaf); }
 .deck .app .input { border: 2px solid var(--line); border-radius: 12px; padding: 8px 12px; color: var(--ink-soft); font-size: 17px; }
+
+/* Lång prompt på en slide */
+.deck .term.prompt { font-size: 16.5px; line-height: 1.42; }
+.deck .term.prompt pre { padding: 16px 22px; }
