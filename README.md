@@ -2,7 +2,7 @@
 
 Kursinformation och undervisningsmaterial för kursen "AI-driven programmering – Claude Code och Codex" på Folkuniversitetet i Stockholm, hösten 2026.
 
-Materialet publiceras med GitHub Pages: <https://erikhellman.github.io/ai-driven_programming_kurs/>
+Materialet publiceras med GitHub Pages på <https://ai-kurs.hellman.cloud/>
 
 ## Innehåll
 
