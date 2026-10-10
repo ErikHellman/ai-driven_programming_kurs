@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Terminalen · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⌨️</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Guide 1 av 6</span>
+      <h1>⌨️ Terminalen</h1>
+      <p>Terminalen är ett fönster där du skriver kommandon till datorn i stället för att klicka. Det är här våra AI-agenter bor.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="os-switch" role="group" aria-label="Välj operativsystem">
+      <button type="button" data-os="windows">Windows</button>
+      <button type="button" data-os="mac">macOS</button>
+      <button type="button" data-os="linux">Linux</button>
+    </div>
+    <p class="os-note">Vi gissade ditt operativsystem. Byt om det blev fel.</p>
+
+    <ol class="steps">
+      <li>
+        <h3>Öppna terminalen</h3>
+        <div data-os-only="windows">
+          <p>Tryck på <kbd>Win</kbd>, skriv <strong>Terminal</strong> och tryck <kbd>Enter</kbd>. Windows Terminal öppnas med <strong>PowerShell</strong>, och det är den vi använder i kursen.</p>
+          <p>Hittar du inte Windows Terminal (vanligt på äldre Windows 10)? Öppna <strong>PowerShell</strong> från startmenyn och installera den:</p>
+          <div class="code"><span class="label">PowerShell</span>
+<pre>winget install --id Microsoft.WindowsTerminal -e</pre></div>
+        </div>
+        <div data-os-only="mac">
+          <p>Tryck <kbd>⌘</kbd> + <kbd>Mellanslag</kbd>, skriv <strong>Terminal</strong> och tryck <kbd>Enter</kbd>.</p>
+          <p>Tips: Högerklicka på Terminal i Dock och välj <em>Behåll i Dock</em> så hittar du den snabbt.</p>
+        </div>
+        <div data-os-only="linux">
+          <p>På de flesta distributioner öppnar <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd> en terminal. Annars letar du efter <strong>Terminal</strong> bland programmen.</p>
+        </div>
+      </li>
+
+      <li>
+        <h3>Prova några kommandon</h3>
+        <p>Skriv ett kommando och tryck <kbd>Enter</kbd>. Inget kan gå sönder av de här.</p>
+        <div data-os-only="windows">
+          <div class="code"><span class="label">PowerShell</span>
+<pre><span class="c"># Var är jag?</span>
+pwd
+<span class="c"># Vad finns i mappen?</span>
+ls
+<span class="c"># Skapa en mapp för kursen och gå in i den</span>
+mkdir $HOME\kurs
+cd $HOME\kurs</pre></div>
+        </div>
+        <div data-os-only="mac linux">
+          <div class="code"><span class="label">Terminal</span>
+<pre><span class="c"># Var är jag?</span>
+pwd
+<span class="c"># Vad finns i mappen?</span>
+ls
+<span class="c"># Skapa en mapp för kursen och gå in i den</span>
+mkdir -p ~/kurs
+cd ~/kurs</pre></div>
+        </div>
+        <div class="note tip"><p><strong>Bra att veta:</strong> <kbd>↑</kbd> tar fram förra kommandot, <kbd>Tab</kbd> fyller i fil- och mappnamn, och <kbd>Ctrl</kbd> + <kbd>C</kbd> avbryter ett kommando som hänger sig.</p></div>
+      </li>
+
+      <li>
+        <h3>Installera en pakethanterare</h3>
+        <p>En pakethanterare är en ”app-butik för terminalen”. Med den installerar du program med ett enda kommando.</p>
+        <div data-os-only="windows">
+          <p>Windows 10 och 11 har redan <strong>winget</strong> inbyggt. Kontrollera att det fungerar:</p>
+          <div class="code"><span class="label">PowerShell</span>
+<pre>winget --version</pre></div>
+          <p>Får du ett fel? Öppna <strong>Microsoft Store</strong>, sök efter <strong>App Installer</strong> och uppdatera den. Starta sedan om terminalen.</p>
+        </div>
+        <div data-os-only="mac">
+          <p>På macOS använder vi <strong>Homebrew</strong>. Klistra in kommandot och följ instruktionerna. Du får skriva in ditt lösenord (det syns inte när du skriver, det är normalt).</p>
+          <div class="code"><span class="label">Terminal</span>
+<pre>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</pre></div>
+          <div class="note warn"><p><strong>Viktigt:</strong> När installationen är klar skriver den ut <em>Next steps</em> med två eller tre kommandon som börjar med <code>echo</code> och <code>eval</code>. Kopiera och kör dem, annars hittar terminalen inte <code>brew</code>.</p></div>
+          <p>Kontrollera sedan:</p>
+          <div class="code"><span class="label">Terminal</span>
+<pre>brew --version</pre></div>
+        </div>
+        <div data-os-only="linux">
+          <p>Din distribution har redan en pakethanterare. I guiderna visar vi kommandon för <strong>Ubuntu och Debian</strong> (<code>apt</code>). Använder du Fedora byter du <code>apt</code> mot <code>dnf</code>.</p>
+          <div class="code"><span class="label">Terminal</span>
+<pre>sudo apt update
+sudo apt install -y curl wget</pre></div>
+        </div>
+      </li>
+
+      <li>
+        <h3>Starta om terminalen efter installationer</h3>
+        <p>När du har installerat något nytt behöver terminalen ibland startas om för att hitta programmet. Får du felet <em>command not found</em> eller <em>känns inte igen</em>, stäng terminalfönstret och öppna ett nytt.</p>
+      </li>
+    </ol>
+
+    <nav class="guide-nav">
+      <a href="../index.html">← Översikt</a>
+      <a href="git.html">Nästa: Git →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>

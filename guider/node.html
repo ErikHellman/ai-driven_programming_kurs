@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Node.js · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🟩</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Guide 4 av 6</span>
+      <h1>🟩 Node.js</h1>
+      <p>Node.js kör JavaScript utanför webbläsaren. Många verktyg och webbprojekt som AI:n bygger åt dig behöver det, och med <code>npm</code> kan du installera Codex.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="os-switch" role="group" aria-label="Välj operativsystem">
+      <button type="button" data-os="windows">Windows</button>
+      <button type="button" data-os="mac">macOS</button>
+      <button type="button" data-os="linux">Linux</button>
+    </div>
+    <p class="os-note">Vi gissade ditt operativsystem. Byt om det blev fel.</p>
+
+    <ol class="steps">
+      <li>
+        <h3>Installera Node.js (LTS)</h3>
+        <p>LTS betyder <em>Long Term Support</em>, den stabila versionen.</p>
+        <div data-os-only="windows">
+          <div class="code"><span class="label">PowerShell</span>
+<pre>winget install --id OpenJS.NodeJS.LTS -e</pre></div>
+          <div class="note"><p><strong>Felet ”running scripts is disabled”?</strong> PowerShell blockerar ibland <code>npm</code>. Kör det här en gång och svara <strong>Y</strong>:</p>
+          <div class="code"><span class="label">PowerShell</span>
+<pre>Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</pre></div></div>
+        </div>
+        <div data-os-only="mac">
+          <div class="code"><span class="label">Terminal</span>
+<pre>brew install node</pre></div>
+        </div>
+        <div data-os-only="linux">
+          <p>Versionen i <code>apt</code> är ofta för gammal. Vi använder <strong>nvm</strong>, som installerar den senaste LTS-versionen i din hemmapp.</p>
+          <div class="code"><span class="label">Terminal</span>
+<pre>curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.8/install.sh | bash
+<span class="c"># Starta om terminalen, sedan:</span>
+nvm install --lts</pre></div>
+        </div>
+      </li>
+
+      <li>
+        <h3>Kontrollera</h3>
+        <p>Starta om terminalen och kör:</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>node --version
+npm --version</pre></div>
+        <p>Du ska se två versionsnummer, till exempel <code>v24.x.x</code> och <code>11.x.x</code>.</p>
+      </li>
+    </ol>
+
+    <nav class="guide-nav">
+      <a href="github.html">← GitHub</a>
+      <a href="vscode.html">Nästa: VS Code →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>

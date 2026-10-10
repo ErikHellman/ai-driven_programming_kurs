@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tillfälle 1 · Del 2: Hur fungerar det?</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="../assets/slides.css">
+  <script src="../assets/slides.js" defer></script>
+</head>
+<body>
+<a class="home" href="../index.html">⌂ Kursmaterial</a>
+<div class="deck">
+
+  <!-- 1 -->
+  <section class="title">
+    <div class="kicker">Folkuniversitetet · Tillfälle 1 · Del 2</div>
+    <h1>Hur fungerar<br>det egentligen?</h1>
+    <p class="lead">Språkmodeller, agenter och harness, och hur de tillsammans skriver kod åt dig.</p>
+    <div class="badge-row">
+      <span class="badge">🧠 LLM</span>
+      <span class="badge">🤖 Agent</span>
+      <span class="badge">🐴 Harness</span>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <div class="kicker">Varför?</div>
+    <h2>Varför förstå hur det fungerar?</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">🎯</span><span>Du skriver bättre instruktioner när du vet vad AI:n ser</span></li>
+      <li class="frag"><span class="e">🔍</span><span>Du förstår varför den ibland gör fel, och vad du kan göra åt det</span></li>
+      <li class="frag"><span class="e">🛡️</span><span>Du vet vad den kan komma åt på din dator</span></li>
+    </ul>
+    <p class="quote frag" style="margin-top:30px">Du behöver inte kunna bygga en motor för att köra bil. Men det hjälper att veta <span class="hl">var bensinen ska</span>.</p>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <div class="kicker">Dagens karta</div>
+    <h2>Tre lager</h2>
+    <div class="layers">
+      <div class="layer l1"><span class="e">🧠</span><b>LLM</b><span>Språkmodellen. Hjärnan som läser text och skriver text.</span></div>
+      <div class="layer l2"><span class="e">🤖</span><b>Agent</b><span>En LLM som får använda verktyg i en loop tills uppgiften är klar.</span></div>
+      <div class="layer l3"><span class="e">🐴</span><b>Harness</b><span>Programmet runt modellen som kör loopen: Claude Code, Codex.</span></div>
+      <div class="layer l4"><span class="e">🙋</span><b>Du</b><span>Ger målet, svarar på frågor och granskar resultatet.</span></div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="divider">
+    <div class="num">🧠</div>
+    <h2>Vad är en LLM?</h2>
+    <p class="lead">Large Language Model, stor språkmodell</p>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <div class="kicker">LLM</div>
+    <h2>En väldigt bra gissare</h2>
+    <p class="lead">En språkmodell gör en enda sak: den gissar <strong>nästa bit text</strong>. Om och om igen.</p>
+    <div class="cols" style="margin-top:24px">
+      <div class="card sun">
+        <p style="font-size:32px;color:var(--ink)">Det var en gång en …</p>
+      </div>
+      <div class="bars">
+        <div class="row frag"><b>prinsessa</b><div class="track"><div class="fill" style="width:62%"></div></div><span>31 %</span></div>
+        <div class="row frag"><b>liten</b><div class="track"><div class="fill" style="width:44%"></div></div><span>22 %</span></div>
+        <div class="row frag"><b>kung</b><div class="track"><div class="fill" style="width:30%"></div></div><span>15 %</span></div>
+        <div class="row frag"><b>gammal</b><div class="track"><div class="fill" style="width:18%"></div></div><span>9 %</span></div>
+        <div class="row frag"><b>…</b><div class="track"><div class="fill" style="width:8%"></div></div><span></span></div>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Siffrorna är påhittade för att illustrera. Poängen: modellen räknar ut sannolikheter för nästa ord och väljer ett.</li>
+        <li>Det är därför den kan svara olika på samma fråga.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 6 -->
+  <section>
+    <div class="kicker">LLM</div>
+    <h2>Text blir tokens</h2>
+    <p>Modellen läser inte bokstäver eller hela ord, utan <strong>tokens</strong>: små bitar text.</p>
+    <div class="tokens" style="margin:18px 0 36px">
+      <span>Skapa</span><span> en</span><span> webb</span><span>sida</span><span> med</span><span> en</span><span> blå</span><span> knapp</span><span>.</span>
+    </div>
+    <div class="tokens">
+      <span>function</span><span> hej</span><span>(</span><span>namn</span><span>)</span><span> {</span><span> return</span><span> "</span><span>Hej</span><span> "</span><span> +</span><span> namn</span><span>;</span><span> }</span>
+    </div>
+    <ul class="nice" style="margin-top:36px">
+      <li class="frag">Ungefär ¾ ord per token på engelska, lite färre på svenska</li>
+      <li class="frag">Allt mäts i tokens: hur mycket modellen kan läsa och vad det kostar</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Uppdelningen är ungefärlig, varje modell har sin egen.</li>
+        <li>Kod är också bara text för modellen.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 7 -->
+  <section>
+    <div class="kicker">LLM</div>
+    <h2>Hur blir den så smart?</h2>
+    <div class="flow" style="margin-top:12px">
+      <div class="box frag">📚 Förträning<small>Läser enorma mängder text och kod</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🎓 Finjustering<small>Lär sig följa instruktioner och föra dialog</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box sun frag">👍 Återkoppling<small>Belönas för hjälpsamma, säkra och korrekta svar</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:44px">Resultatet: en modell som har sett så mycket kod att den kan skriva ny kod som ofta fungerar på första försöket.</p>
+  </section>
+
+  <!-- 8 -->
+  <section>
+    <div class="kicker">LLM</div>
+    <h2>Kontextfönstret: modellens arbetsminne</h2>
+    <div class="cols wide-left">
+      <div>
+        <ul class="nice">
+          <li>Allt modellen vet om din uppgift måste finnas i <strong>kontexten</strong>: instruktioner, filer, tidigare meddelanden</li>
+          <li class="frag">Kontexten har en gräns, idag hundratusentals tokens</li>
+          <li class="frag">Modellen <strong>minns ingenting</strong> mellan konversationer</li>
+        </ul>
+      </div>
+      <div class="card sun">
+        <span class="e">📋</span>
+        <h3>Tänk så här</h3>
+        <p>En supersmart konsult med minnesförlust. Varje morgon måste du ge den en bra överlämning.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Detta är den viktigaste insikten för att skriva bra instruktioner.</li>
+        <li>Det är därför CLAUDE.md och AGENTS.md finns: en överlämning som läses in automatiskt.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 9 -->
+  <section>
+    <div class="kicker">LLM</div>
+    <h2>Vad en LLM inte kan på egen hand</h2>
+    <div class="cards">
+      <div class="card"><span class="e">🎲</span><h3>Vara säker</h3><p>Den kan låta övertygande och ändå ha fel. Det kallas att <strong>hallucinera</strong>.</p></div>
+      <div class="card"><span class="e">📅</span><h3>Veta det senaste</h3><p>Kunskapen tar slut vid träningen. Allt efter det måste den få berättat.</p></div>
+      <div class="card"><span class="e">🖐️</span><h3>Göra saker</h3><p>En ren modell kan bara skriva text. Den kan inte öppna filer eller köra kod.</p></div>
+    </div>
+    <p class="lead frag bottom">Den sista punkten är där agenten kommer in. 👇</p>
+  </section>
+
+  <!-- 10 -->
+  <section class="divider">
+    <div class="num">🤖</div>
+    <h2>Vad är en agent?</h2>
+    <p class="lead">Från att prata till att göra</p>
+  </section>
+
+  <!-- 11 -->
+  <section>
+    <div class="kicker">Agent</div>
+    <h2>Chatt eller agent?</h2>
+    <div class="cols">
+      <div class="card">
+        <span class="e">💬</span>
+        <h3>Chatt</h3>
+        <p>Du frågar, den svarar med text. Du kopierar koden, klistrar in, provar, kopierar felmeddelandet tillbaka …</p>
+      </div>
+      <div class="card hot">
+        <span class="e">🤖</span>
+        <h3>Agent</h3>
+        <p>Du ger ett mål. Den läser filerna, skriver koden, kör den, ser felet och rättar det själv.</p>
+      </div>
+    </div>
+    <p class="quote frag" style="margin-top:40px">Agent = LLM + <span class="hl">verktyg</span> + <span class="hl">loop</span></p>
+  </section>
+
+  <!-- 12 -->
+  <section>
+    <div class="kicker">Agent</div>
+    <h2>Verktyg ger modellen händer</h2>
+    <div class="cards four">
+      <div class="card"><span class="e">📖</span><h3>Läsa</h3><p>Öppna och söka i filer</p></div>
+      <div class="card"><span class="e">✏️</span><h3>Skriva</h3><p>Skapa och ändra filer</p></div>
+      <div class="card"><span class="e">⚙️</span><h3>Köra</h3><p>Kommandon i terminalen</p></div>
+      <div class="card"><span class="e">🌐</span><h3>Söka</h3><p>Hämta info från webben</p></div>
+    </div>
+    <div class="term frag" style="margin-top:30px"><pre><span class="c"># Modellen skriver inte "jag läser filen", den skriver en begäran:</span>
+<span class="p">{</span> "verktyg": "läs_fil", "sökväg": "index.html" <span class="p">}</span>
+<span class="c"># Programmet runt omkring utför det och skickar tillbaka resultatet.</span></pre></div>
+    <aside class="notes">
+      <ul>
+        <li>Nyckelpoäng: modellen kör aldrig något själv. Den ber om det, och harnesset utför.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 13 -->
+  <section>
+    <div class="kicker">Agent</div>
+    <h2>Agentloopen</h2>
+    <div class="cols loop-cols">
+      <div class="loop">
+        <div class="ring"><div class="mid">🎯<br>Ditt mål</div></div>
+        <div class="node n1">🧠 Tänk<small>Vad behöver jag göra?</small></div>
+        <div class="node n2 frag">🛠️ Agera<small>Anropa ett verktyg</small></div>
+        <div class="node n3 frag">👀 Observera<small>Läs resultatet</small></div>
+        <div class="node n4 frag">🔁 Upprepa<small>eller säg att det är klart</small></div>
+      </div>
+      <ul class="nice">
+        <li>En uppgift kan ta tiotals varv</li>
+        <li class="frag">Varje varv läggs resultatet i kontexten</li>
+        <li class="frag">Agenten slutar när målet är nått, eller när den behöver fråga dig</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 14 -->
+  <section class="divider">
+    <div class="num">🐴</div>
+    <h2>Vad är ett harness?</h2>
+    <p class="lead">Selen som gör kraften användbar</p>
+  </section>
+
+  <!-- 15 -->
+  <section>
+    <div class="kicker">Harness</div>
+    <h2>Hästen och selen</h2>
+    <div class="cols">
+      <div class="card">
+        <span class="e">🐎</span>
+        <h3>Modellen är hästen</h3>
+        <p>Massor av kraft, men den vet inte vart den ska eller vad den får göra.</p>
+      </div>
+      <div class="card hot">
+        <span class="e">🐴</span>
+        <h3>Harnesset är selen</h3>
+        <p>Kopplar kraften till vagnen och låter dig styra. Engelskans <em>harness</em> betyder just sele.</p>
+      </div>
+    </div>
+    <p class="lead frag" style="margin-top:36px"><strong>Claude Code</strong> och <strong>Codex</strong> är harness. Samma modell kan bli bättre eller sämre beroende på harnesset runt den.</p>
+  </section>
+
+  <!-- 16 -->
+  <section>
+    <div class="kicker">Harness</div>
+    <h2>Vad gör harnesset?</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">🔁</span><h3>Kör loopen</h3><p>Skickar kontexten till modellen, utför verktygen, skickar tillbaka svaren.</p></div>
+      <div class="card frag"><span class="e">📜</span><h3>Systemprompt</h3><p>Dolda instruktioner om hur agenten ska bete sig och vilka verktyg som finns.</p></div>
+      <div class="card frag"><span class="e">🚦</span><h3>Behörigheter</h3><p>Frågar dig innan något riskabelt händer.</p></div>
+      <div class="card frag"><span class="e">🗜️</span><h3>Kontext</h3><p>Sammanfattar gamla delar när arbetsminnet blir fullt.</p></div>
+      <div class="card frag"><span class="e">📝</span><h3>Minne</h3><p>Läser in <code>CLAUDE.md</code> / <code>AGENTS.md</code> automatiskt.</p></div>
+      <div class="card frag"><span class="e">🔌</span><h3>Tillägg</h3><p>Kopplar in fler verktyg via MCP, skills och plugins.</p></div>
+    </div>
+  </section>
+
+  <!-- 17 -->
+  <section class="divider">
+    <div class="num">🧩</div>
+    <h2>Hela bilden</h2>
+  </section>
+
+  <!-- 18 -->
+  <section>
+    <div class="kicker">Allt tillsammans</div>
+    <h2>Från din idé till fungerande kod</h2>
+    <div class="flow big" style="margin-top:30px">
+      <div class="box sun">🙋 Du<small>”Lägg till en<br>kontaktsida”</small></div>
+      <div class="arrow">⇄</div>
+      <div class="box">🐴 Harness<small>Claude Code / Codex<br>på din dator</small></div>
+      <div class="arrow">⇄</div>
+      <div class="box alt">🧠 LLM<small>i molnet, hos<br>Anthropic / OpenAI</small></div>
+    </div>
+    <div class="flow big" style="margin:18px 0 12px">
+      <div class="arrow">⇅</div>
+    </div>
+    <div class="flow big">
+      <div class="box frag">📁 Filer</div>
+      <div class="box frag">⌨️ Terminal</div>
+      <div class="box frag">🐙 GitHub</div>
+      <div class="box frag">🌐 Webben</div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Viktigt: modellen bor i molnet, harnesset på din dator. Harnesset skickar utvalda delar av dina filer till modellen.</li>
+        <li>Modellen kommer aldrig själv åt din dator, allt går via harnesset.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 19 -->
+  <section>
+    <div class="kicker">Ett exempel</div>
+    <h2>”Lägg till en mörkt läge-knapp”</h2>
+    <div class="term" style="font-size:21px"><pre><span class="p">&gt;</span> Lägg till en knapp som växlar till mörkt läge
+<span class="frag"><span class="c">🧠 Jag behöver se hur sidan är uppbyggd.</span>
+<span class="ok">● Read(index.html)</span>  <span class="ok">● Read(style.css)</span>
+</span><span class="frag"><span class="c">🧠 Jag lägger till en knapp och mörka färger.</span>
+<span class="ok">● Edit(index.html)</span>  <span class="ok">● Edit(style.css)</span>  <span class="ok">● Write(theme.js)</span>
+</span><span class="frag"><span class="c">🧠 Jag testar att sidan fortfarande fungerar.</span>
+<span class="ok">● Bash(npx playwright test)</span>  ✗ 1 fel: knappen saknar etikett
+</span><span class="frag"><span class="c">🧠 Jag rättar felet.</span>
+<span class="ok">● Edit(index.html)</span>  <span class="ok">● Bash(npx playwright test)</span>  ✓
+</span><span class="frag"><span class="ok">✓ Klart! Knappen finns uppe till höger.</span></span></pre></div>
+    <aside class="notes">
+      <ul>
+        <li>Gå igenom varv för varv: tänk, agera, observera. Peka ut att agenten hittade och rättade sitt eget fel.</li>
+        <li>Om tid finns: gör det live i projektet från del 1.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 20 -->
+  <section>
+    <div class="kicker">Vad betyder det för dig?</div>
+    <h2>Fem tumregler</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">🎯</span><span><strong>Var tydlig med målet.</strong> Beskriv vad du vill uppnå, inte bara vad den ska göra.</span></li>
+      <li class="frag"><span class="e">📋</span><span><strong>Ge bra kontext.</strong> Den vet bara det som står i kontexten.</span></li>
+      <li class="frag"><span class="e">🪜</span><span><strong>Ta små steg.</strong> Hellre fem små uppgifter än en jättestor.</span></li>
+      <li class="frag"><span class="e">👀</span><span><strong>Granska alltid.</strong> Läs vad den vill göra innan du godkänner.</span></li>
+      <li class="frag"><span class="e">💾</span><span><strong>Commit ofta.</strong> Git är ditt skyddsnät.</span></li>
+    </ul>
+  </section>
+
+  <!-- 21 -->
+  <section>
+    <div class="kicker">Säkerhet</div>
+    <h2>Agenten jobbar på din dator</h2>
+    <div class="cols">
+      <ul class="nice">
+        <li>Den kan läsa, ändra och radera filer i projektmappen</li>
+        <li class="frag">Den kan köra kommandon, som du</li>
+        <li class="frag">Starta den därför <strong>i en projektmapp</strong>, aldrig i hela hemmappen</li>
+        <li class="frag">Lägg aldrig lösenord eller nycklar i det du ber den om</li>
+      </ul>
+      <div class="card sun">
+        <span class="e">🚦</span>
+        <h3>Behörighetslägen</h3>
+        <p>Som standard frågar agenten innan den ändrar filer eller kör kommandon. Lås upp mer när du känner dig trygg.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 22 -->
+  <section>
+    <div class="kicker">Sammanfattning</div>
+    <h2>Det här tar vi med oss</h2>
+    <div class="layers">
+      <div class="layer l1"><span class="e">🧠</span><b>LLM</b><span>Gissar nästa token. Minns bara det som finns i kontexten.</span></div>
+      <div class="layer l2"><span class="e">🤖</span><b>Agent</b><span>LLM + verktyg + loop. Tänk, agera, observera, upprepa.</span></div>
+      <div class="layer l3"><span class="e">🐴</span><b>Harness</b><span>Claude Code / Codex: kör loopen, ger verktyg, frågar om lov.</span></div>
+      <div class="layer l4"><span class="e">🙋</span><b>Du</b><span>Sätter målet, ger kontext, granskar och committar.</span></div>
+    </div>
+  </section>
+
+  <!-- 23 -->
+  <section>
+    <div class="kicker">Till nästa gång</div>
+    <h2>Hemuppgift</h2>
+    <ul class="emoji">
+      <li><span class="e">✅</span><span>Se till att allt på checklistan fungerar</span></li>
+      <li><span class="e">🎨</span><span>Be agenten bygga vidare på din välkomstsida: en bild, en meny, ett formulär</span></li>
+      <li><span class="e">🐙</span><span>Be agenten lägga upp projektet på GitHub</span></li>
+      <li><span class="e">💡</span><span>Fundera på vad <strong>du</strong> vill bygga under kursen</span></li>
+    </ul>
+    <p class="small bottom">Allt material och alla guider finns på kurssidan.</p>
+  </section>
+
+  <!-- 24 -->
+  <section class="title center">
+    <div style="font-size:120px;line-height:1">🙌</div>
+    <h1>Frågor?</h1>
+    <p class="lead">Tack för idag! Vi ses nästa gång.</p>
+  </section>
+
+</div>
+</body>
+</html>

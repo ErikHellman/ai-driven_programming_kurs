@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-driven programmering</title>
+  <meta name="description" content="Kursmaterial för AI-driven programmering med Claude Code och Codex, Folkuniversitetet Stockholm hösten 2026.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌞</text></svg>">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/site.css">
+  <script src="assets/site.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <span class="eyebrow">Folkuniversitetet Stockholm · Hösten 2026</span>
+      <h1>AI-driven programmering</h1>
+      <p>Bygg appar, verktyg och automatiseringar tillsammans med AI. Här samlas allt material från kursen: presentationer, installationsguider och övningar.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h2>Lektioner</h2>
+      <div class="lesson">
+        <div class="lesson-head">
+          <h3>Tillfälle 1: Kom igång</h3>
+          <span class="pill">14 oktober 2026</span>
+        </div>
+        <div class="grid">
+          <a class="card big" href="slides/tillfalle-1-del-1.html">
+            <span class="emoji">🧰</span>
+            <h3>Del 1: Verktygslådan</h3>
+            <p>Terminal, Git, GitHub, VS Code och våra AI-agenter Claude Code och Codex. Vi installerar allt tillsammans.</p>
+            <span class="meta">Öppna presentationen →</span>
+          </a>
+          <a class="card big" href="slides/tillfalle-1-del-2.html">
+            <span class="emoji">🧠</span>
+            <h3>Del 2: Hur fungerar det?</h3>
+            <p>Vad är en språkmodell, vad är en agent och vad är ett harness? Så hänger allt ihop när AI skriver kod.</p>
+            <span class="meta">Öppna presentationen →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="installation">
+      <h2>Installationsguider</h2>
+      <p>Följ guiderna i ordning. Varje guide har kommandon för både Windows och macOS/Linux, och du kan kopiera dem med ett klick.</p>
+      <div class="grid">
+        <a class="card" href="guider/terminal.html">
+          <span class="emoji">⌨️</span>
+          <h3>1. Terminalen</h3>
+          <p>Öppna terminalen och installera en pakethanterare.</p>
+          <span class="meta">Windows · macOS · Linux</span>
+        </a>
+        <a class="card" href="guider/git.html">
+          <span class="emoji">🌱</span>
+          <h3>2. Git</h3>
+          <p>Versionshantering, ditt skyddsnät när AI ändrar i koden.</p>
+          <span class="meta">Windows · macOS · Linux</span>
+        </a>
+        <a class="card" href="guider/github.html">
+          <span class="emoji">🐙</span>
+          <h3>3. GitHub och gh</h3>
+          <p>Skapa konto, installera GitHub CLI och logga in.</p>
+          <span class="meta">Windows · macOS · Linux</span>
+        </a>
+        <a class="card" href="guider/node.html">
+          <span class="emoji">🟩</span>
+          <h3>4. Node.js</h3>
+          <p>Kör JavaScript-verktyg och webbprojekt på din dator.</p>
+          <span class="meta">Windows · macOS · Linux</span>
+        </a>
+        <a class="card" href="guider/vscode.html">
+          <span class="emoji">📝</span>
+          <h3>5. VS Code</h3>
+          <p>Kodeditorn där du ser och granskar vad AI:n gör, plus rekommenderade tillägg.</p>
+          <span class="meta">Windows · macOS · Linux</span>
+        </a>
+        <a class="card" href="guider/claude-code.html">
+          <span class="emoji">✳️</span>
+          <h3>6a. Claude Code</h3>
+          <p>Anthropics kodagent för terminalen.</p>
+          <span class="meta">Windows · macOS · Linux</span>
+        </a>
+        <a class="card" href="guider/codex.html">
+          <span class="emoji">🌀</span>
+          <h3>6b. Codex</h3>
+          <p>OpenAIs kodagent för terminalen.</p>
+          <span class="meta">Windows · macOS · Linux</span>
+        </a>
+      </div>
+      <div class="note tip">
+        <p><strong>Claude Code eller Codex?</strong> Du behöver bara en av dem. Har du redan ett Claude-abonnemang väljer du Claude Code, har du ChatGPT väljer du Codex. Båda fungerar för allt vi gör i kursen.</p>
+      </div>
+    </section>
+
+    <section id="checklista">
+      <h2>Checklista inför första övningen</h2>
+      <p>När du är klar ska de här kommandona fungera i terminalen. Varje kommando ska skriva ut ett versionsnummer eller ett ”Logged in”.</p>
+      <div class="code">
+        <span class="label">Alla system</span>
+<pre>git --version
+gh auth status
+node --version
+code --version
+claude --version   <span class="c"># eller: codex --version</span></pre>
+      </div>
+      <ul class="checklist">
+        <li>Jag har ett GitHub-konto och är inloggad med <code>gh</code></li>
+        <li>Jag har berättat för Git vem jag är (namn och e-post)</li>
+        <li>Jag kan starta Claude Code eller Codex och har loggat in</li>
+        <li>Jag har öppnat en mapp i VS Code</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    Kursledare: Erik Hellman · Material för Folkuniversitetets kurs ”AI-driven programmering – Claude Code och Codex”
+  </footer>
+</body>
+</html>

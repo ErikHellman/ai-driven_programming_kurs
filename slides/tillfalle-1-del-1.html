@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tillfälle 1 · Del 1: Verktygslådan</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧰</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="../assets/slides.css">
+  <script src="../assets/slides.js" defer></script>
+</head>
+<body>
+<a class="home" href="../index.html">⌂ Kursmaterial</a>
+<div class="deck">
+
+  <!-- 1 -->
+  <section class="title">
+    <div class="kicker">Folkuniversitetet · Tillfälle 1 · Del 1</div>
+    <h1>AI-driven<br>programmering</h1>
+    <p class="lead">Välkommen! Idag packar vi verktygslådan och får igång vår första AI-agent.</p>
+    <div class="badge-row">
+      <span class="badge">🧰 Verktyg</span>
+      <span class="badge">🐙 GitHub</span>
+      <span class="badge">✳️ Claude Code / 🌀 Codex</span>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Hälsa välkommen. Kolla att alla har dator, laddare och wifi.</li>
+        <li>Visa adressen till kursmaterialet så alla kan följa med.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <div class="kicker">Hej!</div>
+    <h2>Vem är jag?</h2>
+    <div class="cols wide-left">
+      <ul class="emoji">
+        <li><span class="e">👋</span><span><strong>Erik Hellman</strong>, kursledare</span></li>
+        <li><span class="e">💻</span><span>Utvecklare som jobbar med AI-verktyg varje dag</span></li>
+        <li><span class="e">🎯</span><span>Mål: att du ska kunna bygga egna saker med AI efter kursen</span></li>
+      </ul>
+      <div class="card sun">
+        <span class="e">🙋</span>
+        <h3>Och vem är du?</h3>
+        <p>Namn, vad du jobbar med och något du skulle vilja bygga eller automatisera.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Kort presentation av dig själv. Anpassa punkterna.</li>
+        <li>Snabb runda: namn + en sak de vill bygga. Skriv upp idéerna, de blir bra exempel senare i kursen.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <div class="kicker">Kursen</div>
+    <h2>Vad ska vi lära oss?</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">🛠️</span><h3>Verktygen</h3><p>Terminal, Git, GitHub och AI-agenterna Claude Code och Codex.</p></div>
+      <div class="card frag"><span class="e">🧠</span><h3>Förståelsen</h3><p>Hur AI-modeller och agenter fungerar, så du vet vad du kan förvänta dig.</p></div>
+      <div class="card frag hot"><span class="e">🚀</span><h3>Bygga på riktigt</h3><p>Appar, webbsidor och automatiseringar, utan att du behöver vara programmerare.</p></div>
+    </div>
+    <p class="small bottom">Du behöver inga förkunskaper i programmering. Du behöver nyfikenhet och lite tålamod.</p>
+    <aside class="notes">
+      <ul>
+        <li>Betona att kursen är för icke-programmerare. Vi lär oss att styra AI:n, inte att skriva all kod själva.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 4 -->
+  <section>
+    <div class="kicker">Idag</div>
+    <h2>Dagens plan</h2>
+    <div class="layers">
+      <div class="layer l1"><span class="e">🧰</span><b>Del 1</b><span>Installera verktygen, skapa GitHub-konto, första körningen med en AI-agent</span></div>
+      <div class="layer l2"><span class="e">☕</span><b>Paus</b><span>Sträck på benen</span></div>
+      <div class="layer l3"><span class="e">🧠</span><b>Del 2</b><span>Hur fungerar en språkmodell, en agent och ett harness?</span></div>
+    </div>
+    <p class="small bottom">Allt material finns på kurssidan. Där finns installationsguider med kommandon för Windows och macOS/Linux.</p>
+    <aside class="notes">
+      <ul>
+        <li>Del 1 är praktisk. Säg att det är helt okej om något krånglar, vi hjälps åt.</li>
+        <li>Be de som blir klara snabbt att hjälpa grannen.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <div class="kicker">Översikt</div>
+    <h2>Verktygslådan</h2>
+    <div class="cards four">
+      <div class="card"><span class="e">⌨️</span><h3>Terminal</h3><p>Där vi skriver kommandon</p></div>
+      <div class="card"><span class="e">🌱</span><h3>Git</h3><p>Sparpunkter för projektet</p></div>
+      <div class="card"><span class="e">🐙</span><h3>GitHub + gh</h3><p>Projekten på nätet</p></div>
+      <div class="card"><span class="e">🟩</span><h3>Node.js</h3><p>Kör JavaScript-verktyg</p></div>
+      <div class="card"><span class="e">📝</span><h3>VS Code</h3><p>Se och granska koden</p></div>
+      <div class="card hot"><span class="e">✳️</span><h3>Claude Code</h3><p>AI-agent från Anthropic</p></div>
+      <div class="card hot"><span class="e">🌀</span><h3>Codex</h3><p>AI-agent från OpenAI</p></div>
+      <div class="card sun"><span class="e">✅</span><h3>Checklista</h3><p>Allt klart?</p></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Visa helheten innan vi går in på varje del. Claude Code och Codex: du väljer en.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 6 -->
+  <section class="divider">
+    <div class="num">1</div>
+    <h2>Terminalen</h2>
+    <p class="lead">Där agenterna bor</p>
+  </section>
+
+  <!-- 7 -->
+  <section>
+    <div class="kicker">Terminalen</div>
+    <h2>Prata med datorn i text</h2>
+    <div class="cols">
+      <div>
+        <ul class="nice">
+          <li>I stället för att klicka skriver du ett <strong>kommando</strong> och trycker <kbd>Enter</kbd></li>
+          <li class="frag">Det är snabbt, exakt och går att upprepa</li>
+          <li class="frag">AI-agenter jobbar på samma sätt: de skriver kommandon åt dig</li>
+        </ul>
+      </div>
+      <div class="term">
+        <div class="bar"><i></i><i></i><i></i></div>
+<pre><span class="p">$</span> pwd
+/Users/anna
+<span class="p">$</span> mkdir kurs
+<span class="p">$</span> cd kurs
+<span class="p">$</span> ls
+<span class="c"># tomt, än så länge!</span></pre>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Windows: Win-tangenten, skriv Terminal. Mac: Cmd + mellanslag, skriv Terminal.</li>
+        <li>Låt alla skriva pwd, mkdir kurs, cd kurs tillsammans.</li>
+        <li>Tips: pil upp tar fram förra kommandot, Tab fyller i namn, Ctrl+C avbryter.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 8 -->
+  <section>
+    <div class="kicker">Terminalen</div>
+    <h2>Pakethanterare: en app-butik i terminalen</h2>
+    <div class="cards two">
+      <div class="card">
+        <span class="e">🪟</span>
+        <h3>Windows: winget</h3>
+        <p>Finns redan inbyggt i Windows 10 och 11.</p>
+        <div class="term" style="margin-top:16px"><pre><span class="p">&gt;</span> winget --version</pre></div>
+      </div>
+      <div class="card">
+        <span class="e">🍎</span>
+        <h3>macOS: Homebrew</h3>
+        <p>Installeras en gång. Linux har redan <code>apt</code>.</p>
+        <div class="term" style="margin-top:16px"><pre><span class="p">$</span> brew --version</pre></div>
+      </div>
+    </div>
+    <p class="small bottom">👉 Följ guide 1 på kurssidan. Mac: glöm inte att köra kommandona under <em>Next steps</em> efter installationen!</p>
+    <aside class="notes">
+      <ul>
+        <li>Homebrew tar några minuter. Starta installationen och fortsätt prata under tiden.</li>
+        <li>Vanligaste felet: man missar Next steps, och då hittas inte brew.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 9 -->
+  <section class="divider">
+    <div class="num">2</div>
+    <h2>Git</h2>
+    <p class="lead">Ditt skyddsnät</p>
+  </section>
+
+  <!-- 10 -->
+  <section>
+    <div class="kicker">Git</div>
+    <h2>Sparpunkter, som i ett spel</h2>
+    <div class="flow" style="margin-top:20px">
+      <div class="box frag">💾 Commit 1<small>Första sidan</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">💾 Commit 2<small>La till meny</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">💥 Commit 3<small>AI:n förstörde något</small></div>
+      <div class="arrow frag">↩</div>
+      <div class="box sun frag">😌 Tillbaka<small>till commit 2</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:48px">När en AI ändrar många filer på en gång är Git det som gör att du vågar låta den jobba.</p>
+    <aside class="notes">
+      <ul>
+        <li>Git är det viktigaste verktyget för den som jobbar med AI-agenter. Vi kan alltid backa.</li>
+        <li>Agenterna kan själva göra commits åt oss, men vi måste förstå idén.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 11 -->
+  <section>
+    <div class="kicker">Git</div>
+    <h2>Fem ord att kunna</h2>
+    <div class="cards">
+      <div class="card"><span class="e">📁</span><h3>Repo</h3><p>En projektmapp som Git håller koll på</p></div>
+      <div class="card"><span class="e">💾</span><h3>Commit</h3><p>En sparpunkt med en beskrivning</p></div>
+      <div class="card"><span class="e">🌿</span><h3>Branch</h3><p>En parallell version att experimentera i</p></div>
+      <div class="card"><span class="e">⬆️</span><h3>Push</h3><p>Skicka dina commits till GitHub</p></div>
+      <div class="card"><span class="e">⬇️</span><h3>Pull / Clone</h3><p>Hämta från GitHub till datorn</p></div>
+      <div class="card sun"><span class="e">🤖</span><h3>Bonus</h3><p>Agenten kan göra allt detta åt dig, om du ber den</p></div>
+    </div>
+  </section>
+
+  <!-- 12 -->
+  <section>
+    <div class="kicker">Git · gör så här</div>
+    <h2>Installera och presentera dig</h2>
+    <div class="cols">
+      <div>
+        <h3>🪟 Windows</h3>
+        <div class="term"><pre><span class="p">&gt;</span> winget install --id Git.Git -e</pre></div>
+        <h3 style="margin-top:24px">🍎 macOS · 🐧 Linux</h3>
+        <div class="term"><pre><span class="p">$</span> brew install git
+<span class="p">$</span> sudo apt install git</pre></div>
+      </div>
+      <div>
+        <h3>Alla</h3>
+        <div class="term"><pre><span class="p">$</span> git config --global user.name "Anna Andersson"
+<span class="p">$</span> git config --global user.email "anna@exempel.se"
+<span class="p">$</span> git --version
+<span class="ok">git version 2.5x.x</span></pre></div>
+      </div>
+    </div>
+    <p class="small bottom">👉 Guide 2 på kurssidan</p>
+    <aside class="notes">
+      <ul>
+        <li>Påminn om att starta om terminalen efter installationen.</li>
+        <li>E-posten bör vara samma som på GitHub, eller noreply-adressen.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 13 -->
+  <section class="divider">
+    <div class="num">3</div>
+    <h2>GitHub</h2>
+    <p class="lead">Dina projekt på nätet</p>
+  </section>
+
+  <!-- 14 -->
+  <section>
+    <div class="kicker">GitHub</div>
+    <h2>Git ≠ GitHub</h2>
+    <div class="cols">
+      <div class="card">
+        <span class="e">🌱</span>
+        <h3>Git</h3>
+        <p>Program på <strong>din dator</strong> som sparar historiken för ett projekt.</p>
+      </div>
+      <div class="card hot">
+        <span class="e">🐙</span>
+        <h3>GitHub</h3>
+        <p>En <strong>webbtjänst</strong> där repon lagras, delas och samarbetas kring. Och där du kan publicera webbsidor gratis.</p>
+      </div>
+    </div>
+    <ul class="nice" style="margin-top:36px">
+      <li class="frag">Backup av allt du bygger</li>
+      <li class="frag">Dela med andra, eller håll det privat</li>
+      <li class="frag">Den här kurssidan ligger på GitHub Pages!</li>
+    </ul>
+  </section>
+
+  <!-- 15 -->
+  <section>
+    <div class="kicker">GitHub · gör så här</div>
+    <h2>Skapa ett konto</h2>
+    <div class="cols wide-left">
+      <ul class="emoji">
+        <li><span class="e">1️⃣</span><span>Gå till <strong>github.com/signup</strong></span></li>
+        <li><span class="e">2️⃣</span><span>E-post, lösenord och ett användarnamn (syns publikt)</span></li>
+        <li><span class="e">3️⃣</span><span>Bekräfta e-posten med koden du får</span></li>
+        <li><span class="e">4️⃣</span><span>Välj <strong>Free</strong>, det räcker</span></li>
+        <li><span class="e">5️⃣</span><span>Slå på tvåstegsverifiering</span></li>
+      </ul>
+      <div class="card sun">
+        <span class="e">💡</span>
+        <h3>Tips</h3>
+        <p>Välj ett användarnamn du kan tänka dig att visa för en framtida arbetsgivare.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Ge alla några minuter. De som redan har konto kan installera gh under tiden.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 16 -->
+  <section>
+    <div class="kicker">GitHub · gör så här</div>
+    <h2>GitHub CLI: gh</h2>
+    <div class="cols">
+      <div>
+        <p>Ett verktyg som låter dig, och agenten, prata med GitHub från terminalen.</p>
+        <div class="term"><pre><span class="c"># Windows</span>
+<span class="p">&gt;</span> winget install GitHub.cli
+<span class="c"># macOS</span>
+<span class="p">$</span> brew install gh
+<span class="c"># Linux: se guide 3</span></pre></div>
+      </div>
+      <div>
+        <div class="term"><pre><span class="p">$</span> gh auth login
+<span class="c">? Where do you use GitHub?</span> GitHub.com
+<span class="c">? Preferred protocol?</span> HTTPS
+<span class="c">? Authenticate Git?</span> Yes
+<span class="c">? How to authenticate?</span> Web browser
+<span class="ok">✓ Logged in as anna</span></pre></div>
+      </div>
+    </div>
+    <p class="small bottom">👉 Guide 3 på kurssidan. Kontrollera med <code>gh auth status</code></p>
+    <aside class="notes">
+      <ul>
+        <li>Demo: kör gh auth login live på projektorn.</li>
+        <li>Visa gh repo create hej-git --private --source . --push om tid finns.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 17 -->
+  <section class="divider">
+    <div class="num">4</div>
+    <h2>Node.js och VS Code</h2>
+    <p class="lead">Motorn och verkstaden</p>
+  </section>
+
+  <!-- 18 -->
+  <section>
+    <div class="kicker">Node.js · VS Code</div>
+    <h2>Två verktyg till</h2>
+    <div class="cols">
+      <div class="card">
+        <span class="e">🟩</span>
+        <h3>Node.js</h3>
+        <p style="margin-bottom:14px">Kör JavaScript på din dator. Många webbprojekt och verktyg behöver det.</p>
+        <div class="term"><pre><span class="p">&gt;</span> winget install OpenJS.NodeJS.LTS
+<span class="p">$</span> brew install node</pre></div>
+      </div>
+      <div class="card">
+        <span class="e">📝</span>
+        <h3>VS Code</h3>
+        <p style="margin-bottom:14px">Gratis editor där du ser filerna och granskar AI:ns ändringar.</p>
+        <div class="term"><pre><span class="p">&gt;</span> winget install Microsoft.VisualStudioCode
+<span class="p">$</span> brew install --cask visual-studio-code</pre></div>
+      </div>
+    </div>
+    <p class="small bottom">👉 Guide 4 och 5 på kurssidan. Linux-kommandon finns där.</p>
+  </section>
+
+  <!-- 19 -->
+  <section>
+    <div class="kicker">VS Code</div>
+    <h2>Rekommenderade tillägg</h2>
+    <div class="cols wider-left">
+      <div class="term"><pre><span class="p">$</span> code --install-extension anthropic.claude-code
+<span class="p">$</span> code --install-extension openai.chatgpt
+<span class="p">$</span> code --install-extension github.vscode-pull-request-github
+<span class="p">$</span> code --install-extension ritwickdey.liveserver</pre></div>
+      <ul class="emoji">
+        <li><span class="e">✳️</span><span>Claude Code i en panel</span></li>
+        <li><span class="e">🌀</span><span>Codex i en panel</span></li>
+        <li><span class="e">🐙</span><span>Pull requests</span></li>
+        <li><span class="e">🔴</span><span>Live Server för webbsidor</span></li>
+      </ul>
+    </div>
+    <p class="small bottom">Öppna en mapp med <code>code .</code> (punkten betyder ”mappen jag står i”)</p>
+  </section>
+
+  <!-- 20 -->
+  <section class="divider">
+    <div class="num">5</div>
+    <h2>AI-agenten</h2>
+    <p class="lead">Claude Code eller Codex</p>
+  </section>
+
+  <!-- 21 -->
+  <section>
+    <div class="kicker">AI-agenten</div>
+    <h2>Välj en av dem</h2>
+    <div class="cols">
+      <div class="card">
+        <span class="e">✳️</span>
+        <h3>Claude Code</h3>
+        <p>Från Anthropic. Kräver Claude Pro eller Max.</p>
+        <div class="term" style="margin-top:14px"><pre><span class="c"># macOS / Linux</span>
+<span class="p">$</span> curl -fsSL https://claude.ai/install.sh | bash
+<span class="c"># Windows (PowerShell)</span>
+<span class="p">&gt;</span> irm https://claude.ai/install.ps1 | iex</pre></div>
+      </div>
+      <div class="card">
+        <span class="e">🌀</span>
+        <h3>Codex</h3>
+        <p>Från OpenAI. Kräver ChatGPT Plus eller högre.</p>
+        <div class="term" style="margin-top:14px"><pre><span class="c"># macOS / Linux</span>
+<span class="p">$</span> curl -fsSL https://chatgpt.com/codex/install.sh | sh
+<span class="c"># Windows / alla med Node.js</span>
+<span class="p">&gt;</span> npm install -g @openai/codex</pre></div>
+      </div>
+    </div>
+    <p class="small bottom">Har du redan ett abonnemang? Välj den. Båda fungerar för allt i kursen. 👉 Guide 6a / 6b</p>
+    <aside class="notes">
+      <ul>
+        <li>Prata om kostnad: båda kräver betalabonnemang. Pro/Plus räcker gott.</li>
+        <li>Windows + Claude Code: Git måste vara installerat först.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 22 -->
+  <section>
+    <div class="kicker">AI-agenten · första körningen</div>
+    <h2>Säg hej!</h2>
+    <div class="cols wide-left">
+      <div class="term"><pre><span class="p">$</span> mkdir -p ~/kurs/forsta-projektet
+<span class="p">$</span> cd ~/kurs/forsta-projektet
+<span class="p">$</span> claude      <span class="c"># eller: codex</span>
+
+<span class="p">&gt;</span> Skapa en enkel webbsida index.html som
+  hälsar mig välkommen till kursen.
+  Använd varma färger.
+
+<span class="ok">● Write(index.html)</span>
+<span class="c">  Do you want to create index.html? › Yes</span></pre></div>
+      <ul class="nice">
+        <li class="frag">Logga in första gången</li>
+        <li class="frag">Skriv på svenska, som till en kollega</li>
+        <li class="frag">Agenten <strong>frågar om lov</strong> innan den gör något</li>
+        <li class="frag">Öppna sidan i webbläsaren 🎉</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Gör det live först, låt sedan alla prova.</li>
+        <li>Öppna index.html: Mac open index.html, Windows start index.html.</li>
+        <li>Be dem be agenten ändra något: byt färg, lägg till en bild, en knapp.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 23 -->
+  <section>
+    <div class="kicker">Klart?</div>
+    <h2>Checklista</h2>
+    <div class="cols">
+      <div class="term"><pre><span class="p">$</span> git --version
+<span class="p">$</span> gh auth status
+<span class="p">$</span> node --version
+<span class="p">$</span> code --version
+<span class="p">$</span> claude --version  <span class="c"># eller codex</span></pre></div>
+      <ul class="emoji">
+        <li><span class="e">✅</span><span>GitHub-konto, inloggad med gh</span></li>
+        <li><span class="e">✅</span><span>Git vet vem du är</span></li>
+        <li><span class="e">✅</span><span>Agenten startar och är inloggad</span></li>
+        <li><span class="e">✅</span><span>Du har skapat din första sida</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 24 -->
+  <section>
+    <div class="kicker">Om något krånglar</div>
+    <h2>Vanliga problem</h2>
+    <div class="cards two">
+      <div class="card"><h3>”command not found”</h3><p>Stäng terminalen och öppna en ny. Programmet installerades men terminalen vet inte om det än.</p></div>
+      <div class="card"><h3>”running scripts is disabled”</h3><p>Windows: kör <code>Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code></p></div>
+      <div class="card"><h3>brew hittas inte</h3><p>Kör kommandona under <em>Next steps</em> från Homebrew-installationen.</p></div>
+      <div class="card"><h3>Lösenordet syns inte</h3><p>Det är normalt i terminalen. Skriv och tryck <kbd>Enter</kbd>.</p></div>
+    </div>
+  </section>
+
+  <!-- 25 -->
+  <section class="title center">
+    <div style="font-size:120px;line-height:1">☕</div>
+    <h1>Paus!</h1>
+    <p class="lead">Sedan: vad händer egentligen när AI:n skriver kod?</p>
+  </section>
+
+</div>
+</body>
+</html>

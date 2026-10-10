@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitHub och gh · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐙</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Guide 3 av 6</span>
+      <h1>🐙 GitHub och gh</h1>
+      <p>GitHub är där dina Git-projekt bor på nätet. Med verktyget <code>gh</code> pratar du med GitHub direkt från terminalen, och det kan AI-agenterna också.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="os-switch" role="group" aria-label="Välj operativsystem">
+      <button type="button" data-os="windows">Windows</button>
+      <button type="button" data-os="mac">macOS</button>
+      <button type="button" data-os="linux">Linux</button>
+    </div>
+    <p class="os-note">Vi gissade ditt operativsystem. Byt om det blev fel.</p>
+
+    <ol class="steps">
+      <li>
+        <h3>Skapa ett konto på GitHub</h3>
+        <ol>
+          <li>Gå till <a href="https://github.com/signup" target="_blank" rel="noopener">github.com/signup</a>.</li>
+          <li>Fyll i e-post, lösenord och ett användarnamn. Användarnamnet syns publikt, så välj något du är bekväm med.</li>
+          <li>Bekräfta e-postadressen med koden du får.</li>
+          <li>Välj gratisplanen (<strong>Free</strong>). Den räcker gott för hela kursen.</li>
+        </ol>
+        <div class="note"><p><strong>Slå på tvåstegsverifiering.</strong> GitHub kräver det förr eller senare. Gå till <em>Settings → Password and authentication</em> och följ guiden, till exempel med en autentiseringsapp i mobilen.</p></div>
+      </li>
+
+      <li>
+        <h3>Installera GitHub CLI (gh)</h3>
+        <div data-os-only="windows">
+          <div class="code"><span class="label">PowerShell</span>
+<pre>winget install --id GitHub.cli -e</pre></div>
+        </div>
+        <div data-os-only="mac">
+          <div class="code"><span class="label">Terminal</span>
+<pre>brew install gh</pre></div>
+        </div>
+        <div data-os-only="linux">
+          <p>Det här är GitHubs officiella instruktion för Ubuntu och Debian. Kopiera hela blocket på en gång.</p>
+          <div class="code"><span class="label">Terminal</span>
+<pre>(type -p wget >/dev/null || (sudo apt update && sudo apt install wget -y)) \
+  && sudo mkdir -p -m 755 /etc/apt/keyrings \
+  && out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+  && cat $out | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+  && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+  && sudo mkdir -p -m 755 /etc/apt/sources.list.d \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+  && sudo apt update \
+  && sudo apt install gh -y</pre></div>
+          <p>Andra distributioner: se <a href="https://github.com/cli/cli#installation" target="_blank" rel="noopener">github.com/cli/cli</a>.</p>
+        </div>
+        <p>Starta om terminalen och kontrollera:</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>gh --version</pre></div>
+      </li>
+
+      <li>
+        <h3>Logga in</h3>
+        <div class="code"><span class="label">Alla system</span>
+<pre>gh auth login</pre></div>
+        <p>Svara så här på frågorna (flytta med piltangenterna, välj med <kbd>Enter</kbd>):</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Fråga</th><th>Svar</th></tr>
+            <tr><td>Where do you use GitHub?</td><td><strong>GitHub.com</strong></td></tr>
+            <tr><td>Preferred protocol for Git operations?</td><td><strong>HTTPS</strong></td></tr>
+            <tr><td>Authenticate Git with your GitHub credentials?</td><td><strong>Yes</strong></td></tr>
+            <tr><td>How would you like to authenticate?</td><td><strong>Login with a web browser</strong></td></tr>
+          </table>
+        </div>
+        <p>Terminalen visar en kod på åtta tecken. Tryck <kbd>Enter</kbd>, klistra in koden i webbläsaren som öppnas och godkänn.</p>
+        <p>Kontrollera att det fungerade:</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>gh auth status</pre></div>
+      </li>
+
+      <li>
+        <h3>Lägg upp ditt första repo</h3>
+        <p>Har du gjort testet i <a href="git.html">Git-guiden</a>? Då kan du skicka upp det till GitHub med ett kommando:</p>
+        <div data-os-only="windows">
+          <div class="code"><span class="label">PowerShell</span>
+<pre>cd $HOME\kurs\hej-git
+gh repo create hej-git --private --source . --push</pre></div>
+        </div>
+        <div data-os-only="mac linux">
+          <div class="code"><span class="label">Terminal</span>
+<pre>cd ~/kurs/hej-git
+gh repo create hej-git --private --source . --push</pre></div>
+        </div>
+        <p>Öppna repot i webbläsaren:</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>gh repo view --web</pre></div>
+      </li>
+    </ol>
+
+    <nav class="guide-nav">
+      <a href="git.html">← Git</a>
+      <a href="node.html">Nästa: Node.js →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>
