@@ -319,3 +319,20 @@ tr:last-child td { border-bottom: 0; }
   .qr-text { align-items: flex-start; }
   .qr-label { margin-top: 0; }
 }
+
+/* Utfällbart alternativ, till exempel terminalversionen */
+details.alt {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  margin-top: 8px;
+}
+details.alt summary {
+  cursor: pointer;
+  font-family: var(--font-head);
+  font-weight: 600;
+  color: var(--plum);
+  font-size: 1.1rem;
+}
+details.alt[open] summary { margin-bottom: 10px; }

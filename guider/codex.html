@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Codex · AI-driven programmering</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌀</text></svg>">
-  <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="../assets/site.css">
-  <script src="../assets/site.js" defer></script>
+  <link rel="stylesheet" href="../assets/theme.css?v=2">
+  <link rel="stylesheet" href="../assets/site.css?v=2">
+  <script src="../assets/site.js?v=2" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -15,7 +15,7 @@
       <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
       <span class="eyebrow">Guide 6b av 6 · välj 6a eller 6b</span>
       <h1>🌀 Codex</h1>
-      <p>Codex är OpenAIs AI-agent för programmering. Den fungerar på samma sätt som Claude Code: läser filer, skriver kod och kör kommandon åt dig.</p>
+      <p>Codex är OpenAIs AI-agent för programmering. I kursen använder vi den i <strong>ChatGPT-appen</strong> på datorn. Där läser den dina filer, skriver kod och kör kommandon åt dig.</p>
     </div>
   </header>
 
@@ -27,73 +27,78 @@
     </div>
     <p class="os-note">Vi gissade ditt operativsystem. Byt om det blev fel.</p>
 
-    <div class="note"><p><strong>Du behöver ett konto.</strong> Codex ingår i ChatGPT:s betalabonnemang (Plus, Pro, Business m.fl.). Logga in på <a href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com</a> och kontrollera ditt abonnemang innan du börjar.</p></div>
+    <div class="note"><p><strong>Du behöver ett ChatGPT-konto.</strong> Logga in på <a href="https://chatgpt.com" target="_blank" rel="noopener">chatgpt.com</a> och kontrollera att ditt abonnemang (till exempel Plus) ger tillgång till Codex innan du börjar.</p></div>
 
     <ol class="steps">
       <li>
-        <h3>Installera</h3>
+        <h3>Installera ChatGPT-appen</h3>
         <div data-os-only="windows">
+          <p>Installera från <a href="https://apps.microsoft.com/detail/9PLM9XGG6VKS" target="_blank" rel="noopener">Microsoft Store</a>, eller med winget:</p>
           <div class="code"><span class="label">PowerShell</span>
-<pre>powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 | iex"</pre></div>
-          <p>Eller med npm (kräver <a href="node.html">Node.js</a>):</p>
-          <div class="code"><span class="label">PowerShell</span>
-<pre>npm install -g @openai/codex</pre></div>
-          <div class="note"><p><strong>Krånglar det på Windows?</strong> OpenAI rekommenderar fortfarande WSL (Linux i Windows) för bästa stöd. Fråga mig på lektionen så hjälper jag dig.</p></div>
+<pre>winget install --id 9PLM9XGG6VKS -s msstore</pre></div>
+          <div class="note"><p><strong>Installera <a href="git.html">Git</a> också.</strong> Utan Git fungerar inte alla funktioner i appen.</p></div>
         </div>
-        <div data-os-only="mac linux">
-          <div class="code"><span class="label">Terminal</span>
-<pre>curl -fsSL https://chatgpt.com/codex/install.sh | sh</pre></div>
-          <p>Eller med Homebrew eller npm:</p>
-          <div class="code"><span class="label">Terminal</span>
-<pre>brew install --cask codex
-<span class="c"># eller</span>
-npm install -g @openai/codex</pre></div>
+        <div data-os-only="mac">
+          <p>Ladda ner <a href="https://persistent.oaistatic.com/codex-app-prod/Codex.dmg" target="_blank" rel="noopener">appen för macOS</a>, öppna filen och dra appen till mappen <em>Program</em>.</p>
+          <div class="note"><p><strong>Appen kräver Apple Silicon</strong> (M1 eller senare). Har du en äldre Mac med Intel-processor använder du terminalversionen längst ner på sidan.</p></div>
         </div>
-        <p>Starta om terminalen och kontrollera:</p>
-        <div class="code"><span class="label">Alla system</span>
-<pre>codex --version</pre></div>
+        <div data-os-only="linux">
+          <p>Linux-appen är i förhandsversion. Ubuntu 24.04+ och Debian 13 (x64):</p>
+          <div class="code"><span class="label">Terminal</span>
+<pre>cd ~/Downloads
+curl -fLO https://persistent.oaistatic.com/codex-app-prod/linux/deb/latest/chatgpt_amd64.deb
+sudo apt install ./chatgpt_amd64.deb</pre></div>
+          <p>Fedora 43+ (x64):</p>
+          <div class="code"><span class="label">Terminal</span>
+<pre>cd ~/Downloads
+curl -fLO https://persistent.oaistatic.com/codex-app-prod/linux/rpm/latest/chatgpt.x86_64.rpm
+sudo dnf install ./chatgpt.x86_64.rpm</pre></div>
+          <p>ARM-dator, Arch eller annan distribution? Se <a href="https://learn.chatgpt.com/codex/linux/linux-app" target="_blank" rel="noopener">OpenAIs Linux-instruktioner</a>.</p>
+        </div>
       </li>
 
       <li>
-        <h3>Starta och logga in</h3>
-        <div data-os-only="windows">
-          <div class="code"><span class="label">PowerShell</span>
-<pre>mkdir $HOME\kurs\forsta-projektet
-cd $HOME\kurs\forsta-projektet
-codex</pre></div>
-        </div>
-        <div data-os-only="mac linux">
-          <div class="code"><span class="label">Terminal</span>
-<pre>mkdir -p ~/kurs/forsta-projektet
-cd ~/kurs/forsta-projektet
-codex</pre></div>
-        </div>
-        <p>Välj <strong>Sign in with ChatGPT</strong> och godkänn i webbläsaren.</p>
+        <h3>Logga in och välj Codex</h3>
+        <p>Starta appen och logga in med ditt ChatGPT-konto. Välj sedan <strong>Codex</strong> i rullgardinsmenyn högst upp. Det är där du jobbar med kod i en projektmapp.</p>
       </li>
 
       <li>
-        <h3>Ge den ditt första uppdrag</h3>
+        <h3>Öppna en projektmapp</h3>
+        <p>Skapa först en tom mapp för ditt första projekt, till exempel <code>kurs/forsta-projektet</code> i din hemmapp. Välj sedan <strong>Add new project</strong> (eller tryck <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>O</kbd>) och välj mappen.</p>
+        <p>Under textrutan väljer du hur mycket Codex får göra på egen hand. Börja med att låta den <strong>fråga om lov</strong> (<em>Ask for approval</em>). Undvik <em>Full access</em>, för då är Codex inte begränsad till projektmappen.</p>
+      </li>
+
+      <li>
+        <h3>Ge Codex ditt första uppdrag</h3>
+        <p>Skriv på svenska, precis som till en kollega, och tryck <kbd>Enter</kbd>:</p>
         <div class="code"><span class="label">Skriv i Codex</span>
 <pre>Skapa en enkel webbsida index.html som hälsar mig välkommen till kursen. Använd varma färger.</pre></div>
-        <p>Codex visar vad den tänker göra och ber om lov innan den kör kommandon.</p>
+        <p>Codex visar vad den gör och ber om lov innan den kör kommandon. Läs vad den vill göra innan du godkänner.</p>
       </li>
 
       <li>
         <h3>Bra att kunna</h3>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Kommando</th><th>Gör</th></tr>
-            <tr><td><code>/init</code></td><td>Skapar filen <code>AGENTS.md</code> med instruktioner om projektet.</td></tr>
-            <tr><td><code>/approvals</code></td><td>Väljer hur mycket Codex får göra utan att fråga.</td></tr>
-            <tr><td><code>/model</code></td><td>Byter modell och hur mycket den ska tänka.</td></tr>
-            <tr><td><code>/new</code></td><td>Börjar om med en tom konversation.</td></tr>
-            <tr><td><kbd>Esc</kbd></td><td>Avbryter det Codex håller på med.</td></tr>
-            <tr><td><code>/quit</code></td><td>Avslutar.</td></tr>
-          </table>
-        </div>
-        <div class="note tip"><p><strong>Hellre en app?</strong> Codex finns också som app och i ChatGPT på webben. Läs mer på <a href="https://developers.openai.com/codex" target="_blank" rel="noopener">developers.openai.com/codex</a>. I kursen utgår vi från terminalen.</p></div>
+        <ul class="checklist">
+          <li><strong>Avbryt:</strong> klicka på stoppknappen om Codex är på väg åt fel håll.</li>
+          <li><strong>Bifoga bilder:</strong> dra in en skärmdump eller skiss direkt i textrutan.</li>
+          <li><strong>Projektinstruktioner:</strong> be Codex skapa en <code>AGENTS.md</code> med instruktioner om projektet.</li>
+        </ul>
       </li>
     </ol>
+
+    <details class="alt">
+      <summary>Vill du hellre köra Codex i terminalen?</summary>
+      <p>Det är samma Codex, men utan grafiskt gränssnitt. Den behövs bara om appen inte fungerar på din dator, till exempel på en Intel-Mac.</p>
+      <div data-os-only="windows">
+        <div class="code"><span class="label">PowerShell</span>
+<pre>powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 | iex"</pre></div>
+      </div>
+      <div data-os-only="mac linux">
+        <div class="code"><span class="label">Terminal</span>
+<pre>curl -fsSL https://chatgpt.com/codex/install.sh | sh</pre></div>
+      </div>
+      <p>Starta sedan med <code>codex</code> i en projektmapp och välj <strong>Sign in with ChatGPT</strong>.</p>
+    </details>
 
     <nav class="guide-nav">
       <a href="claude-code.html">← Claude Code</a>

@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Claude Code · AI-driven programmering</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✳️</text></svg>">
-  <link rel="stylesheet" href="../assets/theme.css">
-  <link rel="stylesheet" href="../assets/site.css">
-  <script src="../assets/site.js" defer></script>
+  <link rel="stylesheet" href="../assets/theme.css?v=2">
+  <link rel="stylesheet" href="../assets/site.css?v=2">
+  <script src="../assets/site.js?v=2" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -15,7 +15,7 @@
       <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
       <span class="eyebrow">Guide 6a av 6 · välj 6a eller 6b</span>
       <h1>✳️ Claude Code</h1>
-      <p>Claude Code är Anthropics AI-agent. Den läser dina filer, skriver kod och kör kommandon åt dig, direkt i terminalen eller i VS Code.</p>
+      <p>Claude Code är Anthropics AI-agent. I kursen använder vi den i <strong>Claude-appen</strong> på datorn, under fliken <strong>Code</strong>. Där läser den dina filer, skriver kod och kör kommandon åt dig, och du ser varje ändring innan den sparas.</p>
     </div>
   </header>
 
@@ -27,73 +27,103 @@
     </div>
     <p class="os-note">Vi gissade ditt operativsystem. Byt om det blev fel.</p>
 
-    <div class="note"><p><strong>Du behöver ett konto.</strong> Claude Code ingår i Claudes betalabonnemang (Pro eller Max). Skapa konto på <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> innan du börjar. Pro räcker för kursen.</p></div>
+    <div class="note"><p><strong>Du behöver ett betalabonnemang.</strong> Claude Code ingår i Claude Pro, Max, Team och Enterprise. Skapa konto på <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> innan du börjar. Pro räcker för kursen.</p></div>
 
     <ol class="steps">
       <li>
-        <h3>Installera</h3>
+        <h3>Installera Claude-appen</h3>
         <div data-os-only="windows">
-          <p>Kör i <strong>PowerShell</strong>. Se till att du har installerat <a href="git.html">Git</a> först.</p>
-          <div class="code"><span class="label">PowerShell</span>
-<pre>irm https://claude.ai/install.ps1 | iex</pre></div>
-          <p>Eller med winget:</p>
-          <div class="code"><span class="label">PowerShell</span>
-<pre>winget install Anthropic.ClaudeCode</pre></div>
+          <p>Ladda ner installationsprogrammet och kör det:</p>
+          <ul>
+            <li><a href="https://claude.ai/api/desktop/win32/x64/setup/latest/redirect" target="_blank" rel="noopener">Claude för Windows (x64)</a>, det vanliga valet</li>
+            <li><a href="https://claude.ai/api/desktop/win32/arm64/setup/latest/redirect" target="_blank" rel="noopener">Claude för Windows (ARM64)</a>, för datorer med Snapdragon-processor</li>
+          </ul>
+          <div class="note"><p><strong>Installera <a href="git.html">Git</a> först.</strong> Claude Code använder Git för att hålla koll på ändringar och för att kunna köra flera uppgifter parallellt.</p></div>
         </div>
-        <div data-os-only="mac linux">
-          <div class="code"><span class="label">Terminal</span>
-<pre>curl -fsSL https://claude.ai/install.sh | bash</pre></div>
-          <p>Eller med Homebrew:</p>
-          <div class="code"><span class="label">Terminal</span>
-<pre>brew install --cask claude-code</pre></div>
+        <div data-os-only="mac">
+          <p>Ladda ner <a href="https://claude.ai/api/desktop/darwin/universal/dmg/latest/redirect" target="_blank" rel="noopener">Claude för macOS</a> (fungerar på både Intel och Apple Silicon). Öppna filen och dra Claude till mappen <em>Program</em>.</p>
         </div>
-        <p>Starta om terminalen och kontrollera:</p>
-        <div class="code"><span class="label">Alla system</span>
-<pre>claude --version</pre></div>
+        <div data-os-only="linux">
+          <p>Linux-appen är i beta och finns för <strong>Ubuntu 22.04+ och Debian 12+</strong>. Kör stegen i ordning:</p>
+          <div class="code"><span class="label">Terminal</span>
+<pre><span class="c"># 1. Verktyg som behövs för att lägga till Anthropics paketkälla</span>
+sudo apt install -y curl gnupg
+<span class="c"># 2. Anthropics signeringsnyckel</span>
+sudo curl -fsSLo /usr/share/keyrings/claude-desktop-archive-keyring.asc https://downloads.claude.ai/claude-desktop/key.asc
+<span class="c"># 3. Lägg till paketkällan</span>
+echo "deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/claude-desktop-archive-keyring.asc] https://downloads.claude.ai/claude-desktop/apt/stable stable main" | sudo tee /etc/apt/sources.list.d/claude-desktop.list
+<span class="c"># 4. Installera</span>
+sudo apt update && sudo apt install -y claude-desktop</pre></div>
+          <p>Använder du Fedora eller Arch? Då finns ingen app ännu. Använd terminalversionen längst ner på sidan.</p>
+        </div>
       </li>
 
       <li>
-        <h3>Starta och logga in</h3>
-        <p>Gå till en projektmapp och starta Claude Code:</p>
-        <div data-os-only="windows">
-          <div class="code"><span class="label">PowerShell</span>
-<pre>mkdir $HOME\kurs\forsta-projektet
-cd $HOME\kurs\forsta-projektet
-claude</pre></div>
+        <h3>Logga in och öppna fliken Code</h3>
+        <p>Starta Claude och logga in med ditt Claude-konto. Klicka sedan på fliken <strong>Code</strong> högst upp i mitten. Appen har tre flikar:</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Flik</th><th>Används till</th></tr>
+            <tr><td><strong>Chat</strong></td><td>Vanlig chatt, utan tillgång till dina filer.</td></tr>
+            <tr><td><strong>Cowork</strong></td><td>Längre uppgifter som Claude gör i bakgrunden.</td></tr>
+            <tr><td><strong>Code</strong></td><td>Claude Code. <strong>Det är den vi använder i kursen.</strong></td></tr>
+          </table>
         </div>
-        <div data-os-only="mac linux">
-          <div class="code"><span class="label">Terminal</span>
-<pre>mkdir -p ~/kurs/forsta-projektet
-cd ~/kurs/forsta-projektet
-claude</pre></div>
-        </div>
-        <p>Första gången får du välja färgtema och logga in. Välj <strong>Claude account with subscription</strong>, godkänn i webbläsaren och svara ja på frågan om du litar på mappen.</p>
+        <p>Ber appen dig uppgradera när du klickar på Code saknar ditt konto ett betalabonnemang.</p>
       </li>
 
       <li>
-        <h3>Ge den ditt första uppdrag</h3>
-        <p>Skriv på svenska, precis som till en kollega:</p>
-        <div class="code"><span class="label">Skriv i Claude Code</span>
+        <h3>Välj en projektmapp</h3>
+        <p>Skapa först en tom mapp för ditt första projekt, till exempel <code>kurs/forsta-projektet</code> i din hemmapp. I Code-fliken:</p>
+        <ol>
+          <li>Välj <strong>Local</strong> så att Claude jobbar med filerna på din dator.</li>
+          <li>Klicka på <strong>Select folder</strong> och välj mappen.</li>
+          <li>Välj behörighetsläge med väljaren bredvid skicka-knappen. Börja med <strong>Manual</strong>, då frågar Claude innan den ändrar filer eller kör kommandon.</li>
+        </ol>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Läge</th><th>Vad Claude får göra</th></tr>
+            <tr><td><strong>Manual</strong></td><td>Frågar innan varje filändring och kommando. Bäst när du är ny.</td></tr>
+            <tr><td><strong>Accept edits</strong></td><td>Ändrar filer direkt, men frågar innan andra kommandon.</td></tr>
+            <tr><td><strong>Plan</strong></td><td>Läser och föreslår en plan, men ändrar ingenting.</td></tr>
+            <tr><td><strong>Auto</strong></td><td>Jobbar på utan att fråga, och en automatisk kontroll stoppar riskabla saker.</td></tr>
+          </table>
+        </div>
+      </li>
+
+      <li>
+        <h3>Ge Claude ditt första uppdrag</h3>
+        <p>Skriv på svenska, precis som till en kollega, och tryck <kbd>Enter</kbd>:</p>
+        <div class="code"><span class="label">Skriv i Claude</span>
 <pre>Skapa en enkel webbsida index.html som hälsar mig välkommen till kursen. Använd varma färger.</pre></div>
-        <p>Claude frågar om lov innan den skapar filer eller kör kommandon. Läs vad den vill göra och godkänn.</p>
+        <p>I läget <strong>Manual</strong> ser du exakt vad som kommer att ändras och trycker <strong>Accept</strong> eller <strong>Reject</strong>. När filer har ändrats visas en markering som <code>+12 -1</code>. Klicka på den för att se alla ändringar.</p>
       </li>
 
       <li>
         <h3>Bra att kunna</h3>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Kommando</th><th>Gör</th></tr>
-            <tr><td><code>/help</code></td><td>Visar hjälp och alla kommandon.</td></tr>
-            <tr><td><code>/init</code></td><td>Skapar filen <code>CLAUDE.md</code> med instruktioner om projektet.</td></tr>
-            <tr><td><code>/clear</code></td><td>Börjar om med en tom konversation.</td></tr>
-            <tr><td><kbd>Esc</kbd></td><td>Avbryter det Claude håller på med.</td></tr>
-            <tr><td><kbd>Shift</kbd> + <kbd>Tab</kbd></td><td>Växlar läge, till exempel planeringsläge eller automatiskt godkännande.</td></tr>
-            <tr><td><code>/exit</code></td><td>Avslutar.</td></tr>
-          </table>
-        </div>
-        <div class="note tip"><p><strong>Hellre en app?</strong> Claude Code finns också i Claudes skrivbordsapp och på webben. Ladda ner appen från <a href="https://claude.ai/download" target="_blank" rel="noopener">claude.ai/download</a>. I kursen utgår vi från terminalen.</p></div>
+        <ul class="checklist">
+          <li><strong>Avbryt eller styr om:</strong> klicka på stoppknappen, eller skriv en rättelse och tryck <kbd>Enter</kbd> medan Claude jobbar.</li>
+          <li><strong>Peka på en fil:</strong> skriv <code>@</code> följt av filnamnet.</li>
+          <li><strong>Bifoga bilder:</strong> dra in en skärmdump eller skiss direkt i textrutan.</li>
+          <li><strong>Inbyggd terminal:</strong> <kbd>Ctrl</kbd> + <kbd>`</kbd> öppnar en terminal i projektmappen.</li>
+          <li><strong>Projektinstruktioner:</strong> be Claude skapa en <code>CLAUDE.md</code> med instruktioner om projektet.</li>
+        </ul>
       </li>
     </ol>
+
+    <details class="alt">
+      <summary>Vill du hellre köra Claude Code i terminalen?</summary>
+      <p>Det är samma Claude Code, men utan grafiskt gränssnitt. Den behövs bara om du inte kan använda appen, till exempel på Fedora eller Arch.</p>
+      <div data-os-only="windows">
+        <div class="code"><span class="label">PowerShell</span>
+<pre>irm https://claude.ai/install.ps1 | iex</pre></div>
+      </div>
+      <div data-os-only="mac linux">
+        <div class="code"><span class="label">Terminal</span>
+<pre>curl -fsSL https://claude.ai/install.sh | bash</pre></div>
+      </div>
+      <p>Starta sedan med <code>claude</code> i en projektmapp.</p>
+    </details>
 
     <nav class="guide-nav">
       <a href="vscode.html">← VS Code</a>
