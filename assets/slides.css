@@ -374,3 +374,40 @@ body.show-notes .notes-box { display: block; }
 .deck .card .term { font-size: 17px; line-height: 1.5; }
 .deck .card .term pre { padding: 14px 18px; }
 .deck .cols.wider-left { grid-template-columns: 1.9fr 1fr; }
+
+/* Skiss av ett appfönster (Claude- eller ChatGPT-appen) */
+.deck .app {
+  background: var(--paper);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(59, 26, 44, 0.25);
+  border: 2px solid var(--line);
+  overflow: hidden;
+  font-size: 20px;
+  line-height: 1.45;
+}
+.deck .app-bar {
+  background: var(--sand);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.deck .app-bar i { width: 13px; height: 13px; border-radius: 50%; background: var(--coral); display: block; }
+.deck .app-bar i:nth-child(2) { background: var(--sun); }
+.deck .app-bar i:nth-child(3) { background: var(--leaf); }
+.deck .app-bar .tabs { margin: 0 auto; display: flex; gap: 6px; font-weight: 800; font-size: 17px; color: var(--ink-soft); }
+.deck .app-bar .tabs span { padding: 3px 14px; border-radius: 999px; }
+.deck .app-bar .tabs .on { background: var(--paper); color: var(--coral); }
+.deck .app-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+.deck .app .pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.deck .app .pill { background: #fff4d6; border: 1px solid var(--sun); border-radius: 999px; padding: 2px 12px; font-size: 16px; font-weight: 800; color: var(--plum); }
+.deck .app .msg { border-radius: 14px; padding: 10px 14px; max-width: 92%; }
+.deck .app .msg.me { background: var(--sand); align-self: flex-end; }
+.deck .app .msg.ai { background: #fff; border: 1px solid var(--line); }
+.deck .app .diff { margin-top: 8px; font-family: var(--font-mono); font-size: 16px; display: flex; gap: 10px; align-items: center; background: var(--cream); border-radius: 10px; padding: 6px 10px; }
+.deck .app .diff .add { color: var(--leaf); font-weight: 600; }
+.deck .app .diff .del { color: var(--berry); font-weight: 600; }
+.deck .app .diff .btns { margin-left: auto; display: flex; gap: 6px; font-family: var(--font-body); font-weight: 800; font-size: 15px; }
+.deck .app .diff .btns span { border: 1px solid var(--line); border-radius: 8px; padding: 2px 10px; background: #fff; }
+.deck .app .diff .btns .ok { background: var(--leaf); color: #fff; border-color: var(--leaf); }
+.deck .app .input { border: 2px solid var(--line); border-radius: 12px; padding: 8px 12px; color: var(--ink-soft); font-size: 17px; }
