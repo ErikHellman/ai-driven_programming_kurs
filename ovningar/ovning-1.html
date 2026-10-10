@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Övning 1 · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛠️</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=3">
+  <script src="../assets/site.js?v=3" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Tillfälle 1 · Övning 1 · 20–25 minuter</span>
+      <h1>🛠️ Mitt eget lilla verktyg</h1>
+      <p>Bygg en liten webbapp som du själv har nytta av, med AI-agenten som programmerare. När du är klar ligger den på GitHub och går att öppna i mobilen.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="note tip"><p><strong>Innan du börjar:</strong> du behöver Git, ett GitHub-konto med <code>gh</code> inloggat och Claude- eller ChatGPT-appen. Se <a href="../index.html#installation">installationsguiderna</a>.</p></div>
+
+    <ol class="steps">
+      <li>
+        <h3>Välj ett projekt</h3>
+        <p>Välj det som låter roligast, eller hitta på ett eget. Varje projekt har en färdig startprompt som du kan kopiera.</p>
+      <details class="alt project" open>
+        <summary>🛒 Inköpslista eller veckomatsedel</summary>
+        <div class="code wrap"><span class="label">Startprompt</span>
+<pre>Bygg en inköpslista som en webbapp i den här mappen.
+
+Funktioner:
+- Jag kan lägga till varor, bocka av dem och ta bort dem.
+- Avbockade varor hamnar längst ner i listan.
+- En knapp rensar alla avbockade varor.
+- Allt sparas i webbläsaren (localStorage) så att det finns kvar när jag laddar om sidan.
+
+Krav:
+- Använd bara HTML, CSS och JavaScript. Ingen server, inget byggsteg och inga paket som behöver installeras.
+- Startsidan ska heta index.html och ligga direkt i mappen. Använd bara relativa sökvägar så att sidan fungerar på GitHub Pages.
+- Sidan ska fungera lika bra på mobil som på dator: responsiv layout som anpassar sig efter skärmbredden, rätt viewport-inställning, knappar och fält som är lätta att träffa med fingret och ingen sidledsscroll.
+- Använd svenska i hela gränssnittet och sätt lang="sv" på sidan.
+- Ge appen en tydlig titel, en favicon och en glad design med varma färger.
+- Skapa en kort README.md som beskriver vad appen gör.
+
+Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver några filer.</pre></div>
+        <p><strong>Idéer för steg 4:</strong></p>
+        <ul>
+<li><code>Gruppera varorna efter kategori, till exempel frukt, mejeri och bröd.</code></li>
+<li><code>Lägg till en veckomatsedel där jag kan skriva in middag för varje dag.</code></li>
+        </ul>
+      </details>
+      <details class="alt project">
+        <summary>💧 Vanetracker</summary>
+        <div class="code wrap"><span class="label">Startprompt</span>
+<pre>Bygg en vanetracker som en webbapp i den här mappen.
+
+Funktioner:
+- Jag kan lägga till vanor, till exempel ”drack vatten” eller ”gick en promenad”.
+- Varje dag kan jag bocka av de vanor jag har gjort.
+- Jag ser hur många dagar i rad jag har klarat varje vana.
+- Allt sparas i webbläsaren (localStorage) så att det finns kvar när jag laddar om sidan.
+
+Krav:
+- Använd bara HTML, CSS och JavaScript. Ingen server, inget byggsteg och inga paket som behöver installeras.
+- Startsidan ska heta index.html och ligga direkt i mappen. Använd bara relativa sökvägar så att sidan fungerar på GitHub Pages.
+- Sidan ska fungera lika bra på mobil som på dator: responsiv layout som anpassar sig efter skärmbredden, rätt viewport-inställning, knappar och fält som är lätta att träffa med fingret och ingen sidledsscroll.
+- Använd svenska i hela gränssnittet och sätt lang="sv" på sidan.
+- Ge appen en tydlig titel, en favicon och en glad design med varma färger.
+- Skapa en kort README.md som beskriver vad appen gör.
+
+Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver några filer.</pre></div>
+        <p><strong>Idéer för steg 4:</strong></p>
+        <ul>
+<li><code>Visa de senaste 7 dagarna som små rutor för varje vana.</code></li>
+<li><code>Ge mig en peppande kommentar när jag har klarat alla vanor för dagen.</code></li>
+        </ul>
+      </details>
+      <details class="alt project">
+        <summary>💰 Budget för resa eller hushåll</summary>
+        <div class="code wrap"><span class="label">Startprompt</span>
+<pre>Bygg en budgetapp som en webbapp i den här mappen.
+
+Funktioner:
+- Jag kan lägga in utgifter med belopp, kategori och datum.
+- Jag ser totalsumman och hur mycket som är kvar av en budget jag själv anger.
+- Jag kan ta bort en utgift om jag skrivit fel.
+- Allt sparas i webbläsaren (localStorage) så att det finns kvar när jag laddar om sidan.
+
+Krav:
+- Använd bara HTML, CSS och JavaScript. Ingen server, inget byggsteg och inga paket som behöver installeras.
+- Startsidan ska heta index.html och ligga direkt i mappen. Använd bara relativa sökvägar så att sidan fungerar på GitHub Pages.
+- Sidan ska fungera lika bra på mobil som på dator: responsiv layout som anpassar sig efter skärmbredden, rätt viewport-inställning, knappar och fält som är lätta att träffa med fingret och ingen sidledsscroll.
+- Använd svenska i hela gränssnittet och sätt lang="sv" på sidan.
+- Ge appen en tydlig titel, en favicon och en glad design med varma färger.
+- Skapa en kort README.md som beskriver vad appen gör.
+
+Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver några filer.</pre></div>
+        <p><strong>Idéer för steg 4:</strong></p>
+        <ul>
+<li><code>Visa ett enkelt stapeldiagram per kategori.</code></li>
+<li><code>Låt mig exportera utgifterna som en CSV-fil.</code></li>
+        </ul>
+      </details>
+      <details class="alt project">
+        <summary>🧠 Quiz eller flashcards</summary>
+        <div class="code wrap"><span class="label">Startprompt</span>
+<pre>Bygg en flashcard-app som en webbapp i den här mappen.
+
+Funktioner:
+- Jag kan skapa kort med en fråga på ena sidan och ett svar på andra.
+- Jag kan öva: kortet visar frågan och vänds när jag trycker på det.
+- Jag markerar om jag kunde svaret, och korten jag inte kunde kommer oftare.
+- Allt sparas i webbläsaren (localStorage) så att det finns kvar när jag laddar om sidan.
+
+Krav:
+- Använd bara HTML, CSS och JavaScript. Ingen server, inget byggsteg och inga paket som behöver installeras.
+- Startsidan ska heta index.html och ligga direkt i mappen. Använd bara relativa sökvägar så att sidan fungerar på GitHub Pages.
+- Sidan ska fungera lika bra på mobil som på dator: responsiv layout som anpassar sig efter skärmbredden, rätt viewport-inställning, knappar och fält som är lätta att träffa med fingret och ingen sidledsscroll.
+- Använd svenska i hela gränssnittet och sätt lang="sv" på sidan.
+- Ge appen en tydlig titel, en favicon och en glad design med varma färger.
+- Skapa en kort README.md som beskriver vad appen gör.
+
+Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver några filer.</pre></div>
+        <p><strong>Idéer för steg 4:</strong></p>
+        <ul>
+<li><code>Låt mig ha flera kortlekar, till exempel ”Spanska” och ”Historia”.</code></li>
+<li><code>Visa hur många procent rätt jag hade på senaste övningen.</code></li>
+        </ul>
+      </details>
+        <p>Eget projekt? Använd en av startprompterna som mall och byt ut raderna under <em>Funktioner</em>. Låt raderna under <em>Krav</em> stå kvar, det är de som gör att appen fungerar på mobilen och på GitHub Pages.</p>
+      </li>
+
+      <li>
+        <h3>Skapa en mapp och öppna den i appen</h3>
+        <p>Skapa en tom mapp i din kursmapp, till exempel <code>kurs/inkopslista</code>.</p>
+        <ul>
+          <li><strong>Claude:</strong> fliken <em>Code</em> → <em>Local</em> → <em>Select folder</em>. Välj läget <strong>Manual</strong>.</li>
+          <li><strong>Codex:</strong> välj <em>Codex</em> → <em>Add new project</em>. Välj <strong>Ask for approval</strong>.</li>
+        </ul>
+      </li>
+
+      <li>
+        <h3>Klistra in startprompten och läs planen</h3>
+        <p>Agenten visar först en plan. Läs den, ställ frågor om något är oklart och svara sedan <code>Kör!</code>. Godkänn filerna den vill skapa.</p>
+        <p>Öppna <code>index.html</code> i webbläsaren och prova appen. Vill du se hur den ser ut på en mobil? Tryck <kbd>F12</kbd> (eller <kbd>⌥</kbd> + <kbd>⌘</kbd> + <kbd>I</kbd> på Mac) och klicka på mobilikonen.</p>
+      </li>
+
+      <li>
+        <h3>Bygg vidare i små steg</h3>
+        <p>Be om en sak i taget och testa efter varje steg. Ta en idé från projektet du valde, eller beskriv något du själv saknar. Hittar du ett fel? Beskriv vad du gjorde, vad du förväntade dig och vad som hände.</p>
+        <div class="code wrap"><span class="label">Exempel</span>
+<pre>När jag lägger till en vara med tom text dyker en tom rad upp. Det ska inte gå att lägga till tomma varor.</pre></div>
+      </li>
+
+      <li>
+        <h3>Spara och publicera</h3>
+        <p>Låt agenten sköta Git och GitHub åt dig:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Spara allt med Git och lägg upp projektet på GitHub som ett publikt repo med hjälp av gh. Slå sedan på GitHub Pages för main-grenen och ge mig länken till den publicerade sidan.</pre></div>
+        <div class="note"><p><strong>Varför publikt?</strong> GitHub Pages är gratis för publika repon. Lägg därför inga personliga uppgifter i koden. Det du skriver in i själva appen sparas bara i din egen webbläsare.</p></div>
+        <p>Det tar någon minut innan sidan är uppe. Öppna sedan länken i mobilen. 🎉</p>
+      </li>
+    </ol>
+
+    <section>
+      <h2>Klart?</h2>
+      <ul class="checklist">
+        <li>Appen fungerar och sparar det jag skriver in</li>
+        <li>Den ser bra ut både på datorn och i mobilen</li>
+        <li>Koden ligger på GitHub</li>
+        <li>Jag har öppnat den publicerade sidan i mobilen</li>
+      </ul>
+      <p>Hann du inte klart? Det gör inget, gör färdigt hemma. Ta med appen till nästa lektion så bygger vi vidare.</p>
+    </section>
+
+    <nav class="guide-nav">
+      <a href="../index.html">← Översikt</a>
+      <a href="../slides/tillfalle-1-del-2.html">Presentationen del 2 →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>

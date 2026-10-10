@@ -336,3 +336,19 @@ details.alt summary {
   font-size: 1.1rem;
 }
 details.alt[open] summary { margin-bottom: 10px; }
+
+/* Kodblock med radbrytning, för långa prompter */
+.code.wrap pre { white-space: pre-wrap; word-break: break-word; }
+details.project { margin: 12px 0; }
+details.project summary { font-size: 1.2rem; }
+
+/* Långa prompter: kopieringsknappen ovanför texten så att raderna får plats */
+.code.wrap pre { padding-top: 44px; padding-right: 18px; }
+@media (max-width: 640px) {
+  ol.steps > li { padding-left: 46px; }
+  ol.steps > li::before { width: 32px; height: 32px; }
+  ol.steps > li::after { left: 15px; top: 34px; }
+  .code pre { font-size: 0.85rem; padding-left: 12px; }
+  .code.wrap pre { padding-right: 12px; }
+  details.alt { padding: 12px 14px; }
+}

@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tillfälle 1 · Del 2: Hur fungerar det?</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
-  <link rel="stylesheet" href="../assets/theme.css?v=2">
-  <link rel="stylesheet" href="../assets/slides.css?v=2">
-  <script src="../assets/slides.js?v=2" defer></script>
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/slides.css?v=3">
+  <script src="../assets/slides.js?v=3" defer></script>
 </head>
 <body>
 <a class="home" href="../index.html">⌂ Kursmaterial</a>
@@ -362,14 +362,94 @@
     </div>
   </section>
 
+  <!-- Övning 1 -->
+  <section class="divider">
+    <div class="num">🛠️</div>
+    <h2>Övning 1: Mitt eget lilla verktyg</h2>
+    <p class="lead">Bygg en liten app du själv har nytta av · 20–25 minuter</p>
+  </section>
+
+  <section>
+    <div class="kicker">Övning 1</div>
+    <h2>Välj ett projekt</h2>
+    <div class="cards four">
+      <div class="card"><span class="e">🛒</span><h3>Inköpslista</h3><p>eller veckomatsedel</p></div>
+      <div class="card"><span class="e">💧</span><h3>Vanetracker</h3><p>”drack vatten”, ”gick en promenad”</p></div>
+      <div class="card"><span class="e">💰</span><h3>Budget</h3><p>för en resa eller ett hushåll</p></div>
+      <div class="card"><span class="e">🧠</span><h3>Quiz</h3><p>eller flashcards för något du pluggar</p></div>
+    </div>
+    <ul class="nice" style="margin-top:34px">
+      <li>En mapp, ingen server, ingen inloggning. Allt sparas i webbläsaren.</li>
+      <li>Färdiga startprompter för alla fyra finns på kurssidan under <strong>Övning 1</strong>.</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Låt alla välja snabbt, max en minut. Eget projekt går bra, de byter bara ut raderna under Funktioner i startprompten.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <h2 style="font-size:40px;margin-bottom:14px">Startprompten: mål, funktioner och krav</h2>
+    <div class="term prompt"><pre>Bygg en inköpslista som en webbapp i den här mappen.
+
+<span class="p">Funktioner:</span>
+- Jag kan lägga till varor, bocka av dem och ta bort dem.
+- Avbockade varor hamnar längst ner i listan.
+- En knapp rensar alla avbockade varor.
+- Allt sparas i webbläsaren (localStorage) så att det finns kvar när jag laddar om sidan.
+
+<span class="p">Krav:</span>
+- Använd bara HTML, CSS och JavaScript. Ingen server, inget byggsteg och inga paket som behöver installeras.
+- Startsidan ska heta index.html och ligga direkt i mappen. Använd bara relativa sökvägar så att sidan fungerar på GitHub Pages.
+- Sidan ska fungera lika bra på mobil som på dator: responsiv layout som anpassar sig efter skärmbredden, rätt viewport-inställning, knappar och fält som är lätta att träffa med fingret och ingen sidledsscroll.
+- Använd svenska i hela gränssnittet och sätt lang="sv" på sidan.
+- Ge appen en tydlig titel, en favicon och en glad design med varma färger.
+- Skapa en kort README.md som beskriver vad appen gör.
+
+Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver några filer.</pre></div>
+    <aside class="notes">
+      <ul>
+        <li>Gå igenom prompten uppifrån: först vad, sedan funktioner, sedan krav. Kraven är det som gör att appen fungerar i mobilen och kan publiceras på GitHub Pages.</li>
+        <li>Koppla till tumreglerna: tydligt mål, bra kontext, och ”visa en plan först” ger ett naturligt stopp att granska.</li>
+        <li>localStorage betyder att datan bara finns i den egna webbläsaren. Bra att säga högt.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Övning 1 · gör så här</div>
+    <h2>Små steg, sedan publicera</h2>
+    <div class="cols wide-left">
+      <ul class="emoji">
+        <li class="frag"><span class="e">📁</span><span>Ny tom mapp, öppna i appen, välj <strong>Manual</strong> / <strong>Ask for approval</strong></span></li>
+        <li class="frag"><span class="e">📋</span><span>Klistra in startprompten, läs planen, svara <strong>Kör!</strong></span></li>
+        <li class="frag"><span class="e">🔁</span><span>Testa, och be om <strong>en sak i taget</strong></span></li>
+        <li class="frag"><span class="e">🚀</span><span>Låt agenten publicera, öppna länken i mobilen</span></li>
+      </ul>
+      <div class="card sun frag">
+        <span class="e">🚀</span>
+        <h3>Publicera</h3>
+        <p style="color:var(--ink)">”Spara allt med Git och lägg upp projektet på GitHub som ett publikt repo med hjälp av gh. Slå sedan på GitHub Pages för main-grenen och ge mig länken till den publicerade sidan.”</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Repot måste vara publikt för gratis GitHub Pages. Inga personliga uppgifter i koden.</li>
+        <li>Det tar någon minut innan Pages-sidan är uppe. Den som inte hinner gör klart hemma.</li>
+        <li>Testa mobilvy direkt i webbläsaren: F12 och mobilikonen.</li>
+      </ul>
+    </aside>
+  </section>
+
   <!-- 23 -->
   <section>
     <div class="kicker">Till nästa gång</div>
     <h2>Hemuppgift</h2>
     <ul class="emoji">
       <li><span class="e">✅</span><span>Se till att allt på checklistan fungerar</span></li>
-      <li><span class="e">🎨</span><span>Be agenten bygga vidare på din välkomstsida: en bild, en meny, ett formulär</span></li>
-      <li><span class="e">🐙</span><span>Be agenten lägga upp projektet på GitHub</span></li>
+      <li><span class="e">🛠️</span><span>Gör klart <strong>övning 1</strong> och publicera din app på GitHub Pages</span></li>
+      <li><span class="e">🎨</span><span>Bygg vidare: be agenten om en ny funktion du själv saknar</span></li>
       <li><span class="e">💡</span><span>Fundera på vad <strong>du</strong> vill bygga under kursen</span></li>
     </ul>
     <p class="small bottom">Allt material och alla guider finns på kurssidan.</p>

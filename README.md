@@ -11,6 +11,7 @@ Materialet publiceras med GitHub Pages på <https://ai-kurs.hellman.cloud/>
 | `index.html` | Startsida med länkar till allt material |
 | `slides/` | Presentationer som HTML-slides |
 | `guider/` | Installationsguider med kommandon för Windows och macOS/Linux |
+| `ovningar/` | Övningar med färdiga startprompter |
 | `assets/` | Gemensam stil (`theme.css`), stil och skript för guider (`site.*`) och slides (`slides.*`) |
 
 ## Presentationerna
