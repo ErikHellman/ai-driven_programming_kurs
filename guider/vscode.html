@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VS Code · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Guide 5 av 6</span>
+      <h1>📝 VS Code</h1>
+      <p>Visual Studio Code är en gratis kodeditor. Här ser du filerna som AI:n skapar, granskar ändringarna och kör agenten i en panel bredvid koden.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="os-switch" role="group" aria-label="Välj operativsystem">
+      <button type="button" data-os="windows">Windows</button>
+      <button type="button" data-os="mac">macOS</button>
+      <button type="button" data-os="linux">Linux</button>
+    </div>
+    <p class="os-note">Vi gissade ditt operativsystem. Byt om det blev fel.</p>
+
+    <ol class="steps">
+      <li>
+        <h3>Installera VS Code</h3>
+        <div data-os-only="windows">
+          <div class="code"><span class="label">PowerShell</span>
+<pre>winget install --id Microsoft.VisualStudioCode -e</pre></div>
+        </div>
+        <div data-os-only="mac">
+          <div class="code"><span class="label">Terminal</span>
+<pre>brew install --cask visual-studio-code</pre></div>
+        </div>
+        <div data-os-only="linux">
+          <div class="code"><span class="label">Terminal</span>
+<pre>sudo snap install code --classic</pre></div>
+          <p>Har du inte snap? Ladda ner <code>.deb</code>-filen från <a href="https://code.visualstudio.com/download" target="_blank" rel="noopener">code.visualstudio.com/download</a> och installera den.</p>
+        </div>
+        <p>Starta om terminalen och kontrollera att kommandot <code>code</code> fungerar:</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>code --version</pre></div>
+        <div class="note" data-os-only="mac"><p><strong>Hittas inte <code>code</code>?</strong> Öppna VS Code, tryck <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>, skriv <em>shell command</em> och välj <strong>Install 'code' command in PATH</strong>.</p></div>
+      </li>
+
+      <li>
+        <h3>Installera rekommenderade tillägg</h3>
+        <p>Kopiera hela blocket och kör det i terminalen. Du kan också söka upp tilläggen under <em>Extensions</em> i VS Code (<kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>).</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>code --install-extension anthropic.claude-code
+code --install-extension openai.chatgpt
+code --install-extension github.vscode-pull-request-github
+code --install-extension ritwickdey.liveserver</pre></div>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Tillägg</th><th>Varför</th></tr>
+            <tr><td><strong>Claude Code</strong></td><td>Kör Claude Code i en panel i VS Code och visar ändringar sida vid sida.</td></tr>
+            <tr><td><strong>Codex</strong> (openai.chatgpt)</td><td>Samma sak för Codex.</td></tr>
+            <tr><td><strong>GitHub Pull Requests</strong></td><td>Se och granska pull requests från GitHub direkt i editorn.</td></tr>
+            <tr><td><strong>Live Server</strong></td><td>Öppnar webbsidor du bygger i webbläsaren och laddar om dem automatiskt.</td></tr>
+          </table>
+        </div>
+        <p>Du behöver bara tillägget för den agent du har valt, men det skadar inte att ha båda.</p>
+      </li>
+
+      <li>
+        <h3>Öppna en mapp</h3>
+        <p>I VS Code arbetar man alltid i en <strong>mapp</strong>, inte i en enskild fil. Gå till kursmappen och öppna den:</p>
+        <div data-os-only="windows">
+          <div class="code"><span class="label">PowerShell</span>
+<pre>cd $HOME\kurs
+code .</pre></div>
+        </div>
+        <div data-os-only="mac linux">
+          <div class="code"><span class="label">Terminal</span>
+<pre>cd ~/kurs
+code .</pre></div>
+        </div>
+        <p>Punkten betyder ”den mapp jag står i”. Svara <strong>Yes, I trust the authors</strong> om VS Code frågar.</p>
+        <div class="note tip"><p><strong>Tips:</strong> VS Code har en inbyggd terminal. Öppna den via menyn <em>Terminal → New Terminal</em>.</p></div>
+      </li>
+    </ol>
+
+    <nav class="guide-nav">
+      <a href="node.html">← Node.js</a>
+      <a href="claude-code.html">Nästa: Claude Code →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>

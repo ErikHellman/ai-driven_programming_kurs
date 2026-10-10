@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude Code · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✳️</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Guide 6a av 6 · välj 6a eller 6b</span>
+      <h1>✳️ Claude Code</h1>
+      <p>Claude Code är Anthropics AI-agent. Den läser dina filer, skriver kod och kör kommandon åt dig, direkt i terminalen eller i VS Code.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="os-switch" role="group" aria-label="Välj operativsystem">
+      <button type="button" data-os="windows">Windows</button>
+      <button type="button" data-os="mac">macOS</button>
+      <button type="button" data-os="linux">Linux</button>
+    </div>
+    <p class="os-note">Vi gissade ditt operativsystem. Byt om det blev fel.</p>
+
+    <div class="note"><p><strong>Du behöver ett konto.</strong> Claude Code ingår i Claudes betalabonnemang (Pro eller Max). Skapa konto på <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> innan du börjar. Pro räcker för kursen.</p></div>
+
+    <ol class="steps">
+      <li>
+        <h3>Installera</h3>
+        <div data-os-only="windows">
+          <p>Kör i <strong>PowerShell</strong>. Se till att du har installerat <a href="git.html">Git</a> först.</p>
+          <div class="code"><span class="label">PowerShell</span>
+<pre>irm https://claude.ai/install.ps1 | iex</pre></div>
+          <p>Eller med winget:</p>
+          <div class="code"><span class="label">PowerShell</span>
+<pre>winget install Anthropic.ClaudeCode</pre></div>
+        </div>
+        <div data-os-only="mac linux">
+          <div class="code"><span class="label">Terminal</span>
+<pre>curl -fsSL https://claude.ai/install.sh | bash</pre></div>
+          <p>Eller med Homebrew:</p>
+          <div class="code"><span class="label">Terminal</span>
+<pre>brew install --cask claude-code</pre></div>
+        </div>
+        <p>Starta om terminalen och kontrollera:</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>claude --version</pre></div>
+      </li>
+
+      <li>
+        <h3>Starta och logga in</h3>
+        <p>Gå till en projektmapp och starta Claude Code:</p>
+        <div data-os-only="windows">
+          <div class="code"><span class="label">PowerShell</span>
+<pre>mkdir $HOME\kurs\forsta-projektet
+cd $HOME\kurs\forsta-projektet
+claude</pre></div>
+        </div>
+        <div data-os-only="mac linux">
+          <div class="code"><span class="label">Terminal</span>
+<pre>mkdir -p ~/kurs/forsta-projektet
+cd ~/kurs/forsta-projektet
+claude</pre></div>
+        </div>
+        <p>Första gången får du välja färgtema och logga in. Välj <strong>Claude account with subscription</strong>, godkänn i webbläsaren och svara ja på frågan om du litar på mappen.</p>
+      </li>
+
+      <li>
+        <h3>Ge den ditt första uppdrag</h3>
+        <p>Skriv på svenska, precis som till en kollega:</p>
+        <div class="code"><span class="label">Skriv i Claude Code</span>
+<pre>Skapa en enkel webbsida index.html som hälsar mig välkommen till kursen. Använd varma färger.</pre></div>
+        <p>Claude frågar om lov innan den skapar filer eller kör kommandon. Läs vad den vill göra och godkänn.</p>
+      </li>
+
+      <li>
+        <h3>Bra att kunna</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Kommando</th><th>Gör</th></tr>
+            <tr><td><code>/help</code></td><td>Visar hjälp och alla kommandon.</td></tr>
+            <tr><td><code>/init</code></td><td>Skapar filen <code>CLAUDE.md</code> med instruktioner om projektet.</td></tr>
+            <tr><td><code>/clear</code></td><td>Börjar om med en tom konversation.</td></tr>
+            <tr><td><kbd>Esc</kbd></td><td>Avbryter det Claude håller på med.</td></tr>
+            <tr><td><kbd>Shift</kbd> + <kbd>Tab</kbd></td><td>Växlar läge, till exempel planeringsläge eller automatiskt godkännande.</td></tr>
+            <tr><td><code>/exit</code></td><td>Avslutar.</td></tr>
+          </table>
+        </div>
+        <div class="note tip"><p><strong>Hellre en app?</strong> Claude Code finns också i Claudes skrivbordsapp och på webben. Ladda ner appen från <a href="https://claude.ai/download" target="_blank" rel="noopener">claude.ai/download</a>. I kursen utgår vi från terminalen.</p></div>
+      </li>
+    </ol>
+
+    <nav class="guide-nav">
+      <a href="vscode.html">← VS Code</a>
+      <a href="codex.html">Alternativet: Codex →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>

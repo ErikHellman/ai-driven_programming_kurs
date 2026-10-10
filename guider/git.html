@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Git · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌱</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css">
+  <link rel="stylesheet" href="../assets/site.css">
+  <script src="../assets/site.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Guide 2 av 6</span>
+      <h1>🌱 Git</h1>
+      <p>Git sparar historiken för ditt projekt, som sparpunkter i ett spel. Gör AI:n något dumt kan du alltid gå tillbaka.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="os-switch" role="group" aria-label="Välj operativsystem">
+      <button type="button" data-os="windows">Windows</button>
+      <button type="button" data-os="mac">macOS</button>
+      <button type="button" data-os="linux">Linux</button>
+    </div>
+    <p class="os-note">Vi gissade ditt operativsystem. Byt om det blev fel.</p>
+
+    <ol class="steps">
+      <li>
+        <h3>Installera Git</h3>
+        <div data-os-only="windows">
+          <p>Git för Windows innehåller också <strong>Git Bash</strong>, som Claude Code behöver på Windows.</p>
+          <div class="code"><span class="label">PowerShell</span>
+<pre>winget install --id Git.Git -e --source winget</pre></div>
+        </div>
+        <div data-os-only="mac">
+          <div class="code"><span class="label">Terminal</span>
+<pre>brew install git</pre></div>
+          <p>Om macOS frågar om du vill installera <em>Command Line Developer Tools</em>, svara ja. Det är också ett sätt att få Git.</p>
+        </div>
+        <div data-os-only="linux">
+          <div class="code"><span class="label">Terminal</span>
+<pre>sudo apt install -y git</pre></div>
+        </div>
+        <p>Starta om terminalen och kontrollera:</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>git --version</pre></div>
+      </li>
+
+      <li>
+        <h3>Berätta vem du är</h3>
+        <p>Varje sparpunkt (commit) märks med namn och e-post. Använd samma e-post som du har, eller ska ha, på GitHub.</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>git config --global user.name "Ditt Namn"
+git config --global user.email "din@epost.se"
+git config --global init.defaultBranch main</pre></div>
+        <div class="note tip"><p><strong>Vill du inte visa din e-post offentligt?</strong> GitHub ger dig en anonym adress som slutar på <code>@users.noreply.github.com</code>. Du hittar den under <em>Settings → Emails</em> när du har skapat ditt konto.</p></div>
+      </li>
+
+      <li>
+        <h3>Ordlista</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Ord</th><th>Betyder</th></tr>
+            <tr><td><strong>Repository (repo)</strong></td><td>En projektmapp som Git håller koll på.</td></tr>
+            <tr><td><strong>Commit</strong></td><td>En sparpunkt med en kort beskrivning av vad som ändrats.</td></tr>
+            <tr><td><strong>Branch</strong></td><td>En parallell version av projektet där du kan testa saker utan att röra huvudversionen.</td></tr>
+            <tr><td><strong>Push / Pull</strong></td><td>Skicka dina commits till GitHub, eller hämta andras.</td></tr>
+            <tr><td><strong>Clone</strong></td><td>Ladda ner en kopia av ett repo från GitHub till din dator.</td></tr>
+          </table>
+        </div>
+      </li>
+
+      <li>
+        <h3>Testa</h3>
+        <p>Det här skapar ett litet repo och gör din första commit. Du behöver inte förstå varje rad än, det går vi igenom på lektionen.</p>
+        <div data-os-only="windows">
+          <div class="code"><span class="label">PowerShell</span>
+<pre>mkdir $HOME\kurs\hej-git
+cd $HOME\kurs\hej-git
+git init
+"Hej från Git!" | Out-File README.md
+git add README.md
+git commit -m "Min första commit"
+git log --oneline</pre></div>
+        </div>
+        <div data-os-only="mac linux">
+          <div class="code"><span class="label">Terminal</span>
+<pre>mkdir -p ~/kurs/hej-git
+cd ~/kurs/hej-git
+git init
+echo "Hej från Git!" > README.md
+git add README.md
+git commit -m "Min första commit"
+git log --oneline</pre></div>
+        </div>
+      </li>
+    </ol>
+
+    <nav class="guide-nav">
+      <a href="terminal.html">← Terminalen</a>
+      <a href="github.html">Nästa: GitHub →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>
