@@ -415,3 +415,9 @@ body.show-notes .notes-box { display: block; }
 /* Lång prompt på en slide */
 .deck .term.prompt { font-size: 16.5px; line-height: 1.42; }
 .deck .term.prompt pre { padding: 16px 22px; }
+
+/* Presentation av kursledaren */
+.deck .me { display: grid; grid-template-columns: 250px 1.8fr 0.9fr; gap: 36px; align-items: center; }
+.deck .me-photo { width: 250px; height: 250px; border-radius: 50%; object-fit: cover; border: 8px solid var(--sun); box-shadow: 0 10px 30px rgba(107, 46, 78, 0.18); }
+.deck .me ul.emoji > li { margin-bottom: 12px; font-size: 27px; }
+.deck .me ul.emoji > li > .e { font-size: 30px; width: 40px; }
