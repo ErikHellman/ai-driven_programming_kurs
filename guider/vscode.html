@@ -15,7 +15,7 @@
       <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
       <span class="eyebrow">Guide 6 av 7</span>
       <h1>📝 VS Code</h1>
-      <p>Visual Studio Code är en gratis kodeditor. Här ser du filerna som AI:n skapar, granskar ändringarna. Vill du kan du också köra agenten direkt i editorn.</p>
+      <p>Visual Studio Code är en gratis kodeditor. AI-agenten jobbar i Claude- eller ChatGPT-appen, och VS Code använder vi bara för att titta på filerna och göra mindre ändringar själv. Du behöver inte installera några tillägg.</p>
     </div>
   </header>
 
@@ -50,26 +50,6 @@
       </li>
 
       <li>
-        <h3>Installera rekommenderade tillägg</h3>
-        <p>Kopiera hela blocket och kör det i terminalen. Du kan också söka upp tilläggen under <em>Extensions</em> i VS Code (<kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>).</p>
-        <div class="code"><span class="label">Alla system</span>
-<pre>code --install-extension anthropic.claude-code
-code --install-extension openai.chatgpt
-code --install-extension github.vscode-pull-request-github
-code --install-extension ritwickdey.liveserver</pre></div>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Tillägg</th><th>Varför</th></tr>
-            <tr><td><strong>Claude Code</strong></td><td>Kör Claude Code i en panel i VS Code och visar ändringar sida vid sida.</td></tr>
-            <tr><td><strong>Codex</strong> (openai.chatgpt)</td><td>Samma sak för Codex.</td></tr>
-            <tr><td><strong>GitHub Pull Requests</strong></td><td>Se och granska pull requests från GitHub direkt i editorn.</td></tr>
-            <tr><td><strong>Live Server</strong></td><td>Öppnar webbsidor du bygger i webbläsaren och laddar om dem automatiskt.</td></tr>
-          </table>
-        </div>
-        <p>Du behöver bara tillägget för den agent du har valt, men det skadar inte att ha båda.</p>
-      </li>
-
-      <li>
         <h3>Öppna en mapp</h3>
         <p>I VS Code arbetar man alltid i en <strong>mapp</strong>, inte i en enskild fil. Gå till kursmappen och öppna den:</p>
         <div data-os-only="windows">
@@ -83,7 +63,19 @@ code .</pre></div>
 code .</pre></div>
         </div>
         <p>Punkten betyder ”den mapp jag står i”. Svara <strong>Yes, I trust the authors</strong> om VS Code frågar.</p>
-        <div class="note tip"><p><strong>Tips:</strong> VS Code har en inbyggd terminal. Öppna den via menyn <em>Terminal → New Terminal</em>.</p></div>
+        <p>Du kan också öppna mappen via menyn <em>File → Open Folder</em>.</p>
+      </li>
+
+      <li>
+        <h3>Gör en liten ändring</h3>
+        <p>Ibland går det snabbare att ändra en text eller en färg själv än att be agenten. Så här gör du:</p>
+        <ol>
+          <li>Klicka på filen i listan till vänster (<em>Explorer</em>), till exempel <code>index.html</code>.</li>
+          <li>Ändra det du vill, till exempel en rubrik.</li>
+          <li>Spara med <kbd>Ctrl</kbd> + <kbd>S</kbd> (Windows och Linux) eller <kbd>⌘</kbd> + <kbd>S</kbd> (macOS). En prick på fliken betyder att filen inte är sparad.</li>
+          <li>Ladda om sidan i webbläsaren för att se ändringen.</li>
+        </ol>
+        <div class="note tip"><p><strong>Se vad som har ändrats:</strong> Ikonen <em>Source Control</em> i vänsterkanten visar alla filer som ändrats sedan den senaste sparpunkten i Git, både dina och agentens ändringar. Klicka på en fil för att se före och efter sida vid sida. Det är inbyggt, inga tillägg behövs.</p></div>
       </li>
     </ol>
 

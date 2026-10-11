@@ -103,7 +103,7 @@
       <div class="card"><span class="e">🌱</span><h3>Git</h3><p>Sparpunkter för projektet</p></div>
       <div class="card"><span class="e">🐙</span><h3>GitHub + gh</h3><p>Projekten på nätet</p></div>
       <div class="card"><span class="e">🟩</span><h3>Node.js</h3><p>Kör JavaScript-verktyg</p></div>
-      <div class="card"><span class="e">📝</span><h3>VS Code</h3><p>Se och granska koden</p></div>
+      <div class="card"><span class="e">📝</span><h3>VS Code</h3><p>Små ändringar själv</p></div>
       <div class="card hot"><span class="e">✳️</span><h3>Claude Code</h3><p>I Claude-appen</p></div>
       <div class="card hot"><span class="e">🌀</span><h3>Codex</h3><p>I ChatGPT-appen</p></div>
     </div>
@@ -510,7 +510,7 @@
       <div class="card">
         <span class="e">📝</span>
         <h3>VS Code</h3>
-        <p style="margin-bottom:14px">Gratis editor där du ser filerna och granskar AI:ns ändringar.</p>
+        <p style="margin-bottom:14px">Gratis editor där du ser filerna och gör små ändringar själv.</p>
         <div class="term"><pre><span class="p">&gt;</span> winget install Microsoft.VisualStudioCode
 <span class="p">$</span> brew install --cask visual-studio-code</pre></div>
       </div>
@@ -521,20 +521,25 @@
   <!-- 26 -->
   <section>
     <div class="kicker">VS Code</div>
-    <h2>Rekommenderade tillägg</h2>
-    <div class="cols wider-left">
-      <div class="term"><pre><span class="p">$</span> code --install-extension anthropic.claude-code
-<span class="p">$</span> code --install-extension openai.chatgpt
-<span class="p">$</span> code --install-extension github.vscode-pull-request-github
-<span class="p">$</span> code --install-extension ritwickdey.liveserver</pre></div>
+    <h2>För små ändringar, inga tillägg</h2>
+    <div class="cols">
+      <div class="term"><pre><span class="c"># Öppna projektmappen</span>
+<span class="p">$</span> cd kurs
+<span class="p">$</span> code .</pre></div>
       <ul class="emoji">
-        <li><span class="e">✳️</span><span>Claude Code i en panel</span></li>
-        <li><span class="e">🌀</span><span>Codex i en panel</span></li>
-        <li><span class="e">🐙</span><span>Pull requests</span></li>
-        <li><span class="e">🔴</span><span>Live Server för webbsidor</span></li>
+        <li><span class="e">📂</span><span>Klicka på en fil i listan till vänster</span></li>
+        <li><span class="e">✏️</span><span>Ändra en text eller en färg</span></li>
+        <li><span class="e">💾</span><span>Spara med <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>S</kbd></span></li>
+        <li><span class="e">🔍</span><span><strong>Source Control</strong> visar vad som ändrats</span></li>
       </ul>
     </div>
-    <p class="small bottom">Öppna en mapp med <code>code .</code> (punkten betyder ”mappen jag står i”)</p>
+    <p class="small bottom">Agenten jobbar i Claude- eller ChatGPT-appen. VS Code är för att titta och justera själv.</p>
+    <aside class="notes">
+      <ul>
+        <li>Vi installerar inga tillägg. Allt agentiskt arbete sker i desktop-appen.</li>
+        <li>Punkten i <code>code .</code> betyder ”mappen jag står i”.</li>
+      </ul>
+    </aside>
   </section>
 
   <!-- 27 -->
