@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lösenordshanterare · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=3">
+  <script src="../assets/site.js?v=3" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Guide 1 av 7</span>
+      <h1>🔐 Lösenordshanterare</h1>
+      <p>I kursen skapar du konton på flera tjänster: GitHub, Claude eller ChatGPT och fler senare. En lösenordshanterare skapar ett unikt, starkt lösenord för varje konto och kommer ihåg dem åt dig. Du behöver bara kunna ett enda lösenord.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="os-switch" role="group" aria-label="Välj operativsystem">
+      <button type="button" data-os="windows">Windows</button>
+      <button type="button" data-os="mac">macOS</button>
+      <button type="button" data-os="linux">Linux</button>
+    </div>
+    <p class="os-note">Vi gissade ditt operativsystem. Byt om det blev fel.</p>
+
+    <ol class="steps">
+      <li>
+        <h3>Välj en lösenordshanterare</h3>
+        <p>Vi rekommenderar en av de här två. Båda krypterar valvet på din egen enhet, så inte ens företaget bakom kan läsa dina lösenord. Båda har appar för dator och mobil samt tillägg till webbläsaren.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th></th><th>Proton Pass</th><th>1Password</th></tr>
+            <tr><td><strong>Pris</strong></td><td>Gratisplanen räcker för kursen: obegränsat antal lösenord och enheter.</td><td>Kostar några dollar i månaden. Du kan prova gratis i 14 dagar.</td></tr>
+            <tr><td><strong>Passar dig som</strong></td><td>vill komma igång gratis.</td><td>vill ha den mest polerade upplevelsen och kan tänka dig att betala.</td></tr>
+            <tr><td><strong>Ladda ner</strong></td><td><a href="https://proton.me/pass/download" target="_blank" rel="noopener">proton.me/pass/download</a></td><td><a href="https://1password.com/downloads/" target="_blank" rel="noopener">1password.com/downloads</a></td></tr>
+          </table>
+        </div>
+        <p>Använder du redan en annan lösenordshanterare, till exempel Bitwarden eller den som finns i Apple-enheter? Då kan du fortsätta med den.</p>
+      </li>
+
+      <li>
+        <h3>Skapa ett konto och välj huvudlösenord</h3>
+        <ol>
+          <li>Skapa ett konto på <a href="https://proton.me/pass" target="_blank" rel="noopener">proton.me/pass</a> eller <a href="https://1password.com/" target="_blank" rel="noopener">1password.com</a>.</li>
+          <li>Välj ett <strong>huvudlösenord</strong>. Det är det enda lösenord du behöver komma ihåg från och med nu.</li>
+          <li>Spara återställningsinformationen. 1Password ger dig ett <em>Emergency Kit</em> och Proton en <em>återställningsfras</em>. Skriv ut den eller skriv av den på papper och förvara den hemma.</li>
+        </ol>
+        <div class="note tip"><p><strong>Ett bra huvudlösenord</strong> är en lösenordsfras med fyra eller fem slumpmässiga ord, till exempel <code>kanel-cykel-moln-tallrik-hopp</code>. Den är lång och svår att gissa men lätt att komma ihåg. Använd den inte någon annanstans.</p></div>
+        <div class="note warn"><p><strong>Glöm inte huvudlösenordet.</strong> Ingen kan återställa det åt dig utan återställningsinformationen, inte ens företaget.</p></div>
+      </li>
+
+      <li>
+        <h3>Installera appen på datorn</h3>
+        <p>Det enklaste är att ladda ner appen från länken i tabellen ovan och installera den som vilket program som helst. Logga sedan in med ditt konto.</p>
+        <details class="alt">
+          <summary>Vill du hellre installera med terminalen?</summary>
+          <div data-os-only="windows">
+            <div class="code"><span class="label">PowerShell · Proton Pass</span>
+<pre>winget install --id Proton.ProtonPass -e</pre></div>
+            <div class="code"><span class="label">PowerShell · 1Password</span>
+<pre>winget install --id AgileBits.1Password -e</pre></div>
+          </div>
+          <div data-os-only="mac">
+            <p>Kräver Homebrew, som du installerar i <a href="terminal.html">nästa guide</a>.</p>
+            <div class="code"><span class="label">Terminal · Proton Pass</span>
+<pre>brew install --cask proton-pass</pre></div>
+            <div class="code"><span class="label">Terminal · 1Password</span>
+<pre>brew install --cask 1password</pre></div>
+          </div>
+          <div data-os-only="linux">
+            <p>Kommandona gäller Ubuntu och Debian. Fedora har <code>.rpm</code>-paket på samma nedladdningssidor.</p>
+            <div class="code"><span class="label">Terminal · Proton Pass</span>
+<pre>wget https://proton.me/download/PassDesktop/linux/x64/ProtonPass.deb
+sudo apt install ./ProtonPass.deb</pre></div>
+            <div class="code"><span class="label">Terminal · 1Password</span>
+<pre>wget https://downloads.1password.com/linux/debian/amd64/stable/1password-latest.deb
+sudo apt install ./1password-latest.deb</pre></div>
+          </div>
+        </details>
+      </li>
+
+      <li>
+        <h3>Lägg till tillägget i webbläsaren och appen i mobilen</h3>
+        <p><strong>Webbläsartillägget</strong> är det du kommer använda mest. Det fyller i användarnamn och lösenord när du loggar in och föreslår ett starkt lösenord när du skapar ett nytt konto. Det finns för Chrome, Edge, Firefox, Safari och Brave på samma nedladdningssidor.</p>
+        <p>Installera gärna <strong>mobilappen</strong> också (App Store eller Google Play), så har du dina lösenord med dig överallt.</p>
+      </li>
+
+      <li>
+        <h3>Använd den för kursens konton</h3>
+        <p>När du skapar konton i nästa guider (GitHub, Claude eller ChatGPT) gör du så här:</p>
+        <ol>
+          <li>Klicka i lösenordsfältet och välj att låta lösenordshanteraren <strong>skapa ett lösenord</strong>.</li>
+          <li><strong>Spara</strong> inloggningen när tillägget frågar.</li>
+          <li>Nästa gång du loggar in fyller tillägget i allt åt dig.</li>
+        </ol>
+        <div class="note"><p><strong>Tvåstegsverifiering:</strong> GitHub kräver en engångskod utöver lösenordet. 1Password och Proton Pass Plus kan spara och fylla i koderna. Med gratisversionen av Proton Pass använder du i stället en autentiseringsapp i mobilen.</p></div>
+      </li>
+    </ol>
+
+    <nav class="guide-nav">
+      <a href="../index.html">← Översikt</a>
+      <a href="terminal.html">Nästa: Terminalen →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>
