@@ -218,13 +218,61 @@
   </section>
 
   <!-- 11 -->
+  <section>
+    <div class="kicker">Tvåstegsverifiering</div>
+    <h2>Ett extra lås: koden i mobilen</h2>
+    <div class="flow" style="margin-top:12px">
+      <div class="box frag">🔑 Lösenordet<small>Något du vet</small></div>
+      <div class="arrow frag">+</div>
+      <div class="box sun frag">📱 Sexsiffrig kod<small>Något du har, byts var 30:e sekund</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">✅ Inloggad<small>Bara du kommer in</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:44px">Även om någon kommer över ditt lösenord kommer de inte in utan din telefon. GitHub kräver det.</p>
+    <aside class="notes">
+      <ul>
+        <li>Kallas även 2FA. Jämför med bankdosan eller BankID: något du vet plus något du har.</li>
+        <li>SMS fungerar också men är svagare. Rekommendera en app.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 12 -->
+  <section>
+    <div class="kicker">Tvåstegsverifiering · gör så här</div>
+    <h2>Välj en autentiseringsapp</h2>
+    <div class="cards two">
+      <div class="card">
+        <span class="e">🟣</span>
+        <h3>Proton Authenticator</h3>
+        <p>Gratis, inget konto krävs. Synkar krypterat med ditt Proton-konto.</p>
+      </div>
+      <div class="card">
+        <span class="e">🟢</span>
+        <h3>Ente Auth</h3>
+        <p>Gratis och öppen källkod. Krypterad säkerhetskopia med Ente-konto.</p>
+      </div>
+    </div>
+    <ul class="emoji" style="margin-top:30px">
+      <li><span class="e">📷</span><span>Skanna QR-koden från tjänsten med appen och skriv in koden</span></li>
+      <li><span class="e">🗝️</span><span>Spara <strong>återställningskoderna</strong> i lösenordshanteraren</span></li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Båda finns för iPhone, Android, Windows, macOS och Linux.</li>
+        <li>Vi slår på det för GitHub när vi skapar kontot. Detaljer i guide 1, steg 6.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 13 -->
   <section class="divider">
     <div class="num">2</div>
     <h2>Terminalen</h2>
     <p class="lead">Datorns kommandorad</p>
   </section>
 
-  <!-- 12 -->
+  <!-- 14 -->
   <section>
     <div class="kicker">Terminalen</div>
     <h2>Prata med datorn i text</h2>
@@ -255,7 +303,7 @@
     </aside>
   </section>
 
-  <!-- 13 -->
+  <!-- 15 -->
   <section>
     <div class="kicker">Terminalen</div>
     <h2>Pakethanterare: en app-butik i terminalen</h2>
@@ -273,7 +321,7 @@
         <div class="term" style="margin-top:16px"><pre><span class="p">$</span> brew --version</pre></div>
       </div>
     </div>
-    <p class="small bottom">👉 Följ guide 1 på kurssidan. Mac: glöm inte att köra kommandona under <em>Next steps</em> efter installationen!</p>
+    <p class="small bottom">👉 Följ guide 2 på kurssidan. Mac: glöm inte att köra kommandona under <em>Next steps</em> efter installationen!</p>
     <aside class="notes">
       <ul>
         <li>Homebrew tar några minuter. Starta installationen och fortsätt prata under tiden.</li>
@@ -282,14 +330,14 @@
     </aside>
   </section>
 
-  <!-- 14 -->
+  <!-- 16 -->
   <section class="divider">
     <div class="num">3</div>
     <h2>Git</h2>
     <p class="lead">Ditt skyddsnät</p>
   </section>
 
-  <!-- 15 -->
+  <!-- 17 -->
   <section>
     <div class="kicker">Git</div>
     <h2>Sparpunkter, som i ett spel</h2>
@@ -311,7 +359,7 @@
     </aside>
   </section>
 
-  <!-- 16 -->
+  <!-- 18 -->
   <section>
     <div class="kicker">Git</div>
     <h2>Fem ord att kunna</h2>
@@ -325,7 +373,7 @@
     </div>
   </section>
 
-  <!-- 17 -->
+  <!-- 19 -->
   <section>
     <div class="kicker">Git · gör så här</div>
     <h2>Installera och presentera dig</h2>
@@ -345,7 +393,7 @@
 <span class="ok">git version 2.5x.x</span></pre></div>
       </div>
     </div>
-    <p class="small bottom">👉 Guide 2 på kurssidan</p>
+    <p class="small bottom">👉 Guide 3 på kurssidan</p>
     <aside class="notes">
       <ul>
         <li>Påminn om att starta om terminalen efter installationen.</li>
@@ -354,14 +402,14 @@
     </aside>
   </section>
 
-  <!-- 18 -->
+  <!-- 20 -->
   <section class="divider">
     <div class="num">4</div>
     <h2>GitHub</h2>
     <p class="lead">Dina projekt på nätet</p>
   </section>
 
-  <!-- 19 -->
+  <!-- 21 -->
   <section>
     <div class="kicker">GitHub</div>
     <h2>Git ≠ GitHub</h2>
@@ -384,7 +432,7 @@
     </ul>
   </section>
 
-  <!-- 20 -->
+  <!-- 22 -->
   <section>
     <div class="kicker">GitHub · gör så här</div>
     <h2>Skapa ett konto</h2>
@@ -394,7 +442,7 @@
         <li><span class="e">2️⃣</span><span>E-post, lösenord från lösenordshanteraren och ett användarnamn (syns publikt)</span></li>
         <li><span class="e">3️⃣</span><span>Bekräfta e-posten med koden du får</span></li>
         <li><span class="e">4️⃣</span><span>Välj <strong>Free</strong>, det räcker</span></li>
-        <li><span class="e">5️⃣</span><span>Slå på tvåstegsverifiering</span></li>
+        <li><span class="e">5️⃣</span><span>Slå på tvåstegsverifiering med din autentiseringsapp</span></li>
       </ul>
       <div class="card sun">
         <span class="e">💡</span>
@@ -409,7 +457,7 @@
     </aside>
   </section>
 
-  <!-- 21 -->
+  <!-- 23 -->
   <section>
     <div class="kicker">GitHub · gör så här</div>
     <h2>GitHub CLI: gh</h2>
@@ -420,7 +468,7 @@
 <span class="p">&gt;</span> winget install GitHub.cli
 <span class="c"># macOS</span>
 <span class="p">$</span> brew install gh
-<span class="c"># Linux: se guide 3</span></pre></div>
+<span class="c"># Linux: se guide 4</span></pre></div>
       </div>
       <div>
         <div class="term"><pre><span class="p">$</span> gh auth login
@@ -431,7 +479,7 @@
 <span class="ok">✓ Logged in as anna</span></pre></div>
       </div>
     </div>
-    <p class="small bottom">👉 Guide 3 på kurssidan. Kontrollera med <code>gh auth status</code></p>
+    <p class="small bottom">👉 Guide 4 på kurssidan. Kontrollera med <code>gh auth status</code></p>
     <aside class="notes">
       <ul>
         <li>Demo: kör gh auth login live på projektorn.</li>
@@ -440,14 +488,14 @@
     </aside>
   </section>
 
-  <!-- 22 -->
+  <!-- 24 -->
   <section class="divider">
     <div class="num">5</div>
     <h2>Node.js och VS Code</h2>
     <p class="lead">Motorn och verkstaden</p>
   </section>
 
-  <!-- 23 -->
+  <!-- 25 -->
   <section>
     <div class="kicker">Node.js · VS Code</div>
     <h2>Två verktyg till</h2>
@@ -467,10 +515,10 @@
 <span class="p">$</span> brew install --cask visual-studio-code</pre></div>
       </div>
     </div>
-    <p class="small bottom">👉 Guide 4 och 5 på kurssidan. Linux-kommandon finns där.</p>
+    <p class="small bottom">👉 Guide 5 och 6 på kurssidan. Linux-kommandon finns där.</p>
   </section>
 
-  <!-- 24 -->
+  <!-- 26 -->
   <section>
     <div class="kicker">VS Code</div>
     <h2>Rekommenderade tillägg</h2>
@@ -489,14 +537,14 @@
     <p class="small bottom">Öppna en mapp med <code>code .</code> (punkten betyder ”mappen jag står i”)</p>
   </section>
 
-  <!-- 25 -->
+  <!-- 27 -->
   <section class="divider">
     <div class="num">6</div>
     <h2>AI-agenten</h2>
     <p class="lead">Claude Code eller Codex, i en app på datorn</p>
   </section>
 
-  <!-- 26 -->
+  <!-- 28 -->
   <section>
     <div class="kicker">AI-agenten</div>
     <h2>Välj en av dem</h2>
@@ -530,7 +578,7 @@
     </aside>
   </section>
 
-  <!-- 27 -->
+  <!-- 29 -->
   <section>
     <div class="kicker">AI-agenten · första körningen</div>
     <h2>Säg hej!</h2>
@@ -562,7 +610,7 @@
     </aside>
   </section>
 
-  <!-- 28 -->
+  <!-- 30 -->
   <section>
     <div class="kicker">Klart?</div>
     <h2>Checklista</h2>
@@ -581,7 +629,7 @@
     </div>
   </section>
 
-  <!-- 29 -->
+  <!-- 31 -->
   <section>
     <div class="kicker">Om något krånglar</div>
     <h2>Vanliga problem</h2>
@@ -593,7 +641,7 @@
     </div>
   </section>
 
-  <!-- 30 -->
+  <!-- 32 -->
   <section class="title center">
     <div style="font-size:120px;line-height:1">☕</div>
     <h1>Paus!</h1>

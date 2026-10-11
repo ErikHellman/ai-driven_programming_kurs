@@ -15,7 +15,7 @@
       <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
       <span class="eyebrow">Guide 1 av 7</span>
       <h1>🔐 Lösenordshanterare</h1>
-      <p>I kursen skapar du konton på flera tjänster: GitHub, Claude eller ChatGPT och fler senare. En lösenordshanterare skapar ett unikt, starkt lösenord för varje konto och kommer ihåg dem åt dig. Du behöver bara kunna ett enda lösenord.</p>
+      <p>I kursen skapar du konton på flera tjänster: GitHub, Claude eller ChatGPT och fler senare. En lösenordshanterare skapar ett unikt, starkt lösenord för varje konto och kommer ihåg dem åt dig. Du behöver bara kunna ett enda lösenord. Vi slår också på tvåstegsverifiering, ett extra lås som kräver en kod från mobilen.</p>
     </div>
   </header>
 
@@ -97,7 +97,27 @@ sudo apt install ./1password-latest.deb</pre></div>
           <li><strong>Spara</strong> inloggningen när tillägget frågar.</li>
           <li>Nästa gång du loggar in fyller tillägget i allt åt dig.</li>
         </ol>
-        <div class="note"><p><strong>Tvåstegsverifiering:</strong> GitHub kräver en engångskod utöver lösenordet. 1Password och Proton Pass Plus kan spara och fylla i koderna. Med gratisversionen av Proton Pass använder du i stället en autentiseringsapp i mobilen.</p></div>
+      </li>
+
+      <li id="tvastegsverifiering">
+        <h3>Slå på tvåstegsverifiering</h3>
+        <p>Med tvåstegsverifiering (även kallat <em>2FA</em>) räcker det inte med lösenordet för att logga in. Du behöver också en sexsiffrig kod som en app i mobilen tar fram och som byts var 30:e sekund. Även om någon kommer över ditt lösenord kommer de inte in utan din telefon. GitHub kräver det, och det är klokt att slå på för alla viktiga konton.</p>
+        <p>Installera en <strong>autentiseringsapp</strong> i mobilen. Båda de här är gratis, saknar reklam och finns för iPhone, Android, Windows, macOS och Linux:</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>App</th><th>Bra att veta</th></tr>
+            <tr><td><strong>Proton Authenticator</strong><br><a href="https://proton.me/authenticator" target="_blank" rel="noopener">proton.me/authenticator</a></td><td>Kräver inget konto. Loggar du in med ditt Proton-konto synkas koderna krypterat mellan dina enheter. Passar bra ihop med Proton Pass.</td></tr>
+            <tr><td><strong>Ente Auth</strong><br><a href="https://ente.io/auth" target="_blank" rel="noopener">ente.io/auth</a></td><td>Öppen källkod. Med ett gratis Ente-konto säkerhetskopieras koderna krypterat, så du inte förlorar dem om du byter telefon.</td></tr>
+          </table>
+        </div>
+        <p>Så här slår du på det, till exempel på GitHub (<em>Settings → Password and authentication</em>):</p>
+        <ol>
+          <li>Välj <strong>Authenticator app</strong>. Sidan visar en QR-kod.</li>
+          <li>Öppna autentiseringsappen, tryck på <strong>+</strong> och skanna QR-koden.</li>
+          <li>Skriv in den sexsiffriga koden som appen visar för att bekräfta.</li>
+          <li>Spara <strong>återställningskoderna</strong> (<em>recovery codes</em>) i lösenordshanteraren, tillsammans med inloggningen. De tar dig in om du tappar bort telefonen.</li>
+        </ol>
+        <div class="note tip"><p><strong>Har du 1Password eller Proton Pass Plus?</strong> De kan också spara koderna och fylla i dem åt dig. Det är bekvämt, men en separat app i mobilen gör att lösenord och kod inte ligger på samma ställe.</p></div>
       </li>
     </ol>
 
