@@ -115,6 +115,42 @@
       x0 = null;
     });
 
+    // Kopiera-knapp på långa prompter (.term.prompt)
+    deck.querySelectorAll(".term.prompt").forEach(function (box) {
+      var pre = box.querySelector("pre");
+      if (!pre) return;
+      var btn = document.createElement("button");
+      btn.className = "copy-btn";
+      btn.type = "button";
+      btn.textContent = "Kopiera";
+      btn.addEventListener("click", function () {
+        var text = pre.textContent.trim();
+        var done = function () {
+          btn.textContent = "Kopierat!";
+          btn.classList.add("done");
+          setTimeout(function () {
+            btn.textContent = "Kopiera";
+            btn.classList.remove("done");
+          }, 1600);
+        };
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text).then(done);
+        } else {
+          // Reserv när sidan öppnas som lokal fil
+          var ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+          done();
+        }
+      });
+      box.appendChild(btn);
+    });
+
     window.addEventListener("hashchange", function () {
       var n = parseInt(location.hash.slice(1), 10);
       if (!isNaN(n) && n - 1 !== cur) go(n - 1, "all");
