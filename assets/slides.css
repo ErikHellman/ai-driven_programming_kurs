@@ -437,3 +437,31 @@ body.show-notes .notes-box { display: block; }
 .deck .copy-btn:hover { background: var(--coral); }
 .deck .copy-btn.done { background: var(--leaf); }
 @media print { .deck .copy-btn { display: none; } }
+
+/* Kontextfönstret som staplade lager */
+.deck .ctx { display: grid; grid-template-columns: 1.35fr 1fr; gap: 40px; align-items: center; }
+.deck .ctx-stack {
+  border: 3px solid var(--plum); border-radius: var(--radius); padding: 12px;
+  display: flex; flex-direction: column; gap: 8px; background: var(--paper); position: relative;
+}
+.deck .ctx-stack::before {
+  content: "Kontextfönstret"; position: absolute; top: -16px; left: 20px;
+  background: var(--plum); color: #fff; font: 800 16px var(--font-body);
+  padding: 3px 12px; border-radius: 999px;
+}
+.deck .ctx-layer {
+  display: flex; align-items: center; gap: 14px; border-radius: 12px;
+  padding: 8px 16px; font-size: 21px; color: var(--ink);
+}
+.deck .ctx-layer .e { font-size: 28px; }
+.deck .ctx-layer b { font-weight: 800; }
+.deck .ctx-layer small { display: block; font-size: 16px; color: var(--ink-soft); font-weight: 600; }
+.deck .ctx-layer.sys { background: #f3dbe6; }
+.deck .ctx-layer.tools { background: var(--peach); }
+.deck .ctx-layer.skills { background: #ffe7a8; }
+.deck .ctx-layer.chat { background: #d5eedf; min-height: 96px; }
+.deck .ctx-layer.free {
+  background: repeating-linear-gradient(135deg, var(--cream) 0 10px, var(--sand) 10px 20px);
+  border: 2px dashed var(--line); color: var(--ink-soft); justify-content: center; min-height: 44px;
+}
+@media (max-width: 800px) { .deck .ctx { grid-template-columns: 1fr; gap: 24px; } }
