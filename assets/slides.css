@@ -421,7 +421,7 @@ body.show-notes .notes-box { display: block; }
 .deck .me-photo { width: 250px; height: 250px; border-radius: 50%; object-fit: cover; border: 8px solid var(--sun); box-shadow: 0 10px 30px rgba(107, 46, 78, 0.18); }
 .deck .me ul.emoji > li { margin-bottom: 12px; font-size: 27px; }
 .deck .me ul.emoji > li > .e { font-size: 30px; width: 40px; }
-.deck .term.prompt { position: relative; }
+.deck .term.prompt, .deck [data-copy] { position: relative; }
 .deck .copy-btn {
   position: absolute;
   top: 12px;

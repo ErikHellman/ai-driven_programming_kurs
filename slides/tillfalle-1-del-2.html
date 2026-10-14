@@ -6,8 +6,8 @@
   <title>Tillfälle 1 · Del 2: Hur fungerar det?</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
   <link rel="stylesheet" href="../assets/theme.css?v=3">
-  <link rel="stylesheet" href="../assets/slides.css?v=5">
-  <script src="../assets/slides.js?v=4" defer></script>
+  <link rel="stylesheet" href="../assets/slides.css?v=6">
+  <script src="../assets/slides.js?v=5" defer></script>
 </head>
 <body>
 <a class="home" href="../index.html">⌂ Kursmaterial</a>
@@ -333,6 +333,72 @@
 
   <!-- 21 -->
   <section>
+    <div class="kicker">Kostnad</div>
+    <h2>Vad kostar det?</h2>
+    <div class="cols wide-left">
+      <ul class="nice">
+        <li>Du betalar per <strong>token</strong>, både in och ut</li>
+        <li class="frag">Svaret (<em>output</em>) kostar ungefär fem gånger mer än det du skickar in (<em>input</em>)</li>
+        <li class="frag">Varje varv i agentloopen skickar <strong>hela kontexten</strong> igen</li>
+        <li class="frag">En lång konversation blir dyrare för varje nytt meddelande</li>
+      </ul>
+      <div class="card sun">
+        <span class="e">💳</span>
+        <h3>Prenumeration eller API?</h3>
+        <p>Med Claude Pro/Max eller ChatGPT Plus/Pro betalar du fast pris per månad och har en användningsgräns. Via API betalar du per token.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>I kursen använder vi prenumeration, så ingen får en oväntad faktura. Det som tar slut är användningsgränsen, inte pengar.</li>
+        <li>Men gränsen följer samma logik som priset: fler tokens betyder att du når gränsen snabbare.</li>
+        <li>Koppla tillbaka till kontextfönstret: allt i kontexten läses om i varje varv.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 22 -->
+  <section>
+    <div class="kicker">Kostnad</div>
+    <h2>Olika modeller, olika pris</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">🐇</span><h3>Haiku</h3><p><strong>$0,10</strong> in · <strong>$0,50</strong> ut</p><p class="small">Snabb och billig. Bra för enkla saker.</p></div>
+      <div class="card frag"><span class="e">🎵</span><h3>Sonnet</h3><p><strong>$2</strong> in · <strong>$10</strong> ut</p><p class="small">En bra vardagsmodell för kod.</p></div>
+      <div class="card frag"><span class="e">🎼</span><h3>Opus</h3><p><strong>$4</strong> in · <strong>$20</strong> ut</p><p class="small">Smartast och dyrast. För svåra uppgifter.</p></div>
+    </div>
+    <p class="small bottom">Pris per miljon tokens för Claude-modellerna, hösten 2026. En miljon tokens motsvarar ungefär 750&nbsp;000 ord engelsk text. OpenAI har en liknande trappa.</p>
+    <aside class="notes">
+      <ul>
+        <li>Priserna ändras ofta. Poängen är skillnaden mellan modellerna och mellan in och ut.</li>
+        <li>Haiku kostar en tjugondel av Sonnet. Det är stor skillnad om man gör samma sak tusen gånger.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 23 -->
+  <section>
+    <div class="kicker">Kostnad</div>
+    <h2>Så håller du nere kostnaden</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">🆕</span><span><strong>Ny uppgift, ny konversation.</strong> Använd <code>/clear</code> eller starta en ny chatt.</span></li>
+      <li class="frag"><span class="e">🗺️</span><span><strong>Planera först.</strong> En tydlig plan ger färre omtag.</span></li>
+      <li class="frag"><span class="e">🎯</span><span><strong>Peka ut rätt filer.</strong> Då slipper den läsa hela projektet.</span></li>
+      <li class="frag"><span class="e">✋</span><span><strong>Avbryt när den går i cirklar.</strong> Tryck Esc och förtydliga.</span></li>
+      <li class="frag"><span class="e">⚖️</span><span><strong>Välj modell efter uppgift.</strong> Enkla saker klarar en mindre modell.</span></li>
+      <li class="frag"><span class="e">📊</span><span><strong>Håll koll på förbrukningen.</strong> Kolla gränsen innan något stort.</span></li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Samma råd som ger bättre resultat ger också lägre kostnad. Kort och fokuserad kontext är bra för både kvalitet och plånbok.</li>
+        <li>/compact sammanfattar en lång konversation om man vill fortsätta i samma.</li>
+        <li>Lägre ansträngning (effort) sparar också tokens. I Claude Code väljer man modell med /model, i Codex i inställningarna.</li>
+        <li>Visa /usage i Claude Code för att se hur mycket av gränsen som är kvar.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 24 -->
+  <section>
     <div class="kicker">Säkerhet</div>
     <h2>Agenten jobbar på din dator</h2>
     <div class="cols">
@@ -350,7 +416,7 @@
     </div>
   </section>
 
-  <!-- 22 -->
+  <!-- 25 -->
   <section>
     <div class="kicker">Sammanfattning</div>
     <h2>Det här tar vi med oss</h2>
@@ -427,10 +493,10 @@ Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver någ
         <li class="frag"><span class="e">🔁</span><span>Testa, och be om <strong>en sak i taget</strong></span></li>
         <li class="frag"><span class="e">🚀</span><span>Låt agenten publicera, öppna länken i mobilen</span></li>
       </ul>
-      <div class="card sun frag">
+      <div class="card sun frag" data-copy>
         <span class="e">🚀</span>
         <h3>Publicera</h3>
-        <p style="color:var(--ink)">”Spara allt med Git och lägg upp projektet på GitHub som ett publikt repo med hjälp av gh. Slå sedan på GitHub Pages för main-grenen och ge mig länken till den publicerade sidan.”</p>
+        <p class="copy-src" style="color:var(--ink)">”Spara allt med Git och lägg upp projektet på GitHub som ett publikt repo med hjälp av gh. Slå sedan på GitHub Pages för main-grenen och ge mig länken till den publicerade sidan.”</p>
       </div>
     </div>
     <aside class="notes">
@@ -442,7 +508,7 @@ Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver någ
     </aside>
   </section>
 
-  <!-- 23 -->
+  <!-- 26 -->
   <section>
     <div class="kicker">Till nästa gång</div>
     <h2>Hemuppgift</h2>
@@ -455,7 +521,7 @@ Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver någ
     <p class="small bottom">Allt material och alla guider finns på kurssidan.</p>
   </section>
 
-  <!-- 24 -->
+  <!-- 27 -->
   <section class="title center">
     <div style="font-size:120px;line-height:1">🙌</div>
     <h1>Frågor?</h1>
