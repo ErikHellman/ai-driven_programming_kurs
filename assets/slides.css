@@ -465,3 +465,46 @@ body.show-notes .notes-box { display: block; }
   border: 2px dashed var(--line); color: var(--ink-soft); justify-content: center; min-height: 44px;
 }
 @media (max-width: 800px) { .deck .ctx { grid-template-columns: 1fr; gap: 24px; } }
+
+/* Översikt (tangent O): alla slides som miniatyrer */
+.overview {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  overflow: auto;
+  background: #3b1a2c;
+  padding: 20px 24px 40px;
+}
+body.show-overview .overview { display: block; }
+.ov-head { color: #fff; font: 700 15px var(--font-body); text-align: center; margin-bottom: 18px; }
+.ov-grid { display: grid; grid-template-columns: repeat(auto-fill, 256px); gap: 18px; justify-content: center; }
+.ov-tile {
+  position: relative;
+  width: 256px;
+  height: 144px;
+  padding: 0;
+  border: 3px solid transparent;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--cream);
+  cursor: pointer;
+  box-sizing: content-box;
+}
+.ov-tile:hover, .ov-tile.sel { border-color: var(--sun); }
+.ov-tile.current { box-shadow: 0 0 0 3px var(--coral); }
+.ov-deck { pointer-events: none; }
+.ov-deck .stage { top: 0; left: 0; transform: scale(0.2); transform-origin: 0 0; }
+.ov-deck *, .ov-deck section { transition: none !important; }
+.ov-num {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  background: var(--plum);
+  color: #fff;
+  font: 800 13px var(--font-body);
+  padding: 1px 8px;
+  border-radius: 999px;
+  z-index: 2;
+}
+@media print { .overview { display: none !important; } }
