@@ -1,10 +1,12 @@
 // En liten slidemotor utan beroenden.
 // Tangenter: → / Mellanslag / PageDown = nästa, ← / PageUp = föregående,
-// Home / End = första / sista, F = helskärm, N = talaranteckningar, Esc = stäng anteckningar.
+// Home / End = första / sista, F = helskärm, N = talaranteckningar, O = översikt,
+// Esc = stäng anteckningar eller översikt.
 (function () {
   var W = 1280, H = 720;
   var deck, slides, stage, bar, counter, notesBox;
   var cur = 0, frag = 0;
+  var overview, ovTiles, ovSel = 0;
 
   function frags(i) {
     return slides[i].querySelectorAll(".frag");
@@ -51,6 +53,75 @@
     else document.exitFullscreen && document.exitFullscreen();
   }
 
+  // Översikt: alla slides som miniatyrer i ett rutnät
+  function buildOverview() {
+    overview = document.createElement("div");
+    overview.className = "overview";
+    overview.innerHTML = '<div class="ov-head">Översikt · klicka på en slide, eller välj med piltangenterna och Enter · O eller Esc stänger</div>';
+    var grid = document.createElement("div");
+    grid.className = "ov-grid";
+    ovTiles = slides.map(function (s, i) {
+      var tile = document.createElement("button");
+      tile.type = "button";
+      tile.className = "ov-tile";
+      tile.setAttribute("aria-label", "Slide " + (i + 1));
+      var mini = document.createElement("div");
+      mini.className = "deck ov-deck";
+      var st = document.createElement("div");
+      st.className = "stage ov-stage";
+      var c = s.cloneNode(true);
+      c.className = s.className.replace(/\b(active|past)\b/g, "") + " active";
+      c.querySelectorAll(".frag").forEach(function (f) { f.classList.add("on"); });
+      c.querySelectorAll("[id]").forEach(function (el) { el.removeAttribute("id"); });
+      st.appendChild(c);
+      mini.appendChild(st);
+      tile.appendChild(mini);
+      var num = document.createElement("span");
+      num.className = "ov-num";
+      num.textContent = i + 1;
+      tile.appendChild(num);
+      tile.addEventListener("click", function () { closeOverview(); go(i, 0); });
+      grid.appendChild(tile);
+      return tile;
+    });
+    overview.appendChild(grid);
+    document.body.appendChild(overview);
+  }
+
+  function selectTile(i) {
+    ovSel = Math.max(0, Math.min(ovTiles.length - 1, i));
+    ovTiles.forEach(function (t, j) { t.classList.toggle("sel", j === ovSel); });
+    ovTiles[ovSel].scrollIntoView({ block: "nearest" });
+  }
+
+  function openOverview() {
+    if (!overview) buildOverview();
+    document.body.classList.add("show-overview");
+    ovTiles.forEach(function (t, j) { t.classList.toggle("current", j === cur); });
+    selectTile(cur);
+  }
+
+  function closeOverview() {
+    document.body.classList.remove("show-overview");
+  }
+
+  function overviewCols() {
+    var a = ovTiles[0].getBoundingClientRect().top, n = 0;
+    while (n < ovTiles.length && ovTiles[n].getBoundingClientRect().top === a) n++;
+    return n || 1;
+  }
+
+  function overviewKey(e) {
+    switch (e.key) {
+      case "ArrowRight": e.preventDefault(); selectTile(ovSel + 1); break;
+      case "ArrowLeft": e.preventDefault(); selectTile(ovSel - 1); break;
+      case "ArrowDown": e.preventDefault(); selectTile(ovSel + overviewCols()); break;
+      case "ArrowUp": e.preventDefault(); selectTile(ovSel - overviewCols()); break;
+      case "Enter": case " ": e.preventDefault(); closeOverview(); go(ovSel, 0); break;
+      case "o": case "O": case "Escape": closeOverview(); break;
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     deck = document.querySelector(".deck");
     stage = document.createElement("div");
@@ -75,7 +146,7 @@
 
     var help = document.createElement("div");
     help.className = "help";
-    help.innerHTML = "← → bläddra · F helskärm · N anteckningar";
+    help.innerHTML = "← → bläddra · O översikt · F helskärm · N anteckningar";
     document.body.appendChild(help);
     setTimeout(function () { help.classList.add("hide"); }, 4000);
 
@@ -86,6 +157,7 @@
 
     document.addEventListener("keydown", function (e) {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (document.body.classList.contains("show-overview")) { overviewKey(e); return; }
       switch (e.key) {
         case "ArrowRight": case "ArrowDown": case " ": case "PageDown": case "Enter":
           e.preventDefault(); next(); break;
@@ -95,6 +167,7 @@
         case "End": go(slides.length - 1, "all"); break;
         case "f": case "F": fullscreen(); break;
         case "n": case "N": document.body.classList.toggle("show-notes"); break;
+        case "o": case "O": openOverview(); break;
         case "Escape": document.body.classList.remove("show-notes"); break;
       }
     });
