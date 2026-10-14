@@ -142,7 +142,8 @@ ol.steps p { margin: 0.3em 0 0.6em; }
 
 /* OS-väljare */
 .os-switch {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
   background: var(--sand);
   border-radius: 999px;
   padding: 4px;
@@ -352,3 +353,16 @@ details.project summary { font-size: 1.2rem; }
   .code.wrap pre { padding-right: 12px; }
   details.alt { padding: 12px 14px; }
 }
+
+/* Folkuniversitetets logga i sidhuvudet */
+.org-logo {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  background: #fff;
+  border-radius: 14px;
+  padding: 10px 16px;
+  margin-bottom: 18px;
+  box-shadow: 0 6px 18px rgba(107, 46, 78, 0.18);
+}
+.org-logo img { display: block; height: 34px; width: auto; max-width: 100%; }
