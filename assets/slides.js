@@ -115,16 +115,16 @@
       x0 = null;
     });
 
-    // Kopiera-knapp på långa prompter (.term.prompt)
-    deck.querySelectorAll(".term.prompt").forEach(function (box) {
-      var pre = box.querySelector("pre");
+    // Kopiera-knapp på prompter (.term.prompt och [data-copy])
+    deck.querySelectorAll(".term.prompt, [data-copy]").forEach(function (box) {
+      var pre = box.querySelector("pre, .copy-src");
       if (!pre) return;
       var btn = document.createElement("button");
       btn.className = "copy-btn";
       btn.type = "button";
       btn.textContent = "Kopiera";
       btn.addEventListener("click", function () {
-        var text = pre.textContent.trim();
+        var text = pre.textContent.trim().replace(/^[”"]|[”"]$/g, "");
         var done = function () {
           btn.textContent = "Kopierat!";
           btn.classList.add("done");
