@@ -508,3 +508,160 @@ body.show-overview .overview { display: block; }
   z-index: 2;
 }
 @media print { .overview { display: none !important; } }
+
+/* Tillfälle 2: webbläsarfönster, kodexempel, filer, enheter och Dev Tools */
+.deck .browser {
+  background: var(--paper);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(59, 26, 44, 0.2);
+  overflow: hidden;
+  font-size: 20px;
+}
+.deck .browser-bar {
+  background: var(--sand);
+  padding: 9px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.deck .browser-bar i { width: 12px; height: 12px; border-radius: 50%; background: var(--coral); display: block; flex: none; }
+.deck .browser-bar i:nth-child(2) { background: var(--sun); }
+.deck .browser-bar i:nth-child(3) { background: var(--leaf); }
+.deck .browser-bar .url {
+  flex: 1;
+  margin-left: 8px;
+  background: var(--paper);
+  border-radius: 999px;
+  padding: 2px 14px;
+  font: 600 16px var(--font-mono);
+  color: var(--ink-soft);
+}
+.deck .browser-body { padding: 18px 22px; }
+.deck .browser-body h4 { font-family: var(--font-head); color: var(--plum); font-size: 30px; margin: 0 0 6px; }
+.deck .browser-body p { font-size: 19px; color: var(--ink-soft); margin: 0 0 10px; }
+.deck .browser-body .demo-btn {
+  display: inline-block;
+  background: var(--gradient);
+  color: #fff;
+  font-weight: 800;
+  border-radius: 12px;
+  padding: 8px 18px;
+  font-size: 19px;
+}
+.deck .browser-body .plain { background: #ddd; color: #222; border-radius: 3px; font-weight: 400; font-family: serif; }
+.deck .browser-body.plain-page h4 { font-family: serif; color: #000; font-weight: 700; }
+.deck .browser-body.plain-page p { font-family: serif; color: #000; }
+
+/* Kodsnutt med färgad etikett för HTML, CSS och JS */
+.deck .snip { position: relative; }
+.deck .snip .tag {
+  display: inline-block;
+  font: 800 16px var(--font-body);
+  letter-spacing: 0.06em;
+  color: #fff;
+  padding: 3px 12px;
+  border-radius: 8px 8px 0 0;
+  background: var(--orange);
+}
+.deck .snip.html .tag { background: var(--coral); }
+.deck .snip.css .tag { background: var(--berry); }
+.deck .snip.js .tag { background: #c99400; }
+.deck .snip .term { border-top-left-radius: 0; font-size: 19px; line-height: 1.5; }
+.deck .snip .term pre { padding: 14px 18px; }
+.deck .term .t { color: #ffb38a; }
+.deck .term .s { color: #8fe0b0; }
+.deck .term .k { color: #ffd76a; }
+
+.deck .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.deck .trio .card { text-align: center; }
+.deck .trio .card.html { border-color: var(--coral); }
+.deck .trio .card.css { border-color: var(--berry); }
+.deck .trio .card.js { border-color: #e0b100; }
+
+/* Filträd */
+.deck .files {
+  background: var(--paper);
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  padding: 18px 24px;
+  font: 600 22px/1.9 var(--font-mono);
+  box-shadow: var(--shadow);
+}
+.deck .files div { white-space: nowrap; }
+.deck .files .in { padding-left: 34px; }
+.deck .files .in2 { padding-left: 68px; }
+.deck .files .dim { color: var(--ink-soft); font-weight: 400; }
+.deck .files .note-tag {
+  font: 800 15px var(--font-body);
+  background: #fff4d6;
+  border: 1px solid var(--sun);
+  color: var(--plum);
+  border-radius: 999px;
+  padding: 1px 10px;
+  margin-left: 10px;
+  vertical-align: 2px;
+}
+
+/* Två enheter med var sin lagring */
+.deck .devices { display: grid; grid-template-columns: 1fr 120px 1fr; gap: 10px; align-items: center; }
+.deck .device {
+  background: var(--paper);
+  border: 3px solid var(--orange);
+  border-radius: 24px;
+  padding: 20px 22px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.deck .device .e { font-size: 54px; line-height: 1; display: block; }
+.deck .device h3 { margin: 8px 0 12px; }
+.deck .device .store {
+  background: #fff4d6;
+  border: 2px dashed var(--sun);
+  border-radius: 14px;
+  padding: 10px 12px;
+  font-size: 20px;
+  text-align: left;
+}
+.deck .device .store b { display: block; font: 800 15px var(--font-body); color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.05em; }
+.deck .device .store.empty { color: var(--ink-soft); font-style: italic; }
+.deck .devices .wall { text-align: center; font-size: 56px; line-height: 1; }
+.deck .devices .wall small { display: block; font: 800 16px var(--font-body); color: var(--berry); margin-top: 6px; }
+
+/* Skiss av webbläsarens Dev Tools */
+.deck .dt {
+  background: #fff;
+  border: 2px solid #d9d4cf;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(59, 26, 44, 0.2);
+  font: 400 17px/1.5 var(--font-mono);
+  color: #303030;
+}
+.deck .dt-tabs { display: flex; gap: 2px; background: #f1efed; border-bottom: 1px solid #d9d4cf; padding: 0 8px; font: 700 16px var(--font-body); }
+.deck .dt-tabs span { padding: 7px 14px; color: #6b6b6b; }
+.deck .dt-tabs span.on { color: #1a5fd0; border-bottom: 3px solid #1a5fd0; }
+.deck .dt-body { padding: 10px 14px; }
+.deck .dt-row { padding: 4px 6px; border-bottom: 1px solid #f0eeec; white-space: pre-wrap; }
+.deck .dt-row:last-child { border-bottom: 0; }
+.deck .dt-row.err { background: #fdecec; color: #b3261e; border-color: #f6caca; }
+.deck .dt-row.warn { background: #fff7d9; color: #7a5a00; border-color: #f1e2a8; }
+.deck .dt-row.sel { background: #e3edfc; }
+.deck .dt-row .tg { color: #a52a6a; }
+.deck .dt-row .at { color: #b25c00; }
+.deck .dt-row .st { color: #1a5fd0; }
+.deck .dt-grid { display: grid; gap: 0 18px; }
+.deck .dt-grid > span { padding: 4px 6px; border-bottom: 1px solid #f0eeec; }
+.deck .dt-grid > span.h { font: 800 15px var(--font-body); color: #6b6b6b; background: #f7f6f5; }
+.deck .dt-grid > span.bad { color: #b3261e; }
+.deck .dt-side { display: grid; grid-template-columns: 210px 1fr; min-height: 210px; }
+.deck .dt-side .tree { background: #f7f6f5; border-right: 1px solid #d9d4cf; padding: 10px 12px; font: 600 16px/1.9 var(--font-body); color: #555; }
+.deck .dt-side .tree .on { background: #e3edfc; color: #1a5fd0; border-radius: 6px; padding: 0 6px; margin-left: -6px; }
+
+.deck .keys { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; font-size: 24px; }
+.deck .keys kbd { font-size: 22px; padding: 4px 12px; }
+.deck .cards.tight .card { padding: 18px 22px; font-size: 21px; }
+.deck .cards.tight .card .e { font-size: 38px; margin-bottom: 6px; }
+.deck .cards.tight .card h3 { font-size: 26px; margin-bottom: 4px; }
+.deck .devices { align-items: stretch; }
+.deck .devices .wall { align-self: center; }
