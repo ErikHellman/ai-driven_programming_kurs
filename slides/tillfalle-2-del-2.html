@@ -6,7 +6,7 @@
   <title>Tillfälle 2 · Del 2: Titta under huven</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>">
   <link rel="stylesheet" href="../assets/theme.css?v=3">
-  <link rel="stylesheet" href="../assets/slides.css?v=9">
+  <link rel="stylesheet" href="../assets/slides.css?v=10">
   <script src="../assets/slides.js?v=6" defer></script>
 </head>
 <body>
@@ -326,6 +326,146 @@ Ta reda på varför och rätta det.</pre></div>
     </aside>
   </section>
 
+  <!-- API-nycklar -->
+  <section class="divider">
+    <div class="num">🔑</div>
+    <h2>API-nycklar</h2>
+    <p class="lead">Hemligheter som inte får hamna fel</p>
+  </section>
+
+  <section>
+    <div class="kicker">API-nycklar</div>
+    <h2>Vad är en API-nyckel?</h2>
+    <div class="cols wide-left">
+      <ul class="nice">
+        <li>En lång rad tecken som visar <strong>vem</strong> som frågar. Skickas med i varje anrop</li>
+        <li class="frag">Du får den när du skapar ett konto hos tjänsten</li>
+        <li class="frag">Fel eller ingen nyckel ger <strong>401</strong>: obehörig</li>
+      </ul>
+      <div class="card sun">
+        <span class="e">🎫</span>
+        <h3>Som ett busskort</h3>
+        <p>Kortet visar att det är du och räknar dina resor. Tappar du det kan någon annan åka på ditt kort.</p>
+      </div>
+    </div>
+    <div class="term frag" style="margin-top:22px;font-size:17px"><pre><span class="c"># Ett anrop till OpenWeatherMap. Nyckeln skickas som appid:</span>
+api.openweathermap.org/data/2.5/weather?q=Stockholm&amp;<span class="p">appid=3f9c2a8d41b7e05c6a1f9d2e8b4c7a10</span></pre></div>
+    <aside class="notes">
+      <ul>
+        <li>Nyckeln på sliden är påhittad.</li>
+        <li>API:er med nyckel är vanligast. De öppna utan nyckel är undantaget.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">API-nycklar</div>
+    <h2>Varför behövs den?</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">📊</span><h3>Räkna</h3><p>Tjänsten håller koll på hur mycket du använder. Gratisnivån har ett tak.</p></div>
+      <div class="card frag"><span class="e">💳</span><h3>Betala</h3><p>Går du över taket, eller väljer en betalplan, debiteras rätt konto.</p></div>
+      <div class="card frag"><span class="e">🛑</span><h3>Stoppa</h3><p>En nyckel som missbrukas kan spärras utan att någon annan påverkas.</p></div>
+    </div>
+    <p class="lead frag bottom">En läckt nyckel betyder att någon annan kan använda din kvot, och i värsta fall dina pengar.</p>
+    <aside class="notes">
+      <ul>
+        <li>Det finns automatiska program som letar efter nycklar i publika repon på GitHub dygnet runt. En nyckel som har pushats ska ses som läckt.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">API-nycklar</div>
+    <h2>Fem regler för nycklar</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">🔐</span><span><strong>Spara den i lösenordshanteraren</strong> direkt när du skapar den. Där finns originalet.</span></li>
+      <li class="frag"><span class="e">🙊</span><span><strong>Klistra inte in den i chatten.</strong> Allt du skriver till agenten skickas till AI-tjänsten.</span></li>
+      <li class="frag"><span class="e">🚫</span><span><strong>Aldrig i koden eller i Git.</strong> Lokalt ligger den i <code>.env.local</code>, som står i <code>.gitignore</code>.</span></li>
+      <li class="frag"><span class="e">🐙</span><span><strong>GitHub Secrets</strong> för bygget i GitHub Actions.</span></li>
+      <li class="frag"><span class="e">🔄</span><span><strong>Har den läckt?</strong> Skapa en ny nyckel och ta bort den gamla hos tjänsten.</span></li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>.env.local är en vanlig textfil med raden VITE_OPENWEATHER_API_KEY=din-nyckel. Den öppnar man själv i VS Code.</li>
+        <li>Agenten kan tekniskt sett läsa filen om den vill, men vi ber den att låta bli och skriver inte nyckeln i chatten.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">API-nycklar</div>
+    <h2>Var bor nyckeln?</h2>
+    <div class="keyflow">
+      <div class="box sun">🔐 Lösenords&shy;hanteraren<small>originalet</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">💻 .env.local<small>på din dator</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🏠 localhost<small>npm run dev</small></div>
+      <div></div><div></div>
+      <div class="box sun frag">🔐 Lösenords&shy;hanteraren<small>originalet</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🐙 GitHub Secrets<small>låst fack i repot</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🤖 Actions<small>bygger in nyckeln</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">🌐 GitHub Pages<small>hos alla besökare</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:36px">Nyckeln finns aldrig i koden på GitHub. Den läggs till först när appen byggs.</p>
+  </section>
+
+  <section>
+    <div class="kicker">API-nycklar</div>
+    <h2>Två ställen att spara den på</h2>
+    <div class="cols">
+      <div class="card">
+        <span class="e">🔐</span>
+        <h3>Lösenordshanteraren</h3>
+        <p><strong>1Password:</strong> ny post av typen <em>API Credential</em>.</p>
+        <p style="margin-top:8px"><strong>Proton Pass:</strong> öppna inloggningen för OpenWeatherMap och lägg till ett dolt fält som heter <em>API-nyckel</em>.</p>
+      </div>
+      <div>
+        <div class="term" style="font-size:16.5px"><div class="bar"><i></i><i></i><i></i></div><pre><span class="c"># i terminalen, i projektmappen</span>
+<span class="p">$</span> gh secret set VITE_OPENWEATHER_API_KEY
+? Paste your secret: ********
+<span class="ok">✓ Set Actions secret VITE_OPENWEATHER_API_KEY</span></pre></div>
+        <p class="small" style="margin-top:14px">Eller på GitHub: repots <strong>Settings → Secrets and variables → Actions → New repository secret</strong>.</p>
+      </div>
+    </div>
+    <p class="lead frag bottom">En secret går inte att läsa igen, inte ens för dig. Därför sparar du originalet i lösenordshanteraren.</p>
+    <aside class="notes">
+      <ul>
+        <li>gh secret set frågar efter värdet, så nyckeln hamnar varken i chatten eller i terminalens historik.</li>
+        <li>Visa gärna båda vägarna. Webbvägen är lättare att förstå första gången.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">API-nycklar · ärligt talat</div>
+    <h2>I en webbapp syns nyckeln ändå</h2>
+    <div class="dt" style="font-size:17px">
+      <div class="dt-tabs"><span>Elements</span><span>Console</span><span class="on">Network</span><span>Application</span></div>
+      <div class="dt-body">
+        <div class="dt-grid" style="grid-template-columns:2.4fr 0.5fr 0.6fr">
+          <span class="h">Name</span><span class="h">Status</span><span class="h">Type</span>
+          <span>index-B7x2.js</span><span>200</span><span>script</span>
+          <span class="bad">forecast?q=Stockholm&amp;appid=3f9c2a8d41b7e05c…</span><span>200</span><span>fetch</span>
+        </div>
+      </div>
+    </div>
+    <ul class="nice" style="margin-top:26px">
+      <li class="frag">Appen körs i besökarens webbläsare, så nyckeln måste finnas där. Alla kan se den i Network</li>
+      <li class="frag">Okej för en <strong>gratisnyckel med tak</strong>, som vår väder-API</li>
+      <li class="frag">En nyckel som kostar pengar eller ger åtkomst till data kräver en <strong>server</strong> som håller den hemlig</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Koppla till del 1: en webbapp kan inte hålla hemligheter.</li>
+        <li>Varför då alls lösenordshanterare och Secrets? Vanan är det viktiga: samma metod fungerar när nyckeln verkligen är hemlig, och nyckeln hamnar aldrig i Git-historiken.</li>
+      </ul>
+    </aside>
+  </section>
+
   <!-- Övning 3 -->
   <section class="divider">
     <div class="num">🚀</div>
@@ -337,7 +477,7 @@ Ta reda på varför och rätta det.</pre></div>
     <div class="kicker">Övning 3</div>
     <h2>Välj ett projekt</h2>
     <div class="cards four">
-      <div class="card"><span class="e">🌦️</span><h3>Väderappen</h3><p>Hämtar väder från ett öppet API</p></div>
+      <div class="card"><span class="e">🌦️</span><h3>Väderappen</h3><p>OpenWeatherMap, med API-nyckel</p></div>
       <div class="card"><span class="e">🎲</span><h3>Poängräknare</h3><p>för spelkvällen</p></div>
       <div class="card"><span class="e">🍲</span><h3>Receptboken</h3><p>med sök och export</p></div>
       <div class="card"><span class="e">⏱️</span><h3>Fokustimer</h3><p>med statistik</p></div>
@@ -348,19 +488,25 @@ Ta reda på varför och rätta det.</pre></div>
     </ul>
     <aside class="notes">
       <ul>
-        <li>Väderappen är bra för att se klient och server i Network-fliken. Receptboken visar export och import, lösningen på datorn-mobilen-problemet.</li>
+        <li>Väderappen är den som övar API-nycklar, och den visar klient och server i Network-fliken. Receptboken visar export och import, lösningen på datorn-mobilen-problemet.</li>
       </ul>
     </aside>
   </section>
 
   <section>
-    <h2 style="font-size:40px;margin-bottom:14px">Startprompten: nu med modern teknik</h2>
-    <div class="term prompt"><pre>Bygg en väderapp som en webbapp i den här mappen.
+    <h2 style="font-size:36px;margin-bottom:10px">Startprompten: nu med modern teknik</h2>
+    <div class="term prompt" style="font-size:14.2px;line-height:1.38"><pre>Bygg en väderapp som en webbapp i den här mappen.
 
 <span class="p">Funktioner:</span>
 - Jag kan söka efter en ort och se vädret just nu och de kommande fem dagarna.
-- Vädret hämtas från Open-Meteo, som är gratis och inte kräver någon API-nyckel.
+- Vädret hämtas från OpenWeatherMap. Använd deras gratis-API:er för aktuellt väder, femdygnsprognos och sökning av orter (Geocoding).
 - Jag kan spara favoritorter och snabbt byta mellan dem. Favoriterna sparas i webbläsaren (localStorage).
+
+<span class="p">API-nyckeln:</span>
+- Läs nyckeln från miljövariabeln VITE_OPENWEATHER_API_KEY. Skriv aldrig in den i koden.
+- Skapa filen .env.example med raden VITE_OPENWEATHER_API_KEY= och se till att .env.local finns i .gitignore.
+- Jag lägger själv in nyckeln i .env.local. Be mig aldrig klistra in nyckeln i chatten, och läs inte .env.local.
+- Om nyckeln saknas eller inte fungerar ska appen visa ett tydligt meddelande på svenska.
 
 <span class="p">Krav:</span>
 - Använd React och Vite med JavaScript. Skapa projektet direkt i den här mappen.
@@ -375,6 +521,7 @@ Ta reda på varför och rätta det.</pre></div>
 Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver några filer.</pre></div>
     <aside class="notes">
       <ul>
+        <li>Nytt avsnitt: API-nyckeln. Agenten bygger koden som läser nyckeln, men det är du som lägger in den.</li>
         <li>Jämför med övning 1: samma struktur, men nu ber vi om React och Vite i stället för ”inget byggsteg”.</li>
         <li>base './' gör att sökvägarna blir relativa, samma sak som vi bad om i övning 1.</li>
         <li>Agenten kommer köra npm install och npm run dev. Godkänn kommandona.</li>
@@ -385,23 +532,34 @@ Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver någ
   <section>
     <div class="kicker">Övning 3 · gör så här</div>
     <h2>Bygg, felsök, publicera</h2>
-    <div class="cols wide-left">
-      <ul class="emoji">
-        <li class="frag"><span class="e">📁</span><span>Ny tom mapp, klistra in startprompten, läs planen, svara <strong>Kör!</strong></span></li>
-        <li class="frag"><span class="e">🏠</span><span>Öppna <code>localhost</code>-adressen och prova appen</span></li>
-        <li class="frag"><span class="e">🔧</span><span>Ha Dev Tools öppet. Något rött? Ge det till agenten</span></li>
-        <li class="frag"><span class="e">🚀</span><span>Publicera, följ bygget under <strong>Actions</strong>, öppna i mobilen</span></li>
+    <ul class="emoji">
+      <li class="frag"><span class="e">🔑</span><span><strong>Väderappen:</strong> skapa en nyckel på openweathermap.org och spara den i lösenordshanteraren</span></li>
+      <li class="frag"><span class="e">📁</span><span>Ny tom mapp, klistra in startprompten, läs planen, svara <strong>Kör!</strong></span></li>
+      <li class="frag"><span class="e">✍️</span><span><strong>Väderappen:</strong> kopiera <code>.env.example</code> till <code>.env.local</code> i VS Code och klistra in nyckeln där</span></li>
+      <li class="frag"><span class="e">🏠</span><span>Öppna <code>localhost</code>-adressen och prova appen. Något rött i Dev Tools? Ge det till agenten</span></li>
+      <li class="frag"><span class="e">🚀</span><span>Publicera, lägg in nyckeln i GitHub Secrets när agenten ber om det, öppna i mobilen</span></li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>En ny nyckel hos OpenWeatherMap kan ta upp till ett par timmar innan den fungerar. Be deltagarna skapa konto och nyckel i förväg. Fram till dess svarar API:et 401.</li>
+        <li>Har utvecklingsservern redan startat när .env.local skapas? Starta om den (be agenten), annars läses nyckeln inte in.</li>
       </ul>
-      <div class="card sun frag" data-copy>
-        <span class="e">🚀</span>
-        <h3>Publicera</h3>
-        <p class="copy-src" style="color:var(--ink);font-size:20px">”Spara allt med Git och lägg upp projektet på GitHub som ett publikt repo med hjälp av gh. Skapa ett GitHub Actions-workflow som bygger appen och publicerar den på GitHub Pages, och ställ in Pages så att den använder GitHub Actions. Vänta tills bygget är klart och ge mig länken.”</p>
-      </div>
-    </div>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Övning 3 · publicera</div>
+    <h2 style="font-size:44px">Publicera med nyckeln i GitHub Secrets</h2>
+    <div class="term prompt" style="font-size:21px;line-height:1.5"><pre>Spara allt med Git och lägg upp projektet på GitHub som ett publikt repo med hjälp av gh. Skapa ett GitHub Actions-workflow som bygger appen och publicerar den på GitHub Pages, och ställ in Pages så att den använder GitHub Actions. Bygget ska läsa API-nyckeln från GitHub Secrets med namnet VITE_OPENWEATHER_API_KEY. Innan du pushar workflowet: säg till mig att lägga in nyckeln och vänta på mitt okej. Vänta sedan tills bygget är klart och ge mig länken.</pre></div>
+    <ul class="emoji" style="margin-top:26px">
+      <li class="frag"><span class="e">⏸️</span><span>När agenten frågar: kör <code>gh secret set VITE_OPENWEATHER_API_KEY</code> i terminalen, klistra in nyckeln och svara <strong>Klart!</strong></span></li>
+      <li class="frag"><span class="e">🟢</span><span>Följ bygget under <strong>Actions</strong>. De andra projekten har en prompt utan nyckel på kurssidan</span></li>
+    </ul>
     <aside class="notes">
       <ul>
         <li>Den som får rött kryss i Actions: klicka in på bygget, kopiera felet, ge det till agenten. Samma metod som i Dev Tools.</li>
-        <li>Säg att vanliga felet är en vit sida på GitHub Pages: kolla Console och Network, ofta en 404 på en JS-fil på grund av base.</li>
+        <li>Vit sida på GitHub Pages: kolla Console och Network, ofta en 404 på en JS-fil på grund av base.</li>
+        <li>Fungerar appen lokalt men säger att nyckeln saknas på GitHub Pages? Då är secret-namnet fel, eller så lades nyckeln in efter bygget. Kör om bygget under Actions.</li>
       </ul>
     </aside>
   </section>
@@ -411,6 +569,7 @@ Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver någ
     <h2>Hemuppgift</h2>
     <ul class="emoji">
       <li><span class="e">🚀</span><span>Gör klart <strong>övning 3</strong> och publicera appen med GitHub Actions</span></li>
+      <li><span class="e">🔐</span><span>Gå igenom lösenordshanteraren: ligger alla nycklar och konton från kursen där?</span></li>
       <li><span class="e">🔧</span><span>Öppna Dev Tools på en sida du använder ofta. Vad hämtas under Network?</span></li>
       <li><span class="e">🗄️</span><span>Titta i Application på din app från övning 1. Hittar du din data?</span></li>
       <li><span class="e">💡</span><span>Fundera: vilken av dina idéer skulle behöva en server?</span></li>

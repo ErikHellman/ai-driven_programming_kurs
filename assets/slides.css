@@ -665,3 +665,13 @@ body.show-overview .overview { display: block; }
 .deck .cards.tight .card h3 { font-size: 26px; margin-bottom: 4px; }
 .deck .devices { align-items: stretch; }
 .deck .devices .wall { align-self: center; }
+.deck .keyflow { display: grid; grid-template-columns: 1fr 40px 1fr 40px 1fr 40px 1fr; gap: 22px 8px; align-items: stretch; margin-top: 12px; }
+.deck .keyflow .box {
+  background: var(--paper); border: 3px solid var(--orange); border-radius: 18px; padding: 14px 12px;
+  text-align: center; font-weight: 800; font-size: 21px; box-shadow: var(--shadow);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.deck .keyflow .box small { display: block; font-weight: 600; font-size: 16px; color: var(--ink-soft); }
+.deck .keyflow .box.sun { background: #fff4d6; border-color: var(--sun); }
+.deck .keyflow .box.alt { border-color: var(--berry); }
+.deck .keyflow .arrow { font-size: 34px; color: var(--coral); font-weight: 800; align-self: center; text-align: center; }
