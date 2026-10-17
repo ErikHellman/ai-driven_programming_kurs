@@ -675,3 +675,26 @@ body.show-overview .overview { display: block; }
 .deck .keyflow .box.sun { background: #fff4d6; border-color: var(--sun); }
 .deck .keyflow .box.alt { border-color: var(--berry); }
 .deck .keyflow .arrow { font-size: 34px; color: var(--coral); font-weight: 800; align-self: center; text-align: center; }
+
+/* Git: grenträd och worktree-mappar */
+.deck .gitsvg { width: 100%; height: auto; display: block; }
+.deck .gitsvg .line-main { stroke: var(--orange); stroke-width: 8; fill: none; stroke-linecap: round; }
+.deck .gitsvg .line-br { stroke: var(--berry); stroke-width: 8; fill: none; stroke-linecap: round; }
+.deck .gitsvg .c-main { fill: var(--paper); stroke: var(--orange); stroke-width: 6; }
+.deck .gitsvg .c-br { fill: var(--paper); stroke: var(--berry); stroke-width: 6; }
+.deck .gitsvg .c-merge { fill: var(--sun); stroke: var(--orange); stroke-width: 6; }
+.deck .gitsvg text { font-family: var(--font-body); font-size: 19px; fill: var(--ink-soft); font-weight: 700; }
+.deck .gitsvg .lbl { font-family: var(--font-head); font-size: 26px; font-weight: 600; }
+.deck .gitsvg .lbl.main { fill: var(--orange); }
+.deck .gitsvg .lbl.br { fill: var(--berry); }
+.deck .gitsvg .frag { transform: none; }
+
+.deck .wt { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+.deck .wt .files { font-size: 20px; line-height: 1.75; }
+.deck .wt .files .head { font-family: var(--font-body); font-weight: 800; margin-bottom: 4px; }
+.deck .wt .files.b2 { border-color: var(--berry); }
+.deck .wt .files.b1 { border-color: var(--orange); }
+.deck .branch-tag { font: 800 15px var(--font-body); color: #fff; border-radius: 999px; padding: 1px 10px; margin-left: 8px; vertical-align: 2px; }
+.deck .branch-tag.main { background: var(--orange); }
+.deck .branch-tag.br { background: var(--berry); }
+.deck .files .x { text-decoration: line-through; color: var(--ink-soft); font-weight: 400; }

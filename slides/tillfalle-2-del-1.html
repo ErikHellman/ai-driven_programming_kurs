@@ -6,7 +6,7 @@
   <title>Tillfälle 2 · Del 1: Vad är en webbapp?</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
   <link rel="stylesheet" href="../assets/theme.css?v=3">
-  <link rel="stylesheet" href="../assets/slides.css?v=10">
+  <link rel="stylesheet" href="../assets/slides.css?v=11">
   <script src="../assets/slides.js?v=6" defer></script>
 </head>
 <body>
@@ -36,7 +36,7 @@
     <div class="kicker">Idag</div>
     <h2>Dagens plan</h2>
     <div class="layers">
-      <div class="layer l1"><span class="e">🌐</span><b>Del 1</b><span>Vad en webbapp är, vad den kan och inte kan, och modern webbteknik</span></div>
+      <div class="layer l1"><span class="e">🌐</span><b>Del 1</b><span>Mer om Git, vad en webbapp är, vad den kan och inte kan, och modern webbteknik</span></div>
       <div class="layer l2"><span class="e">☕</span><b>Paus</b><span>Sträck på benen</span></div>
       <div class="layer l3"><span class="e">🔧</span><b>Del 2</b><span>Dev Tools: titta under huven och hitta felen</span></div>
       <div class="layer l4"><span class="e">🚀</span><b>Övningar</b><span>Detektiv i Dev Tools, sedan bygger och publicerar vi en riktig webbapp</span></div>
@@ -64,6 +64,189 @@
       <ul>
         <li>Säg det tydligt: ingen kommer att få kodläxa. Vi tittar på kod för att känna igen den, inte för att lära oss skriva den.</li>
         <li>Jämför med att renovera: du behöver inte kunna dra el, men det hjälper att veta skillnaden på en elcentral och ett vägguttag.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Git -->
+  <section class="divider">
+    <div class="num">🌱</div>
+    <h2>Mer om Git</h2>
+    <p class="lead">Fyra begrepp du kommer att höra agenten använda</p>
+  </section>
+
+  <section>
+    <div class="kicker">Git · repetition</div>
+    <h2>Det vi redan kan</h2>
+    <div class="cards">
+      <div class="card"><span class="e">📁</span><h3>Repo</h3><p>En projektmapp som Git håller koll på.</p></div>
+      <div class="card"><span class="e">💾</span><h3>Commit</h3><p>En sparpunkt med en beskrivning.</p></div>
+      <div class="card"><span class="e">⬆️</span><h3>Push</h3><p>Skicka dina commits till GitHub.</p></div>
+    </div>
+    <div class="cards four" style="margin-top:28px">
+      <div class="card sun frag"><span class="e">🙈</span><h3>.gitignore</h3><p>Det Git ska strunta i</p></div>
+      <div class="card sun frag"><span class="e">🌿</span><h3>Branch</h3><p>En parallell version</p></div>
+      <div class="card sun frag"><span class="e">🗂️</span><h3>Worktree</h3><p>En extra mapp per branch</p></div>
+      <div class="card sun frag"><span class="e">☁️</span><h3>Remote</h3><p>Repot någon annanstans</p></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Snabb repetition från förra gången. De fyra gula korten är dagens nya ord.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Git · .gitignore</div>
+    <h2>.gitignore: det Git ska strunta i</h2>
+    <div class="cols">
+      <div class="files">
+        <div>📁 vaderappen/</div>
+        <div class="in">📄 index.html</div>
+        <div class="in">📁 src/</div>
+        <div class="in">🙈 .gitignore</div>
+        <div class="in frag"><span class="x">📦 node_modules/</span> <span class="note-tag">tusentals filer</span></div>
+        <div class="in frag"><span class="x">📦 dist/</span> <span class="note-tag">byggs om</span></div>
+        <div class="in frag"><span class="x">🔑 .env.local</span> <span class="note-tag">hemligt</span></div>
+        <div class="in frag"><span class="x">🍏 .DS_Store</span> <span class="note-tag">systemskräp</span></div>
+      </div>
+      <div>
+        <div class="snip">
+          <span class="tag">.gitignore</span>
+          <div class="term"><pre>node_modules
+dist
+.env.local
+.DS_Store</pre></div>
+        </div>
+        <ul class="nice" style="margin-top:24px;font-size:25px">
+          <li class="frag">En vanlig textfil med en rad per fil eller mapp</li>
+          <li class="frag">Git låtsas att de filerna inte finns. De följer aldrig med till GitHub</li>
+        </ul>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Agenten skapar .gitignore åt oss, men det är bra att veta varför den finns. Vi ser node_modules, dist och .env.local senare idag.</li>
+        <li>Viktigt: .gitignore skyddar bara filer som inte redan har committats. Har en hemlighet redan pushats hjälper det inte att lägga till den i efterhand.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Git · branch</div>
+    <h2>Branch: en gren att experimentera i</h2>
+    <svg class="gitsvg" viewBox="0 0 1100 300" role="img" aria-label="En branch som grenar ut från main och slås ihop igen">
+      <path class="line-main" d="M60 210 H1040"/>
+      <g class="frag">
+        <path class="line-br" d="M280 210 C 340 210, 340 80, 420 80 H 680 C 760 80, 760 210, 820 210"/>
+        <circle class="c-br" cx="460" cy="80" r="18"/>
+        <circle class="c-br" cx="640" cy="80" r="18"/>
+        <text class="lbl br" x="420" y="40">mork-lage</text>
+        <text x="425" y="125">mörka färger</text>
+        <text x="600" y="125">knapp för läge</text>
+      </g>
+      <circle class="c-main" cx="100" cy="210" r="18"/>
+      <circle class="c-main" cx="280" cy="210" r="18"/>
+      <circle class="c-main" cx="560" cy="210" r="18"/>
+      <g class="frag">
+        <circle class="c-merge" cx="820" cy="210" r="22"/>
+        <text x="760" y="268">merge: ihop igen</text>
+      </g>
+      <circle class="c-main" cx="1000" cy="210" r="18"/>
+      <text class="lbl main" x="40" y="168">main</text>
+      <text x="60" y="268">första sidan</text>
+      <text x="240" y="268">sökning</text>
+      <text x="500" y="268">rättat stavfel</text>
+    </svg>
+    <ul class="nice" style="margin-top:18px">
+      <li class="frag"><strong>main</strong> är huvudgrenen, den som publiceras på GitHub Pages</li>
+      <li class="frag">En <strong>branch</strong> är en kopia av historiken där du kan prova något utan att röra main. Blev det bra? <strong>Merge</strong>. Blev det dåligt? Släng grenen</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Varje ring är en commit. Main fortsätter att leva medan grenen pågår, här rättades ett stavfel under tiden.</li>
+        <li>Merge betyder att ändringarna från grenen läggs in i main. En pull request på GitHub är en begäran om en merge.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Git · branch</div>
+    <h2>Be agenten jobba på en branch</h2>
+    <div class="term prompt" style="font-size:22px;line-height:1.5"><pre>Skapa en ny branch som heter mork-lage och lägg till ett mörkt läge i appen där. Rör inte main.</pre></div>
+    <div class="cols" style="margin-top:30px">
+      <div class="card frag">
+        <span class="e">👍</span>
+        <h3>Blev det bra?</h3>
+        <p>”Slå ihop branchen mork-lage med main och pusha.”</p>
+      </div>
+      <div class="card frag">
+        <span class="e">🗑️</span>
+        <h3>Blev det dåligt?</h3>
+        <p>”Gå tillbaka till main och ta bort branchen mork-lage.”</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Det här är det tryggaste sättet att låta agenten prova stora ändringar. Main är orörd tills du säger till.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Git · worktree</div>
+    <h2>Worktree: en mapp per branch</h2>
+    <div class="wt">
+      <div class="files b1">
+        <div class="head">📁 kurs/vaderappen/ <span class="branch-tag main">main</span></div>
+        <div class="in">📄 index.html</div>
+        <div class="in">📁 src/</div>
+        <div class="in dim">📁 .git/ <span class="note-tag">hela historiken</span></div>
+      </div>
+      <div class="files b2 frag">
+        <div class="head">📁 kurs/vaderappen-mork/ <span class="branch-tag br">mork-lage</span></div>
+        <div class="in">📄 index.html</div>
+        <div class="in">📁 src/</div>
+        <div class="in dim">🔗 .git <span class="note-tag">pekar på samma repo</span></div>
+      </div>
+    </div>
+    <ul class="nice" style="margin-top:28px">
+      <li class="frag">Utan worktree byter du branch <strong>i samma mapp</strong>, och filerna byts ut framför ögonen på dig</li>
+      <li class="frag">Med worktree har varje branch <strong>sin egen mapp</strong>. Samma repo, samma historik</li>
+      <li class="frag">Två agenter kan jobba samtidigt utan att skriva i varandras filer</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Claude- och ChatGPT-apparna kan skapa worktrees åt dig när du kör flera uppgifter parallellt i samma projekt.</li>
+        <li>Be agenten: ”Skapa en worktree för en ny branch som heter mork-lage.”</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Git · remote</div>
+    <h2>Remote: repot någon annanstans</h2>
+    <div class="flow" style="justify-content:center;margin-top:10px">
+      <div class="box">💻 Din dator<small>ditt lokala repo</small></div>
+      <div class="arrow">⇄</div>
+      <div class="box sun">☁️ GitHub<small>remoten <strong>origin</strong></small></div>
+      <div class="arrow frag">⇄</div>
+      <div class="box frag">💻 Annan dator<small>en clone av samma repo</small></div>
+    </div>
+    <div class="cols" style="margin-top:30px">
+      <ul class="nice">
+        <li class="frag">En <strong>remote</strong> är en kopia av repot på en server, oftast GitHub</li>
+        <li class="frag"><strong>Push</strong> skickar dina commits dit, <strong>pull</strong> hämtar nya därifrån</li>
+        <li class="frag">Commits finns bara på din dator tills du pushar</li>
+      </ul>
+      <div class="term frag" style="font-size:17px"><pre><span class="p">$</span> git remote -v
+origin  https://github.com/anna/vaderappen.git
+<span class="c"># namnet    adressen till repot på GitHub</span></pre></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>origin är bara standardnamnet på den första remoten. Ett repo kan ha flera.</li>
+        <li>Koppla till del 1: GitHub är också en server. Git-repot på GitHub är källan som GitHub Actions och Pages bygger från.</li>
       </ul>
     </aside>
   </section>
