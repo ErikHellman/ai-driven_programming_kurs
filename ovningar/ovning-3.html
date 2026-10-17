@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Övning 3 · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=4">
+  <script src="../assets/site.js?v=3" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Tillfälle 2 · Övning 3 · 40 minuter</span>
+      <h1>🚀 En riktig webbapp</h1>
+      <p>Bygg en webbapp med React och Vite, samma verktyg som proffsen använder, och låt GitHub Actions bygga och publicera den åt dig.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="note tip"><p><strong>Innan du börjar:</strong> du behöver Node.js, Git, ett GitHub-konto med <code>gh</code> inloggat och Claude- eller ChatGPT-appen. Kolla med <code>node --version</code> i terminalen. Se <a href="../index.html#installation">installationsguiderna</a>.</p></div>
+    <div class="note warn"><p><strong>Väljer du väderappen?</strong> Skapa kontot och nyckeln hos OpenWeatherMap redan före lektionen (steg 2). En ny nyckel kan ta upp till ett par timmar innan den fungerar.</p></div>
+
+    <ol class="steps">
+      <li>
+        <h3>Välj ett projekt</h3>
+        <p>Välj det som låter roligast, eller hitta på ett eget. Varje projekt har en färdig startprompt som du kan kopiera.</p>
+      <details class="alt project" open>
+        <summary>🌦️ Väderappen</summary>
+        <div class="code wrap"><span class="label">Startprompt</span>
+<pre>Bygg en väderapp som en webbapp i den här mappen.
+
+Funktioner:
+- Jag kan söka efter en ort och se vädret just nu och de kommande fem dagarna.
+- Vädret hämtas från OpenWeatherMap. Använd deras gratis-API:er för aktuellt väder, femdygnsprognos och sökning av orter (Geocoding).
+- Jag kan spara favoritorter och snabbt byta mellan dem. Favoriterna sparas i webbläsaren (localStorage).
+
+API-nyckeln:
+- Läs nyckeln från miljövariabeln VITE_OPENWEATHER_API_KEY. Skriv aldrig in den i koden.
+- Skapa filen .env.example med raden VITE_OPENWEATHER_API_KEY= och se till att .env.local finns i .gitignore.
+- Jag lägger själv in nyckeln i .env.local. Be mig aldrig klistra in nyckeln i chatten, och läs inte .env.local.
+- Om nyckeln saknas eller inte fungerar ska appen visa ett tydligt meddelande på svenska.
+
+Krav:
+- Använd React och Vite med JavaScript. Skapa projektet direkt i den här mappen.
+- Sätt base till './' i Vite-inställningarna så att appen fungerar på GitHub Pages.
+- Lägg till en .gitignore som utesluter node_modules och dist.
+- Sidan ska fungera lika bra på mobil som på dator: responsiv layout, knappar som är lätta att träffa med fingret och ingen sidledsscroll.
+- Använd svenska i hela gränssnittet och sätt lang="sv" på sidan.
+- Ge appen en tydlig titel, en favicon och en glad design med varma färger.
+- Skapa en kort README.md som beskriver vad appen gör.
+- När du är klar: starta utvecklingsservern och ge mig adressen.
+
+Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver några filer.</pre></div>
+        <p><strong>Väderappen kräver en API-nyckel.</strong> Följ stegen märkta 🔑 nedan. Öppna också fliken Network i Dev Tools när du söker: där ser du hur appen frågar OpenWeatherMaps server, och att nyckeln syns i adressen.</p>
+        <p><strong>Idéer för steg 4:</strong></p>
+        <ul>
+<li><code>Visa en enkel kurva över temperaturen timme för timme i dag.</code></li>
+<li><code>Ge mig ett klädtips utifrån vädret, till exempel ”ta med paraply”.</code></li>
+        </ul>
+      </details>
+      <details class="alt project">
+        <summary>🎲 Poängräknare för spelkvällen</summary>
+        <div class="code wrap"><span class="label">Startprompt</span>
+<pre>Bygg en poängräknare för spelkvällar som en webbapp i den här mappen.
+
+Funktioner:
+- Jag kan lägga till spelare med namn och en egen färg.
+- Varje spelare har stora knappar för plus och minus, och jag kan skriva in poäng direkt.
+- Den som leder syns tydligt, och jag kan starta en ny omgång med samma spelare.
+- Pågående spel sparas i webbläsaren (localStorage) så att inget försvinner om jag råkar ladda om sidan.
+
+Krav:
+- Använd React och Vite med JavaScript. Skapa projektet direkt i den här mappen.
+- Sätt base till './' i Vite-inställningarna så att appen fungerar på GitHub Pages.
+- Lägg till en .gitignore som utesluter node_modules och dist.
+- Sidan ska fungera lika bra på mobil som på dator: responsiv layout, knappar som är lätta att träffa med fingret och ingen sidledsscroll.
+- Använd svenska i hela gränssnittet och sätt lang="sv" på sidan.
+- Ge appen en tydlig titel, en favicon och en glad design med varma färger.
+- Skapa en kort README.md som beskriver vad appen gör.
+- När du är klar: starta utvecklingsservern och ge mig adressen.
+
+Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver några filer.</pre></div>
+        <p><strong>Tips:</strong> Testa mobilvyn i Dev Tools: det är troligen i mobilen appen kommer användas.</p>
+        <p><strong>Idéer för steg 4:</strong></p>
+        <ul>
+<li><code>Spara en historik över tidigare spel med vinnare och datum.</code></li>
+<li><code>Lägg till en timer som visar vems tur det är.</code></li>
+        </ul>
+      </details>
+      <details class="alt project">
+        <summary>🍲 Receptboken</summary>
+        <div class="code wrap"><span class="label">Startprompt</span>
+<pre>Bygg en receptbok som en webbapp i den här mappen.
+
+Funktioner:
+- Jag kan lägga till recept med namn, ingredienser, gör så här och taggar som ”vegetariskt” eller ”snabbt”.
+- Jag kan söka på namn och ingredienser och filtrera på taggar.
+- Jag kan exportera alla recept till en fil och importera dem igen, så att jag kan flytta dem till en annan enhet.
+- Allt sparas i webbläsaren (localStorage).
+
+Krav:
+- Använd React och Vite med JavaScript. Skapa projektet direkt i den här mappen.
+- Sätt base till './' i Vite-inställningarna så att appen fungerar på GitHub Pages.
+- Lägg till en .gitignore som utesluter node_modules och dist.
+- Sidan ska fungera lika bra på mobil som på dator: responsiv layout, knappar som är lätta att träffa med fingret och ingen sidledsscroll.
+- Använd svenska i hela gränssnittet och sätt lang="sv" på sidan.
+- Ge appen en tydlig titel, en favicon och en glad design med varma färger.
+- Skapa en kort README.md som beskriver vad appen gör.
+- När du är klar: starta utvecklingsservern och ge mig adressen.
+
+Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver några filer.</pre></div>
+        <p><strong>Tips:</strong> Export och import är det enkla sättet att få samma data i datorn och mobilen, utan server.</p>
+        <p><strong>Idéer för steg 4:</strong></p>
+        <ul>
+<li><code>Låt mig ändra antal portioner så att mängderna räknas om.</code></li>
+<li><code>Gör en inköpslista av ingredienserna i de recept jag väljer.</code></li>
+        </ul>
+      </details>
+      <details class="alt project">
+        <summary>⏱️ Fokustimer</summary>
+        <div class="code wrap"><span class="label">Startprompt</span>
+<pre>Bygg en fokustimer som en webbapp i den här mappen.
+
+Funktioner:
+- Jag kan starta en timer för fokuspass, 25 minuter som standard, följt av en kort paus.
+- Jag kan ändra längden på pass och pauser.
+- Det hörs en ljudsignal när ett pass eller en paus är slut.
+- Jag ser statistik över hur många pass jag har gjort i dag och den senaste veckan. Statistiken sparas i webbläsaren (localStorage).
+
+Krav:
+- Använd React och Vite med JavaScript. Skapa projektet direkt i den här mappen.
+- Sätt base till './' i Vite-inställningarna så att appen fungerar på GitHub Pages.
+- Lägg till en .gitignore som utesluter node_modules och dist.
+- Sidan ska fungera lika bra på mobil som på dator: responsiv layout, knappar som är lätta att träffa med fingret och ingen sidledsscroll.
+- Använd svenska i hela gränssnittet och sätt lang="sv" på sidan.
+- Ge appen en tydlig titel, en favicon och en glad design med varma färger.
+- Skapa en kort README.md som beskriver vad appen gör.
+- När du är klar: starta utvecklingsservern och ge mig adressen.
+
+Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver några filer.</pre></div>
+        <p><strong>Tips:</strong> Titta i Application i Dev Tools för att se hur statistiken sparas.</p>
+        <p><strong>Idéer för steg 4:</strong></p>
+        <ul>
+<li><code>Låt mig skriva vad jag ska jobba med i varje pass och visa det i statistiken.</code></li>
+<li><code>Visa ett stapeldiagram över fokustid per dag.</code></li>
+        </ul>
+      </details>
+        <p>Eget projekt? Använd en av startprompterna som mall och byt ut raderna under <em>Funktioner</em>. Låt raderna under <em>Krav</em> stå kvar. Osäker på om idén går att bygga utan server? Fråga agenten: <code>Kan det här byggas som en statisk webbapp på GitHub Pages?</code></p>
+      </li>
+
+      <li>
+        <h3>🔑 Väderappen: skaffa en API-nyckel</h3>
+        <p>En <strong>API-nyckel</strong> är en lång rad tecken som visar vem som frågar en tjänst. Tjänsten använder den för att räkna hur mycket du använder, ta betalt om du går över gratisnivån och spärra nyckeln om den missbrukas. Den som har din nyckel kan alltså använda din kvot.</p>
+        <ol>
+          <li>Skapa ett gratiskonto på <a href="https://home.openweathermap.org/users/sign_up">openweathermap.org</a>. Låt lösenordshanteraren skapa och spara lösenordet.</li>
+          <li>Logga in och öppna <a href="https://home.openweathermap.org/api_keys">API keys</a>. Där finns redan en nyckel som heter <em>Default</em>. Kopiera den.</li>
+          <li>Spara nyckeln i lösenordshanteraren direkt:
+            <ul>
+              <li><strong>1Password:</strong> välj <em>New Item</em> → <em>API Credential</em>, kalla den <em>OpenWeatherMap</em> och klistra in nyckeln under <em>credential</em>.</li>
+              <li><strong>Proton Pass:</strong> öppna inloggningen för OpenWeatherMap, välj <em>Edit</em>, lägg till ett dolt fält (<em>Hidden</em>) som heter <em>API-nyckel</em> och klistra in nyckeln där.</li>
+            </ul>
+          </li>
+        </ol>
+        <div class="note warn"><p><strong>Klistra inte in nyckeln i chatten med agenten.</strong> Allt du skriver där skickas till AI-tjänsten. Nyckeln ska bara finnas i lösenordshanteraren, i filen <code>.env.local</code> på din dator och i GitHub Secrets.</p></div>
+        <p>Det kan ta upp till ett par timmar innan en ny nyckel fungerar. Fram till dess svarar OpenWeatherMap med <code>401</code> i Network-fliken.</p>
+      </li>
+
+      <li>
+        <h3>Skapa en mapp och klistra in startprompten</h3>
+        <p>Skapa en tom mapp i din kursmapp, till exempel <code>kurs/vaderappen</code>, och öppna den i Claude- eller ChatGPT-appen precis som i övning 1. Klistra in startprompten, läs planen och svara <code>Kör!</code>.</p>
+        <p>Agenten kommer vilja köra kommandon som <code>npm install</code> och <code>npm run dev</code>. Läs vad den vill göra och godkänn. Den första installationen kan ta en minut.</p>
+        <div class="note"><p><strong>Vad är node_modules?</strong> En mapp med alla paket som projektet använder, ofta tusentals filer. Den skapas av <code>npm install</code> och ska aldrig in i Git. Därför står den i <code>.gitignore</code>.</p></div>
+      </li>
+
+      <li>
+        <h3>🔑 Väderappen: lägg in nyckeln i .env.local</h3>
+        <p>Agenten har skapat filen <code>.env.example</code>. Öppna projektmappen i VS Code, skapa en ny fil som heter <code>.env.local</code> bredvid den och skriv in din nyckel från lösenordshanteraren:</p>
+        <div class="code"><span class="label">.env.local</span>
+<pre>VITE_OPENWEATHER_API_KEY=klistra-in-din-nyckel-här</pre></div>
+        <p>Filen står i <code>.gitignore</code>, så den hamnar aldrig i Git eller på GitHub. Be sedan agenten starta om utvecklingsservern, annars läses nyckeln inte in:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Jag har lagt in nyckeln i .env.local. Starta om utvecklingsservern.</pre></div>
+      </li>
+
+      <li>
+        <h3>Öppna appen på localhost</h3>
+        <p>När agenten är klar ger den dig en adress, oftast <code>http://localhost:5173/</code>. Öppna den i webbläsaren. Det är din egen dator som är servern, så bara du kan se sidan.</p>
+        <p>Låt utvecklingsservern stå på. När agenten ändrar en fil uppdateras sidan av sig själv.</p>
+      </li>
+
+      <li>
+        <h3>Bygg vidare och felsök med Dev Tools</h3>
+        <p>Be om en sak i taget och testa efter varje steg. Ta en idé från projektet du valde, eller beskriv något du själv saknar.</p>
+        <p>Ha Dev Tools öppet medan du testar. Ser du något rött i Console, kopiera det och ge det till agenten:</p>
+        <div class="code wrap"><span class="label">Exempel</span>
+<pre>När jag söker efter Göteborg blir sidan vit. I Console står det: [klistra in felet här]. Ta reda på varför och rätta det.</pre></div>
+      </li>
+
+      <li>
+        <h3>Publicera med GitHub Actions</h3>
+        <p>Nu finns ett byggsteg, så GitHub måste bygga appen innan den kan publiceras. Det sköter GitHub Actions. Låt agenten ställa in allt:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Spara allt med Git och lägg upp projektet på GitHub som ett publikt repo med hjälp av gh. Skapa ett GitHub Actions-workflow som bygger appen och publicerar den på GitHub Pages, och ställ in Pages så att den använder GitHub Actions. Vänta tills bygget är klart och ge mig länken.</pre></div>
+        <details class="alt" open>
+          <summary>🔑 Väderappen: publicera med nyckeln i GitHub Secrets</summary>
+          <p>Bygget sker på en dator hos GitHub, och den kan inte läsa din <code>.env.local</code>. Därför sparar du nyckeln i <strong>GitHub Secrets</strong>, ett låst fack i repot som bara GitHub Actions kan läsa. Använd den här prompten i stället:</p>
+          <div class="code wrap"><span class="label">Prompt</span>
+<pre>Spara allt med Git och lägg upp projektet på GitHub som ett publikt repo med hjälp av gh. Skapa ett GitHub Actions-workflow som bygger appen och publicerar den på GitHub Pages, och ställ in Pages så att den använder GitHub Actions. Bygget ska läsa API-nyckeln från GitHub Secrets med namnet VITE_OPENWEATHER_API_KEY. Innan du pushar workflowet: säg till mig att lägga in nyckeln och vänta på mitt okej. Vänta sedan tills bygget är klart och ge mig länken.</pre></div>
+          <p>När agenten ber dig lägga in nyckeln, öppna en terminal i projektmappen och kör kommandot nedan. Klistra in nyckeln från lösenordshanteraren när du blir tillfrågad. Det du klistrar in syns inte.</p>
+          <div class="code"><span class="label">Alla system</span>
+<pre>gh secret set VITE_OPENWEATHER_API_KEY</pre></div>
+          <p>Eller gör det på GitHub: öppna repot, välj <strong>Settings → Secrets and variables → Actions → New repository secret</strong>, skriv namnet <code>VITE_OPENWEATHER_API_KEY</code> och klistra in nyckeln. Svara sedan agenten <code>Klart!</code>.</p>
+          <p>En secret går inte att läsa igen, inte ens för dig. Därför finns originalet i lösenordshanteraren.</p>
+          <div class="note"><p><strong>Ärligt talat:</strong> appen körs i besökarens webbläsare, så nyckeln byggs in i appen och syns för alla i Dev Tools. Det är okej för en gratisnyckel med tak som den här. En nyckel som kostar pengar eller ger åtkomst till data måste ligga på en server. Vanan att hålla nyckeln utanför koden och Git är densamma.</p></div>
+        </details>
+        <p>Öppna repot på GitHub och klicka på fliken <strong>Actions</strong>. En gul prick betyder att bygget pågår, en grön bock att det är klart och ett rött kryss att något gick fel. Öppna sedan länken i mobilen. 🎉</p>
+        <details class="alt">
+          <summary>Rött kryss eller vit sida?</summary>
+          <ul>
+            <li><strong>Rött kryss i Actions:</strong> klicka på bygget, öppna steget som misslyckades och kopiera felet till agenten.</li>
+            <li><strong>Vit sida på GitHub Pages:</strong> öppna Dev Tools. En 404 i Network på en JS- eller CSS-fil betyder oftast att <code>base</code> inte är rätt inställd. Berätta det för agenten.</li>
+            <li><strong>”API-nyckel saknas” på GitHub Pages men inte lokalt:</strong> namnet på din secret stämmer inte, eller så lades den in efter bygget. Kör om bygget under Actions med <em>Re-run all jobs</em>.</li>
+            <li><strong>Gammal version syns:</strong> ladda om hårt med <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>, på Mac <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>.</li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <h3>Ändra och publicera igen</h3>
+        <p>Gör en liten ändring, till exempel en ny färg eller en ny funktion. Be sedan agenten:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Spara ändringarna med Git och pusha dem till GitHub.</pre></div>
+        <p>Titta under Actions igen. GitHub bygger och publicerar den nya versionen av sig själv, varje gång du pushar.</p>
+      </li>
+    </ol>
+
+    <section>
+      <h2>Klart?</h2>
+      <ul class="checklist">
+        <li>Appen fungerar på localhost</li>
+        <li>Jag har använt Dev Tools för att titta på appen</li>
+        <li>Koden ligger på GitHub och bygget i Actions är grönt</li>
+        <li>🔑 Väderappen: nyckeln finns i lösenordshanteraren och GitHub Secrets, men inte i koden</li>
+        <li>Jag har öppnat den publicerade sidan i mobilen</li>
+        <li>Jag har pushat en ändring och sett den publiceras av sig själv</li>
+      </ul>
+      <p>Hann du inte klart? Det gör inget, gör färdigt hemma. Ta med appen till nästa lektion.</p>
+    </section>
+
+    <nav class="guide-nav">
+      <a href="ovning-2.html">← Övning 2</a>
+      <a href="../slides/tillfalle-2-del-2.html">Presentationen del 2 →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>

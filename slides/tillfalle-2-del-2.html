@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tillfälle 2 · Del 2: Titta under huven</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/slides.css?v=11">
+  <script src="../assets/slides.js?v=6" defer></script>
+</head>
+<body>
+<a class="home" href="../index.html">⌂ Kursmaterial</a>
+<div class="deck">
+
+  <!-- 1 -->
+  <section class="title">
+    <div class="kicker">Folkuniversitetet · Tillfälle 2 · Del 2</div>
+    <h1>Titta under<br>huven</h1>
+    <p class="lead">Webbläsarens Dev Tools, och sedan bygger och publicerar vi en riktig webbapp.</p>
+    <div class="badge-row">
+      <span class="badge">🔧 Dev Tools</span>
+      <span class="badge">🕵️ Felsökning</span>
+      <span class="badge">🚀 Bygg och publicera</span>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <div class="kicker">Varför?</div>
+    <h2>Du är agentens ögon</h2>
+    <div class="cols wide-left">
+      <ul class="nice">
+        <li>Agenten skriver koden, men det är <strong>du</strong> som ser sidan i webbläsaren</li>
+        <li class="frag">”Det funkar inte” ger agenten väldigt lite att gå på</li>
+        <li class="frag">Ett exakt felmeddelande ger den nästan alltid rätt spår direkt</li>
+        <li class="frag">Dev Tools visar det som händer bakom sidan</li>
+      </ul>
+      <div class="card sun">
+        <span class="e">🔧</span>
+        <h3>Dev Tools</h3>
+        <p>Utvecklarverktyg som finns inbyggda i alla vanliga webbläsare. Gratis, och du kan inte förstöra något genom att titta.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Allt du ändrar i Dev Tools försvinner när du laddar om sidan. Det är helt ofarligt att utforska.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <div class="kicker">Kom igång</div>
+    <h2>Öppna Dev Tools</h2>
+    <div class="cards">
+      <div class="card"><span class="e">🪟</span><h3>Windows och Linux</h3><p><kbd>F12</kbd> eller <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>I</kbd></p></div>
+      <div class="card"><span class="e">🍎</span><h3>Mac</h3><p><kbd>⌥</kbd> + <kbd>⌘</kbd> + <kbd>I</kbd></p></div>
+      <div class="card sun"><span class="e">🖱️</span><h3>Alla</h3><p>Högerklicka på sidan och välj <strong>Inspektera</strong></p></div>
+    </div>
+    <ul class="nice" style="margin-top:34px">
+      <li>Vi använder <strong>Chrome</strong> eller <strong>Edge</strong> i kursen. De har samma Dev Tools</li>
+      <li class="frag">Safari: slå först på <em>Visa funktioner för webbutvecklare</em> under Inställningar → Avancerat</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Firefox fungerar också, men flikarna heter lite annorlunda (Storage i stället för Application).</li>
+        <li>Dev Tools kan vara på engelska även om webbläsaren är på svenska. Flikarnas namn är desamma.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 4 -->
+  <section>
+    <div class="kicker">Översikt</div>
+    <h2>Fyra flikar och en mobil</h2>
+    <div class="cards four">
+      <div class="card frag"><span class="e">🧱</span><h3>Elements</h3><p>Sidans HTML och CSS, just nu</p></div>
+      <div class="card frag"><span class="e">💬</span><h3>Console</h3><p>Felmeddelanden och loggar</p></div>
+      <div class="card frag"><span class="e">📡</span><h3>Network</h3><p>Allt som hämtas från servrar</p></div>
+      <div class="card frag"><span class="e">🗄️</span><h3>Application</h3><p>Sparad data i webbläsaren</p></div>
+    </div>
+    <div class="card sun frag" style="margin-top:28px">
+      <p style="color:var(--ink)">📱 <strong>Mobilvy:</strong> ikonen med en mobil och en surfplatta uppe till vänster i Dev Tools visar sidan som på en telefon.</p>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <div class="kicker">Elements</div>
+    <h2>Elements: sidan som den är just nu</h2>
+    <div class="cols wide-left">
+      <div class="dt">
+        <div class="dt-tabs"><span class="on">Elements</span><span>Console</span><span>Network</span><span>Application</span></div>
+        <div class="dt-body">
+          <div class="dt-row">▾ <span class="tg">&lt;header&gt;</span></div>
+          <div class="dt-row">    <span class="tg">&lt;img</span> <span class="at">src</span>=<span class="st">"bilder/kanelbulle.png"</span><span class="tg">&gt;</span></div>
+          <div class="dt-row sel">    <span class="tg">&lt;h1</span> <span class="at">id</span>=<span class="st">"rubrik"</span><span class="tg">&gt;</span>Fikalistan<span class="tg">&lt;/h1&gt;</span></div>
+          <div class="dt-row">    <span class="tg">&lt;p&gt;</span>Vad ska vi ha till fikat?<span class="tg">&lt;/p&gt;</span></div>
+          <div class="dt-row" style="margin-top:8px;background:#f7f6f5"><span class="tg">h1</span> {
+  color: <span class="st">#6b2e4e</span>;
+  font-size: <span class="st">2.6rem</span>;
+}</div>
+        </div>
+      </div>
+      <ul class="nice">
+        <li class="frag">Peka på något på sidan med pilikonen, så visas dess HTML</li>
+        <li class="frag">Dubbelklicka för att ändra text eller färg direkt</li>
+        <li class="frag">Allt försvinner när du laddar om. Bra för att prova idéer</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Bra tips: hittar du en färg du gillar i Elements, säg den till agenten (”gör rubriken #6b2e4e”).</li>
+        <li>Visa live: ändra rubriken på kurssidan till ditt eget namn. Ladda om.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 6 -->
+  <section>
+    <div class="kicker">Console</div>
+    <h2>Console: här syns felen</h2>
+    <div class="cols wide-left">
+      <div class="dt">
+        <div class="dt-tabs"><span>Elements</span><span class="on">Console</span><span>Network</span><span>Application</span></div>
+        <div class="dt-body">
+          <div class="dt-row">Fikalistan startad ☕</div>
+          <div class="dt-row err frag">⛔ Uncaught ReferenceError: antalBullar is not defined
+    at HTMLButtonElement.&lt;anonymous&gt; (app.js:78:61)</div>
+          <div class="dt-row warn frag">⚠️ Sparade data i gammalt format.</div>
+        </div>
+      </div>
+      <ul class="nice">
+        <li class="frag"><strong>Rött</strong> är fel. Något gick sönder</li>
+        <li class="frag"><strong>Gult</strong> är varningar. Värt att nämna</li>
+        <li class="frag">Filnamn och radnummer visar var felet sitter</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Många fel syns bara i Console. Sidan ser bara ”död” ut, knappen gör inget.</li>
+        <li>Felmeddelandena är på engelska. Du behöver inte förstå dem, bara kopiera dem.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 7 -->
+  <section>
+    <div class="kicker">Console</div>
+    <h2>Ge felet till agenten</h2>
+    <div class="term prompt" style="font-size:22px;line-height:1.5"><pre>När jag klickar på knappen ”Räkna fikat” händer ingenting. I Console i webbläsarens Dev Tools står det här felet:
+
+[klistra in felet här]
+
+Ta reda på varför och rätta det.</pre></div>
+    <ul class="emoji" style="margin-top:30px">
+      <li class="frag"><span class="e">🖱️</span><span>Högerklicka på felet och välj <strong>Copy message</strong>, eller markera och kopiera</span></li>
+      <li class="frag"><span class="e">📝</span><span>Berätta vad du gjorde, vad du väntade dig och vad som hände</span></li>
+    </ul>
+  </section>
+
+  <!-- 8 -->
+  <section>
+    <div class="kicker">Network</div>
+    <h2>Network: allt som hämtas</h2>
+    <div class="dt" style="font-size:18px">
+      <div class="dt-tabs"><span>Elements</span><span>Console</span><span class="on">Network</span><span>Application</span></div>
+      <div class="dt-body">
+        <div class="dt-grid" style="grid-template-columns:1.5fr 0.6fr 0.8fr 0.6fr">
+          <span class="h">Name</span><span class="h">Status</span><span class="h">Type</span><span class="h">Size</span>
+          <span>index.html</span><span>200</span><span>document</span><span>1.4 kB</span>
+          <span>style.css</span><span>200</span><span>stylesheet</span><span>1.8 kB</span>
+          <span>app.js</span><span>200</span><span>script</span><span>2.9 kB</span>
+          <span class="bad frag">kanelbulle.png</span><span class="bad frag">404</span><span class="bad frag">png</span><span class="bad frag">9.1 kB</span>
+          <span class="frag">fika.json</span><span class="frag">200</span><span class="frag">fetch</span><span class="frag">0.2 kB</span>
+        </div>
+      </div>
+    </div>
+    <ul class="nice" style="margin-top:28px">
+      <li class="frag">Ladda om sidan med fliken öppen, så ser du allt som hämtas i ordning</li>
+      <li class="frag">Röda rader är fel. Klicka på en rad för att se exakt vad som skickades och kom tillbaka</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Här syns klient och server från del 1 på riktigt: varje rad är en fråga och ett svar.</li>
+        <li>fetch betyder att JavaScript själv har bett om data, till exempel från ett API.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 9 -->
+  <section>
+    <div class="kicker">Network</div>
+    <h2>Serverns svar i tre siffror</h2>
+    <div class="cards four">
+      <div class="card frag"><span class="e">✅</span><h3>200</h3><p>OK, här är filen</p></div>
+      <div class="card frag"><span class="e">♻️</span><h3>304</h3><p>Du har redan den, använd din sparade kopia</p></div>
+      <div class="card frag"><span class="e">🔍</span><h3>404</h3><p>Hittas inte. Fel namn eller sökväg</p></div>
+      <div class="card frag"><span class="e">💥</span><h3>500</h3><p>Fel på servern, inte hos dig</p></div>
+    </div>
+    <p class="lead frag bottom">En 404 på GitHub Pages beror nästan alltid på en sökväg: stora och små bokstäver, eller ett <code>/</code> för mycket i början.</p>
+    <aside class="notes">
+      <ul>
+        <li>Siffror som börjar på 2 betyder att det gick bra, 4 att klienten bad om fel sak, 5 att servern har problem.</li>
+        <li>På din egen dator spelar stora och små bokstäver ofta ingen roll, men på GitHub Pages gör de det. Klassiskt fel.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 10 -->
+  <section>
+    <div class="kicker">Application</div>
+    <h2>Application: datan i webbläsaren</h2>
+    <div class="dt">
+      <div class="dt-tabs"><span>Elements</span><span>Console</span><span>Network</span><span class="on">Application</span></div>
+      <div class="dt-side">
+        <div class="tree">
+          ▾ Storage<br>
+          &nbsp;&nbsp;▾ Local storage<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;<span class="on">ai-kurs.hellman.cloud</span><br>
+          &nbsp;&nbsp;▸ Session storage<br>
+          &nbsp;&nbsp;▸ Cookies
+        </div>
+        <div class="dt-body">
+          <div class="dt-grid" style="grid-template-columns:0.6fr 2fr">
+            <span class="h">Key</span><span class="h">Value</span>
+            <span>fikalistan</span><span>[{"id":1,"namn":"Kanelbulle"},{"id":2,"namn":"Kaffe"}]</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ul class="nice" style="margin-top:26px">
+      <li class="frag">Här ser du localStorage från del 1: varje app har sina egna nycklar och värden</li>
+      <li class="frag">Markera en rad och tryck <kbd>Delete</kbd> för att ta bort den, eller dubbelklicka för att ändra</li>
+    </ul>
+  </section>
+
+  <!-- 11 -->
+  <section>
+    <div class="kicker">Application</div>
+    <h2>När gammal data ställer till det</h2>
+    <div class="cols wide-left">
+      <ul class="nice">
+        <li>Agenten ändrar hur appen sparar data, men din webbläsare har kvar <strong>datan från förra versionen</strong></li>
+        <li class="frag">Symptom: konstiga rader, tomma listor eller fel som bara du får</li>
+        <li class="frag">Lösning: ta bort nyckeln, eller rensa allt med <strong>Storage → Clear site data</strong></li>
+      </ul>
+      <div class="card hot">
+        <span class="e">⚠️</span>
+        <h3>Rensa = borta</h3>
+        <p>Allt som sparats i appen försvinner när du rensar. Be agenten om en exportknapp innan, om datan är viktig.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Be också agenten hantera det: ”Om sparad data har ett gammalt format, gör om den till det nya i stället för att krascha.”</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 12 -->
+  <section>
+    <div class="kicker">Vanligt problem</div>
+    <h2>”Jag ser inte ändringen!”</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">🔄</span><span><strong>Hård omladdning:</strong> <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>, på Mac <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>. Hämtar allt på nytt i stället för att använda sparade kopior</span></li>
+      <li class="frag"><span class="e">🚫</span><span><strong>Disable cache</strong> i Network-fliken stänger av sparade kopior så länge Dev Tools är öppet</span></li>
+      <li class="frag"><span class="e">⏳</span><span><strong>GitHub Pages</strong> tar en minut eller två. Kolla fliken Actions på GitHub</span></li>
+      <li class="frag"><span class="e">💾</span><span><strong>Sparat och pushat?</strong> Det som bara finns på din dator syns inte på nätet</span></li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Cache betyder att webbläsaren sparar kopior av filer för att sidan ska gå snabbare. Ibland för snabbt.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 13 -->
+  <section>
+    <div class="kicker">Sammanfattning</div>
+    <h2>Felsökning i fem steg</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">1️⃣</span><span><strong>Ladda om hårt.</strong> Är felet kvar?</span></li>
+      <li class="frag"><span class="e">2️⃣</span><span><strong>Kolla Console.</strong> Finns det något rött?</span></li>
+      <li class="frag"><span class="e">3️⃣</span><span><strong>Kolla Network.</strong> Saknas någon fil?</span></li>
+      <li class="frag"><span class="e">4️⃣</span><span><strong>Kolla Application.</strong> Kan gammal data ställa till det?</span></li>
+      <li class="frag"><span class="e">5️⃣</span><span><strong>Berätta för agenten.</strong> Vad du gjorde, vad du väntade dig, vad som hände, och felet.</span></li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Agenten kan också köra webbläsaren själv, till exempel med Playwright: ”Starta appen, testa den i en webbläsare och kolla om det blir några fel i konsolen.”</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Övning 2 -->
+  <section class="divider">
+    <div class="num">🕵️</div>
+    <h2>Övning 2: Detektiv i Dev Tools</h2>
+    <p class="lead">Hitta felen i Fikalistan · 15 minuter</p>
+  </section>
+
+  <section>
+    <div class="kicker">Övning 2</div>
+    <h2>Fem uppdrag</h2>
+    <div class="cols wide-left">
+      <ul class="emoji">
+        <li><span class="e">🧱</span><span><strong>Elements:</strong> byt rubriken till ditt eget namn</span></li>
+        <li><span class="e">📡</span><span><strong>Network:</strong> vilken fil saknas?</span></li>
+        <li><span class="e">💬</span><span><strong>Console:</strong> varför fungerar inte ”Räkna fikat”?</span></li>
+        <li><span class="e">🗄️</span><span><strong>Application:</strong> ladda gammal data, och laga appen igen</span></li>
+        <li><span class="e">📱</span><span><strong>Mobilvy:</strong> hur ser den ut på en telefon?</span></li>
+      </ul>
+      <div class="card sun">
+        <span class="e">🔗</span>
+        <h3>Uppdragen och appen</h3>
+        <p>Kurssidan → <strong>Övning 2</strong>. Där finns alla uppdrag med tips och länken till Fikalistan.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Fikalistan ligger på ai-kurs.hellman.cloud/ovningar/fikalistan/.</li>
+        <li>Gå igenom svaren tillsammans efteråt. Bonus: be agenten rätta felen i en kopia av appen.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- API-nycklar -->
+  <section class="divider">
+    <div class="num">🔑</div>
+    <h2>API-nycklar</h2>
+    <p class="lead">Hemligheter som inte får hamna fel</p>
+  </section>
+
+  <section>
+    <div class="kicker">API-nycklar</div>
+    <h2>Vad är en API-nyckel?</h2>
+    <div class="cols wide-left">
+      <ul class="nice">
+        <li>En lång rad tecken som visar <strong>vem</strong> som frågar. Skickas med i varje anrop</li>
+        <li class="frag">Du får den när du skapar ett konto hos tjänsten</li>
+        <li class="frag">Fel eller ingen nyckel ger <strong>401</strong>: obehörig</li>
+      </ul>
+      <div class="card sun">
+        <span class="e">🎫</span>
+        <h3>Som ett busskort</h3>
+        <p>Kortet visar att det är du och räknar dina resor. Tappar du det kan någon annan åka på ditt kort.</p>
+      </div>
+    </div>
+    <div class="term frag" style="margin-top:22px;font-size:17px"><pre><span class="c"># Ett anrop till OpenWeatherMap. Nyckeln skickas som appid:</span>
+api.openweathermap.org/data/2.5/weather?q=Stockholm&amp;<span class="p">appid=3f9c2a8d41b7e05c6a1f9d2e8b4c7a10</span></pre></div>
+    <aside class="notes">
+      <ul>
+        <li>Nyckeln på sliden är påhittad.</li>
+        <li>API:er med nyckel är vanligast. De öppna utan nyckel är undantaget.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">API-nycklar</div>
+    <h2>Varför behövs den?</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">📊</span><h3>Räkna</h3><p>Tjänsten håller koll på hur mycket du använder. Gratisnivån har ett tak.</p></div>
+      <div class="card frag"><span class="e">💳</span><h3>Betala</h3><p>Går du över taket, eller väljer en betalplan, debiteras rätt konto.</p></div>
+      <div class="card frag"><span class="e">🛑</span><h3>Stoppa</h3><p>En nyckel som missbrukas kan spärras utan att någon annan påverkas.</p></div>
+    </div>
+    <p class="lead frag bottom">En läckt nyckel betyder att någon annan kan använda din kvot, och i värsta fall dina pengar.</p>
+    <aside class="notes">
+      <ul>
+        <li>Det finns automatiska program som letar efter nycklar i publika repon på GitHub dygnet runt. En nyckel som har pushats ska ses som läckt.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">API-nycklar</div>
+    <h2>Fem regler för nycklar</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">🔐</span><span><strong>Spara den i lösenordshanteraren</strong> direkt när du skapar den. Där finns originalet.</span></li>
+      <li class="frag"><span class="e">🙊</span><span><strong>Klistra inte in den i chatten.</strong> Allt du skriver till agenten skickas till AI-tjänsten.</span></li>
+      <li class="frag"><span class="e">🚫</span><span><strong>Aldrig i koden eller i Git.</strong> Lokalt ligger den i <code>.env.local</code>, som står i <code>.gitignore</code>.</span></li>
+      <li class="frag"><span class="e">🐙</span><span><strong>GitHub Secrets</strong> för bygget i GitHub Actions.</span></li>
+      <li class="frag"><span class="e">🔄</span><span><strong>Har den läckt?</strong> Skapa en ny nyckel och ta bort den gamla hos tjänsten.</span></li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>.env.local är en vanlig textfil med raden VITE_OPENWEATHER_API_KEY=din-nyckel. Den öppnar man själv i VS Code.</li>
+        <li>Agenten kan tekniskt sett läsa filen om den vill, men vi ber den att låta bli och skriver inte nyckeln i chatten.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">API-nycklar</div>
+    <h2>Var bor nyckeln?</h2>
+    <div class="keyflow">
+      <div class="box sun">🔐 Lösenords&shy;hanteraren<small>originalet</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">💻 .env.local<small>på din dator</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🏠 localhost<small>npm run dev</small></div>
+      <div></div><div></div>
+      <div class="box sun frag">🔐 Lösenords&shy;hanteraren<small>originalet</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🐙 GitHub Secrets<small>låst fack i repot</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🤖 Actions<small>bygger in nyckeln</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">🌐 GitHub Pages<small>hos alla besökare</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:36px">Nyckeln finns aldrig i koden på GitHub. Den läggs till först när appen byggs.</p>
+  </section>
+
+  <section>
+    <div class="kicker">API-nycklar</div>
+    <h2>Två ställen att spara den på</h2>
+    <div class="cols">
+      <div class="card">
+        <span class="e">🔐</span>
+        <h3>Lösenordshanteraren</h3>
+        <p><strong>1Password:</strong> ny post av typen <em>API Credential</em>.</p>
+        <p style="margin-top:8px"><strong>Proton Pass:</strong> öppna inloggningen för OpenWeatherMap och lägg till ett dolt fält som heter <em>API-nyckel</em>.</p>
+      </div>
+      <div>
+        <div class="term" style="font-size:16.5px"><div class="bar"><i></i><i></i><i></i></div><pre><span class="c"># i terminalen, i projektmappen</span>
+<span class="p">$</span> gh secret set VITE_OPENWEATHER_API_KEY
+? Paste your secret: ********
+<span class="ok">✓ Set Actions secret VITE_OPENWEATHER_API_KEY</span></pre></div>
+        <p class="small" style="margin-top:14px">Eller på GitHub: repots <strong>Settings → Secrets and variables → Actions → New repository secret</strong>.</p>
+      </div>
+    </div>
+    <p class="lead frag bottom">En secret går inte att läsa igen, inte ens för dig. Därför sparar du originalet i lösenordshanteraren.</p>
+    <aside class="notes">
+      <ul>
+        <li>gh secret set frågar efter värdet, så nyckeln hamnar varken i chatten eller i terminalens historik.</li>
+        <li>Visa gärna båda vägarna. Webbvägen är lättare att förstå första gången.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">API-nycklar · ärligt talat</div>
+    <h2>I en webbapp syns nyckeln ändå</h2>
+    <div class="dt" style="font-size:17px">
+      <div class="dt-tabs"><span>Elements</span><span>Console</span><span class="on">Network</span><span>Application</span></div>
+      <div class="dt-body">
+        <div class="dt-grid" style="grid-template-columns:2.4fr 0.5fr 0.6fr">
+          <span class="h">Name</span><span class="h">Status</span><span class="h">Type</span>
+          <span>index-B7x2.js</span><span>200</span><span>script</span>
+          <span class="bad">forecast?q=Stockholm&amp;appid=3f9c2a8d41b7e05c…</span><span>200</span><span>fetch</span>
+        </div>
+      </div>
+    </div>
+    <ul class="nice" style="margin-top:26px">
+      <li class="frag">Appen körs i besökarens webbläsare, så nyckeln måste finnas där. Alla kan se den i Network</li>
+      <li class="frag">Okej för en <strong>gratisnyckel med tak</strong>, som vår väder-API</li>
+      <li class="frag">En nyckel som kostar pengar eller ger åtkomst till data kräver en <strong>server</strong> som håller den hemlig</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Koppla till del 1: en webbapp kan inte hålla hemligheter.</li>
+        <li>Varför då alls lösenordshanterare och Secrets? Vanan är det viktiga: samma metod fungerar när nyckeln verkligen är hemlig, och nyckeln hamnar aldrig i Git-historiken.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Övning 3 -->
+  <section class="divider">
+    <div class="num">🚀</div>
+    <h2>Övning 3: En riktig webbapp</h2>
+    <p class="lead">Med React och Vite, publicerad med GitHub Actions · 40 minuter</p>
+  </section>
+
+  <section>
+    <div class="kicker">Övning 3</div>
+    <h2>Välj ett projekt</h2>
+    <div class="cards four">
+      <div class="card"><span class="e">🌦️</span><h3>Väderappen</h3><p>OpenWeatherMap, med API-nyckel</p></div>
+      <div class="card"><span class="e">🎲</span><h3>Poängräknare</h3><p>för spelkvällen</p></div>
+      <div class="card"><span class="e">🍲</span><h3>Receptboken</h3><p>med sök och export</p></div>
+      <div class="card"><span class="e">⏱️</span><h3>Fokustimer</h3><p>med statistik</p></div>
+    </div>
+    <ul class="nice" style="margin-top:34px">
+      <li>Den här gången med <strong>React</strong>, <strong>Vite</strong> och ett byggsteg</li>
+      <li>Startprompter för alla fyra finns på kurssidan under <strong>Övning 3</strong></li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Väderappen är den som övar API-nycklar, och den visar klient och server i Network-fliken. Receptboken visar export och import, lösningen på datorn-mobilen-problemet.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <h2 style="font-size:36px;margin-bottom:10px">Startprompten: nu med modern teknik</h2>
+    <div class="term prompt" style="font-size:14.2px;line-height:1.38"><pre>Bygg en väderapp som en webbapp i den här mappen.
+
+<span class="p">Funktioner:</span>
+- Jag kan söka efter en ort och se vädret just nu och de kommande fem dagarna.
+- Vädret hämtas från OpenWeatherMap. Använd deras gratis-API:er för aktuellt väder, femdygnsprognos och sökning av orter (Geocoding).
+- Jag kan spara favoritorter och snabbt byta mellan dem. Favoriterna sparas i webbläsaren (localStorage).
+
+<span class="p">API-nyckeln:</span>
+- Läs nyckeln från miljövariabeln VITE_OPENWEATHER_API_KEY. Skriv aldrig in den i koden.
+- Skapa filen .env.example med raden VITE_OPENWEATHER_API_KEY= och se till att .env.local finns i .gitignore.
+- Jag lägger själv in nyckeln i .env.local. Be mig aldrig klistra in nyckeln i chatten, och läs inte .env.local.
+- Om nyckeln saknas eller inte fungerar ska appen visa ett tydligt meddelande på svenska.
+
+<span class="p">Krav:</span>
+- Använd React och Vite med JavaScript. Skapa projektet direkt i den här mappen.
+- Sätt base till './' i Vite-inställningarna så att appen fungerar på GitHub Pages.
+- Lägg till en .gitignore som utesluter node_modules och dist.
+- Sidan ska fungera lika bra på mobil som på dator: responsiv layout, knappar som är lätta att träffa med fingret och ingen sidledsscroll.
+- Använd svenska i hela gränssnittet och sätt lang="sv" på sidan.
+- Ge appen en tydlig titel, en favicon och en glad design med varma färger.
+- Skapa en kort README.md som beskriver vad appen gör.
+- När du är klar: starta utvecklingsservern och ge mig adressen.
+
+Börja med att visa mig en kort plan. Vänta på mitt okej innan du skriver några filer.</pre></div>
+    <aside class="notes">
+      <ul>
+        <li>Nytt avsnitt: API-nyckeln. Agenten bygger koden som läser nyckeln, men det är du som lägger in den.</li>
+        <li>Jämför med övning 1: samma struktur, men nu ber vi om React och Vite i stället för ”inget byggsteg”.</li>
+        <li>base './' gör att sökvägarna blir relativa, samma sak som vi bad om i övning 1.</li>
+        <li>Agenten kommer köra npm install och npm run dev. Godkänn kommandona.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Övning 3 · gör så här</div>
+    <h2>Bygg, felsök, publicera</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">🔑</span><span><strong>Väderappen:</strong> skapa en nyckel på openweathermap.org och spara den i lösenordshanteraren</span></li>
+      <li class="frag"><span class="e">📁</span><span>Ny tom mapp, klistra in startprompten, läs planen, svara <strong>Kör!</strong></span></li>
+      <li class="frag"><span class="e">✍️</span><span><strong>Väderappen:</strong> kopiera <code>.env.example</code> till <code>.env.local</code> i VS Code och klistra in nyckeln där</span></li>
+      <li class="frag"><span class="e">🏠</span><span>Öppna <code>localhost</code>-adressen och prova appen. Något rött i Dev Tools? Ge det till agenten</span></li>
+      <li class="frag"><span class="e">🚀</span><span>Publicera, lägg in nyckeln i GitHub Secrets när agenten ber om det, öppna i mobilen</span></li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>En ny nyckel hos OpenWeatherMap kan ta upp till ett par timmar innan den fungerar. Be deltagarna skapa konto och nyckel i förväg. Fram till dess svarar API:et 401.</li>
+        <li>Har utvecklingsservern redan startat när .env.local skapas? Starta om den (be agenten), annars läses nyckeln inte in.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Övning 3 · publicera</div>
+    <h2 style="font-size:44px">Publicera med nyckeln i GitHub Secrets</h2>
+    <div class="term prompt" style="font-size:21px;line-height:1.5"><pre>Spara allt med Git och lägg upp projektet på GitHub som ett publikt repo med hjälp av gh. Skapa ett GitHub Actions-workflow som bygger appen och publicerar den på GitHub Pages, och ställ in Pages så att den använder GitHub Actions. Bygget ska läsa API-nyckeln från GitHub Secrets med namnet VITE_OPENWEATHER_API_KEY. Innan du pushar workflowet: säg till mig att lägga in nyckeln och vänta på mitt okej. Vänta sedan tills bygget är klart och ge mig länken.</pre></div>
+    <ul class="emoji" style="margin-top:26px">
+      <li class="frag"><span class="e">⏸️</span><span>När agenten frågar: kör <code>gh secret set VITE_OPENWEATHER_API_KEY</code> i terminalen, klistra in nyckeln och svara <strong>Klart!</strong></span></li>
+      <li class="frag"><span class="e">🟢</span><span>Följ bygget under <strong>Actions</strong>. De andra projekten har en prompt utan nyckel på kurssidan</span></li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Den som får rött kryss i Actions: klicka in på bygget, kopiera felet, ge det till agenten. Samma metod som i Dev Tools.</li>
+        <li>Vit sida på GitHub Pages: kolla Console och Network, ofta en 404 på en JS-fil på grund av base.</li>
+        <li>Fungerar appen lokalt men säger att nyckeln saknas på GitHub Pages? Då är secret-namnet fel, eller så lades nyckeln in efter bygget. Kör om bygget under Actions.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Till nästa gång</div>
+    <h2>Hemuppgift</h2>
+    <ul class="emoji">
+      <li><span class="e">🚀</span><span>Gör klart <strong>övning 3</strong> och publicera appen med GitHub Actions</span></li>
+      <li><span class="e">🔐</span><span>Gå igenom lösenordshanteraren: ligger alla nycklar och konton från kursen där?</span></li>
+      <li><span class="e">🔧</span><span>Öppna Dev Tools på en sida du använder ofta. Vad hämtas under Network?</span></li>
+      <li><span class="e">🗄️</span><span>Titta i Application på din app från övning 1. Hittar du din data?</span></li>
+      <li><span class="e">💡</span><span>Fundera: vilken av dina idéer skulle behöva en server?</span></li>
+    </ul>
+    <p class="small bottom">Allt material finns på kurssidan.</p>
+  </section>
+
+  <section class="title center">
+    <div style="font-size:120px;line-height:1">🙌</div>
+    <h1>Frågor?</h1>
+    <p class="lead">Tack för idag! Vi ses nästa gång.</p>
+  </section>
+
+</div>
+</body>
+</html>

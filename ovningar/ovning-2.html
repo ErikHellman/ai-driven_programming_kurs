@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Övning 2 · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕵️</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=4">
+  <script src="../assets/site.js?v=3" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Tillfälle 2 · Övning 2 · 15 minuter</span>
+      <h1>🕵️ Detektiv i Dev Tools</h1>
+      <p>Fikalistan är en liten webbapp med några fel inbyggda med flit. Använd webbläsarens Dev Tools för att hitta dem.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="note tip"><p><strong>Så börjar du:</strong> öppna <a href="fikalistan/" target="_blank" rel="noopener">Fikalistan</a> i en ny flik i Chrome eller Edge. Tryck sedan <kbd>F12</kbd>, eller <kbd>⌥</kbd> + <kbd>⌘</kbd> + <kbd>I</kbd> på Mac, för att öppna Dev Tools.</p></div>
+
+    <ol class="steps">
+      <li>
+        <h3>🧱 Elements: byt rubriken</h3>
+        <p>Klicka på pilikonen längst upp till vänster i Dev Tools och sedan på rubriken <em>Fikalistan</em>. Dubbelklicka på texten i Elements och skriv ditt eget namn. Prova också att ändra färgen under <em>Styles</em>.</p>
+        <p>Ladda om sidan. Vad hände med din ändring?</p>
+        <details class="alt"><summary>Svar</summary><p>Ändringen försvinner. Dev Tools ändrar bara sidan i din webbläsare just nu, inte filerna på servern. Bra för att prova idéer innan du ber agenten om ändringen.</p></details>
+      </li>
+
+      <li>
+        <h3>📡 Network: vilken fil saknas?</h3>
+        <p>Öppna fliken <strong>Network</strong> och ladda om sidan. Nu ser du alla filer som webbläsaren hämtar. En av dem är röd.</p>
+        <ul>
+          <li>Vilken fil är det, och vilken statuskod har den?</li>
+          <li>Vilken fil hämtar förslagen under rubriken <em>Förslag</em>?</li>
+        </ul>
+        <details class="alt"><summary>Svar</summary><p><code>kanelbulle.png</code> ger <strong>404</strong>: bilden finns inte på servern. Därför syns en trasig bild överst på sidan. Förslagen kommer från <code>fika.json</code>, som JavaScript hämtar med <em>fetch</em>.</p></details>
+      </li>
+
+      <li>
+        <h3>💬 Console: varför fungerar inte knappen?</h3>
+        <p>Öppna fliken <strong>Console</strong> och klicka på knappen <em>🧮 Räkna fikat</em> i appen. Det händer ingenting på sidan, men något dyker upp i Console.</p>
+        <p>Kopiera felmeddelandet. Hur skulle du beskriva felet för agenten?</p>
+        <details class="alt"><summary>Svar</summary>
+          <p>Felet är <code>ReferenceError: antalBullar is not defined</code>. Koden använder ett namn som inte finns. Så här kan du skriva till agenten:</p>
+          <div class="code wrap"><span class="label">Prompt</span>
+<pre>När jag klickar på knappen ”Räkna fikat” händer ingenting. I Console står det: Uncaught ReferenceError: antalBullar is not defined (app.js:78). Ta reda på varför och rätta det.</pre></div>
+        </details>
+      </li>
+
+      <li>
+        <h3>🗄️ Application: gammal data</h3>
+        <p>Lägg till några saker i listan. Öppna fliken <strong>Application</strong>, välj <em>Local storage</em> i vänsterkolumnen och klicka på adressen under den. Där ser du nyckeln <code>fikalistan</code> och allt du har lagt till.</p>
+        <p>Klicka nu på <em>🕰️ Ladda gammal data</em> i appen. Den låtsas att en äldre version av appen sparade listan på ett annat sätt. Vad händer med listan? Prova att lägga till något nytt och titta i Console.</p>
+        <p>Laga appen: ta bort nyckeln i Application och ladda om sidan.</p>
+        <details class="alt"><summary>Svar</summary><p>Listan fylls med rader där det står <code>undefined</code>, och nya saker går inte att lägga till. Appen försöker läsa datan i det nya formatet, men den är sparad i det gamla. Markera raden <code>fikalistan</code> och tryck <kbd>Delete</kbd>, eller använd <em>Storage → Clear site data</em>. Då fungerar appen igen, men listan är tom.</p></details>
+        <div class="note warn"><p><strong>Kom ihåg:</strong> när du rensar sparad data försvinner den för gott. Be agenten lägga till en exportknapp om datan är viktig för dig.</p></div>
+      </li>
+
+      <li>
+        <h3>📱 Mobilvy och en annan enhet</h3>
+        <p>Klicka på mobilikonen uppe till vänster i Dev Tools och välj en telefon i listan högst upp. Hur ändras layouten?</p>
+        <p>Öppna sedan Fikalistan i mobilen, eller i ett privat fönster. Finns sakerna du lade till på datorn där?</p>
+        <details class="alt"><summary>Svar</summary><p>På smala skärmar hamnar fältet och knappen under varandra, det är CSS som anpassar sig. Listan i mobilen är tom: localStorage finns bara i webbläsaren där du sparade den. För att dela data mellan enheter behövs en server.</p></details>
+      </li>
+    </ol>
+
+    <section>
+      <h2>Bonus: låt agenten laga Fikalistan</h2>
+      <p>Hämta en egen kopia av appen och låt agenten rätta alla fel du hittade. Skapa en tom mapp, öppna den i Claude- eller ChatGPT-appen och klistra in:</p>
+      <div class="code wrap"><span class="label">Prompt</span>
+<pre>Ladda ner filerna index.html, style.css, app.js och fika.json från https://ai-kurs.hellman.cloud/ovningar/fikalistan/ till den här mappen. Appen har några fel: bilden kanelbulle.png saknas, knappen ”Räkna fikat” ger ett ReferenceError i Console, och appen kraschar om det finns sparad data i ett gammalt format. Visa mig en plan för hur du rättar felen innan du ändrar något.</pre></div>
+    </section>
+
+    <section>
+      <h2>Klart?</h2>
+      <ul class="checklist">
+        <li>Jag kan öppna Dev Tools</li>
+        <li>Jag har hittat ett fel i Console och kopierat det</li>
+        <li>Jag har hittat en fil som saknas i Network</li>
+        <li>Jag har sett och rensat sparad data i Application</li>
+        <li>Jag har provat mobilvyn</li>
+      </ul>
+    </section>
+
+    <nav class="guide-nav">
+      <a href="../slides/tillfalle-2-del-2.html">← Presentationen del 2</a>
+      <a href="ovning-3.html">Övning 3 →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>
