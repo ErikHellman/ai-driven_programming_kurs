@@ -12,11 +12,11 @@
   }
 
   function readSaved() {
-    try { return localStorage.getItem(KEY); } catch (e) { return null; }
+    try { return localStorage.getItem(KEY); } catch { return null; }
   }
 
   function save(os) {
-    try { localStorage.setItem(KEY, os); } catch (e) { /* privat läge, ignorera */ }
+    try { localStorage.setItem(KEY, os); } catch { /* privat läge, ignorera */ }
   }
 
   function setOs(os) {
@@ -70,11 +70,11 @@
     if (!document.querySelector('a[href^="slides/"]')) return;
 
     var last = null;
-    try { last = JSON.parse(localStorage.getItem(SLIDE_KEY)); } catch (e) { /* ignorera */ }
+    try { last = JSON.parse(localStorage.getItem(SLIDE_KEY)); } catch { /* ignorera */ }
 
     document.querySelectorAll('a[href^="slides/"]').forEach(function (a) {
       a.addEventListener("click", function () {
-        try { localStorage.removeItem(SLIDE_KEY); } catch (e) { /* ignorera */ }
+        try { localStorage.removeItem(SLIDE_KEY); } catch { /* ignorera */ }
       });
     });
 
