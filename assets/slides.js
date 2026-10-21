@@ -1,6 +1,7 @@
 // En liten slidemotor utan beroenden.
 // Tangenter: → / Mellanslag / PageDown = nästa, ← / PageUp = föregående,
 // Home / End = första / sista, F = helskärm, N = talaranteckningar, O = översikt,
+// H = till startsidan (positionen sparas så att H på startsidan hoppar tillbaka),
 // Esc = stäng anteckningar eller översikt.
 (function () {
   var W = 1280, H = 720;
@@ -51,6 +52,19 @@
   function fullscreen() {
     if (!document.fullscreenElement) document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
     else document.exitFullscreen && document.exitFullscreen();
+  }
+
+  // Spara var vi är och gå till startsidan. Startsidan (site.js) läser
+  // samma nyckel och hoppar tillbaka hit när man trycker H där.
+  function home() {
+    try {
+      localStorage.setItem("kurs-senaste-slide", JSON.stringify({
+        url: location.pathname.split("/").pop(),
+        slide: cur + 1,
+        title: document.title
+      }));
+    } catch (e) { /* privat läge, ignorera */ }
+    location.href = "../index.html";
   }
 
   // Översikt: alla slides som miniatyrer i ett rutnät
@@ -146,7 +160,7 @@
 
     var help = document.createElement("div");
     help.className = "help";
-    help.innerHTML = "← → bläddra · O översikt · F helskärm · N anteckningar";
+    help.innerHTML = "← → bläddra · O översikt · F helskärm · N anteckningar · H startsidan";
     document.body.appendChild(help);
     setTimeout(function () { help.classList.add("hide"); }, 4000);
 
@@ -168,6 +182,7 @@
         case "f": case "F": fullscreen(); break;
         case "n": case "N": document.body.classList.toggle("show-notes"); break;
         case "o": case "O": openOverview(); break;
+        case "h": case "H": home(); break;
         case "Escape": document.body.classList.remove("show-notes"); break;
       }
     });

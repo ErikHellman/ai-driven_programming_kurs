@@ -59,5 +59,38 @@
       });
       block.appendChild(btn);
     });
+
+    resumeSlides();
   });
+
+  // Startsidan: H hoppar tillbaka till presentationen man lämnade med H
+  // (sparas av slides.js). Att öppna en presentation via länkarna nollställer.
+  function resumeSlides() {
+    var SLIDE_KEY = "kurs-senaste-slide";
+    if (!document.querySelector('a[href^="slides/"]')) return;
+
+    var last = null;
+    try { last = JSON.parse(localStorage.getItem(SLIDE_KEY)); } catch (e) { /* ignorera */ }
+
+    document.querySelectorAll('a[href^="slides/"]').forEach(function (a) {
+      a.addEventListener("click", function () {
+        try { localStorage.removeItem(SLIDE_KEY); } catch (e) { /* ignorera */ }
+      });
+    });
+
+    if (!last || !/^[\w-]+\.html$/.test(last.url)) return;
+    var href = "slides/" + last.url + "#" + (parseInt(last.slide, 10) || 1);
+
+    var back = document.createElement("a");
+    back.className = "resume-slides";
+    back.href = href;
+    back.textContent = "Tryck H för att gå tillbaka till " + (last.title || "presentationen") + ", bild " + (parseInt(last.slide, 10) || 1);
+    document.body.appendChild(back);
+
+    document.addEventListener("keydown", function (e) {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.target.closest && e.target.closest("input, textarea, select, [contenteditable]")) return;
+      if (e.key === "h" || e.key === "H") location.href = href;
+    });
+  }
 })();
