@@ -364,3 +364,21 @@ details.project summary { font-size: 1.2rem; }
   box-shadow: 0 6px 18px rgba(107, 46, 78, 0.18);
 }
 .org-logo img { display: block; height: 34px; width: auto; max-width: 100%; }
+
+/* Tillbaka till presentationen (H från en presentation) */
+.resume-slides {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  max-width: calc(100% - 32px);
+  background: var(--plum);
+  color: #fff;
+  font: 700 15px var(--font-body);
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  z-index: 10;
+}
+.resume-slides:hover { background: var(--berry); }
