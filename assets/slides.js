@@ -63,7 +63,7 @@
         slide: cur + 1,
         title: document.title
       }));
-    } catch (e) { /* privat läge, ignorera */ }
+    } catch { /* privat läge, ignorera */ }
     location.href = "../index.html";
   }
 

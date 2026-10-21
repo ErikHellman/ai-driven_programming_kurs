@@ -70,11 +70,11 @@
     if (!document.querySelector('a[href^="slides/"]')) return;
 
     var last = null;
-    try { last = JSON.parse(localStorage.getItem(SLIDE_KEY)); } catch (e) { /* ignorera */ }
+    try { last = JSON.parse(localStorage.getItem(SLIDE_KEY)); } catch { /* ignorera */ }
 
     document.querySelectorAll('a[href^="slides/"]').forEach(function (a) {
       a.addEventListener("click", function () {
-        try { localStorage.removeItem(SLIDE_KEY); } catch (e) { /* ignorera */ }
+        try { localStorage.removeItem(SLIDE_KEY); } catch { /* ignorera */ }
       });
     });
 
