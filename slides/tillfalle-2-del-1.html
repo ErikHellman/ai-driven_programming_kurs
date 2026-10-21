@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tillfälle 2 · Del 1: Vad är en webbapp?</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/slides.css?v=11">
+  <script src="../assets/slides.js?v=6" defer></script>
+</head>
+<body>
+<a class="home" href="../index.html">⌂ Kursmaterial</a>
+<div class="deck">
+
+  <!-- 1 -->
+  <section class="title">
+    <div class="kicker">Folkuniversitetet · Tillfälle 2 · Del 1</div>
+    <h1>Vad är en<br>webbapp?</h1>
+    <p class="lead">Klient och server, webbens tre byggstenar och vad som händer när du publicerar.</p>
+    <div class="badge-row">
+      <span class="badge">🌐 Klient och server</span>
+      <span class="badge">🧱 HTML · CSS · JS</span>
+      <span class="badge">🚀 Modern teknik</span>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Välkommen tillbaka. Fråga vem som fick upp sin app från övning 1 på GitHub Pages.</li>
+        <li>Be ett par stycken visa sin app i mobilen.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <div class="kicker">Idag</div>
+    <h2>Dagens plan</h2>
+    <div class="layers">
+      <div class="layer l1"><span class="e">🌐</span><b>Del 1</b><span>Mer om Git, vad en webbapp är, vad den kan och inte kan, och modern webbteknik</span></div>
+      <div class="layer l2"><span class="e">☕</span><b>Paus</b><span>Sträck på benen</span></div>
+      <div class="layer l3"><span class="e">🔧</span><b>Del 2</b><span>Dev Tools: titta under huven och hitta felen</span></div>
+      <div class="layer l4"><span class="e">🚀</span><b>Övningar</b><span>Detektiv i Dev Tools, sedan bygger och publicerar vi en riktig webbapp</span></div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <div class="kicker">Viktigt</div>
+    <h2>Vi lär oss inte att koda</h2>
+    <div class="cols">
+      <div class="card">
+        <span class="e">✍️</span>
+        <h3>Agenten skriver koden</h3>
+        <p>All kod i kursen skrivs av Claude Code eller Codex. Du behöver inte kunna skriva en enda rad själv.</p>
+      </div>
+      <div class="card hot">
+        <span class="e">🧭</span>
+        <h3>Du förstår delarna</h3>
+        <p>Du vet vad som är vad, hur delarna hänger ihop och var du ska titta när något går fel.</p>
+      </div>
+    </div>
+    <p class="quote frag" style="margin-top:36px">Du är <span class="hl">beställaren</span>. En bra beställare vet vad saker heter.</p>
+    <aside class="notes">
+      <ul>
+        <li>Säg det tydligt: ingen kommer att få kodläxa. Vi tittar på kod för att känna igen den, inte för att lära oss skriva den.</li>
+        <li>Jämför med att renovera: du behöver inte kunna dra el, men det hjälper att veta skillnaden på en elcentral och ett vägguttag.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Git -->
+  <section class="divider">
+    <div class="num">🌱</div>
+    <h2>Mer om Git</h2>
+    <p class="lead">Fyra begrepp du kommer att höra agenten använda</p>
+  </section>
+
+  <section>
+    <div class="kicker">Git · repetition</div>
+    <h2>Det vi redan kan</h2>
+    <div class="cards">
+      <div class="card"><span class="e">📁</span><h3>Repo</h3><p>En projektmapp som Git håller koll på.</p></div>
+      <div class="card"><span class="e">💾</span><h3>Commit</h3><p>En sparpunkt med en beskrivning.</p></div>
+      <div class="card"><span class="e">⬆️</span><h3>Push</h3><p>Skicka dina commits till GitHub.</p></div>
+    </div>
+    <div class="cards four" style="margin-top:28px">
+      <div class="card sun frag"><span class="e">🙈</span><h3>.gitignore</h3><p>Det Git ska strunta i</p></div>
+      <div class="card sun frag"><span class="e">🌿</span><h3>Branch</h3><p>En parallell version</p></div>
+      <div class="card sun frag"><span class="e">🗂️</span><h3>Worktree</h3><p>En extra mapp per branch</p></div>
+      <div class="card sun frag"><span class="e">☁️</span><h3>Remote</h3><p>Repot någon annanstans</p></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Snabb repetition från förra gången. De fyra gula korten är dagens nya ord.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Git · .gitignore</div>
+    <h2>.gitignore: det Git ska strunta i</h2>
+    <div class="cols">
+      <div class="files">
+        <div>📁 vaderappen/</div>
+        <div class="in">📄 index.html</div>
+        <div class="in">📁 src/</div>
+        <div class="in">🙈 .gitignore</div>
+        <div class="in frag"><span class="x">📦 node_modules/</span> <span class="note-tag">tusentals filer</span></div>
+        <div class="in frag"><span class="x">📦 dist/</span> <span class="note-tag">byggs om</span></div>
+        <div class="in frag"><span class="x">🔑 .env.local</span> <span class="note-tag">hemligt</span></div>
+        <div class="in frag"><span class="x">🍏 .DS_Store</span> <span class="note-tag">systemskräp</span></div>
+      </div>
+      <div>
+        <div class="snip">
+          <span class="tag">.gitignore</span>
+          <div class="term"><pre>node_modules
+dist
+.env.local
+.DS_Store</pre></div>
+        </div>
+        <ul class="nice" style="margin-top:24px;font-size:25px">
+          <li class="frag">En vanlig textfil med en rad per fil eller mapp</li>
+          <li class="frag">Git låtsas att de filerna inte finns. De följer aldrig med till GitHub</li>
+        </ul>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Agenten skapar .gitignore åt oss, men det är bra att veta varför den finns. Vi ser node_modules, dist och .env.local senare idag.</li>
+        <li>Viktigt: .gitignore skyddar bara filer som inte redan har committats. Har en hemlighet redan pushats hjälper det inte att lägga till den i efterhand.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Git · branch</div>
+    <h2>Branch: en gren att experimentera i</h2>
+    <svg class="gitsvg" viewBox="0 0 1100 300" role="img" aria-label="En branch som grenar ut från main och slås ihop igen">
+      <path class="line-main" d="M60 210 H1040"/>
+      <g class="frag">
+        <path class="line-br" d="M280 210 C 340 210, 340 80, 420 80 H 680 C 760 80, 760 210, 820 210"/>
+        <circle class="c-br" cx="460" cy="80" r="18"/>
+        <circle class="c-br" cx="640" cy="80" r="18"/>
+        <text class="lbl br" x="420" y="40">mork-lage</text>
+        <text x="425" y="125">mörka färger</text>
+        <text x="600" y="125">knapp för läge</text>
+      </g>
+      <circle class="c-main" cx="100" cy="210" r="18"/>
+      <circle class="c-main" cx="280" cy="210" r="18"/>
+      <circle class="c-main" cx="560" cy="210" r="18"/>
+      <g class="frag">
+        <circle class="c-merge" cx="820" cy="210" r="22"/>
+        <text x="760" y="268">merge: ihop igen</text>
+      </g>
+      <circle class="c-main" cx="1000" cy="210" r="18"/>
+      <text class="lbl main" x="40" y="168">main</text>
+      <text x="60" y="268">första sidan</text>
+      <text x="240" y="268">sökning</text>
+      <text x="500" y="268">rättat stavfel</text>
+    </svg>
+    <ul class="nice" style="margin-top:18px">
+      <li class="frag"><strong>main</strong> är huvudgrenen, den som publiceras på GitHub Pages</li>
+      <li class="frag">En <strong>branch</strong> är en kopia av historiken där du kan prova något utan att röra main. Blev det bra? <strong>Merge</strong>. Blev det dåligt? Släng grenen</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Varje ring är en commit. Main fortsätter att leva medan grenen pågår, här rättades ett stavfel under tiden.</li>
+        <li>Merge betyder att ändringarna från grenen läggs in i main. En pull request på GitHub är en begäran om en merge.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Git · branch</div>
+    <h2>Be agenten jobba på en branch</h2>
+    <div class="term prompt" style="font-size:22px;line-height:1.5"><pre>Skapa en ny branch som heter mork-lage och lägg till ett mörkt läge i appen där. Rör inte main.</pre></div>
+    <div class="cols" style="margin-top:30px">
+      <div class="card frag">
+        <span class="e">👍</span>
+        <h3>Blev det bra?</h3>
+        <p>”Slå ihop branchen mork-lage med main och pusha.”</p>
+      </div>
+      <div class="card frag">
+        <span class="e">🗑️</span>
+        <h3>Blev det dåligt?</h3>
+        <p>”Gå tillbaka till main och ta bort branchen mork-lage.”</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Det här är det tryggaste sättet att låta agenten prova stora ändringar. Main är orörd tills du säger till.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Git · worktree</div>
+    <h2>Worktree: en mapp per branch</h2>
+    <div class="wt">
+      <div class="files b1">
+        <div class="head">📁 kurs/vaderappen/ <span class="branch-tag main">main</span></div>
+        <div class="in">📄 index.html</div>
+        <div class="in">📁 src/</div>
+        <div class="in dim">📁 .git/ <span class="note-tag">hela historiken</span></div>
+      </div>
+      <div class="files b2 frag">
+        <div class="head">📁 kurs/vaderappen-mork/ <span class="branch-tag br">mork-lage</span></div>
+        <div class="in">📄 index.html</div>
+        <div class="in">📁 src/</div>
+        <div class="in dim">🔗 .git <span class="note-tag">pekar på samma repo</span></div>
+      </div>
+    </div>
+    <ul class="nice" style="margin-top:28px">
+      <li class="frag">Utan worktree byter du branch <strong>i samma mapp</strong>, och filerna byts ut framför ögonen på dig</li>
+      <li class="frag">Med worktree har varje branch <strong>sin egen mapp</strong>. Samma repo, samma historik</li>
+      <li class="frag">Två agenter kan jobba samtidigt utan att skriva i varandras filer</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Claude- och ChatGPT-apparna kan skapa worktrees åt dig när du kör flera uppgifter parallellt i samma projekt.</li>
+        <li>Be agenten: ”Skapa en worktree för en ny branch som heter mork-lage.”</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Git · remote</div>
+    <h2>Remote: repot någon annanstans</h2>
+    <div class="flow" style="justify-content:center;margin-top:10px">
+      <div class="box">💻 Din dator<small>ditt lokala repo</small></div>
+      <div class="arrow">⇄</div>
+      <div class="box sun">☁️ GitHub<small>remoten <strong>origin</strong></small></div>
+      <div class="arrow frag">⇄</div>
+      <div class="box frag">💻 Annan dator<small>en clone av samma repo</small></div>
+    </div>
+    <div class="cols" style="margin-top:30px">
+      <ul class="nice">
+        <li class="frag">En <strong>remote</strong> är en kopia av repot på en server, oftast GitHub</li>
+        <li class="frag"><strong>Push</strong> skickar dina commits dit, <strong>pull</strong> hämtar nya därifrån</li>
+        <li class="frag">Commits finns bara på din dator tills du pushar</li>
+      </ul>
+      <div class="term frag" style="font-size:17px"><pre><span class="p">$</span> git remote -v
+origin  https://github.com/anna/vaderappen.git
+<span class="c"># namnet    adressen till repot på GitHub</span></pre></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>origin är bara standardnamnet på den första remoten. Ett repo kan ha flera.</li>
+        <li>Koppla till del 1: GitHub är också en server. Git-repot på GitHub är källan som GitHub Actions och Pages bygger från.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 4 -->
+  <section class="divider">
+    <div class="num">1</div>
+    <h2>Klient och server</h2>
+    <p class="lead">Vem gör vad på webben?</p>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <div class="kicker">Klient och server</div>
+    <h2>Vad händer när du skriver in en adress?</h2>
+    <div class="flow" style="margin-top:20px">
+      <div class="box sun">⌨️ Du<small>skriver<br>ai-kurs.hellman.cloud</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">📒 DNS<small>Nätets adressbok:<br>var finns servern?</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🖥️ Servern<small>skickar tillbaka<br>filerna</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">🌐 Webbläsaren<small>läser filerna och<br>visar sidan</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:44px">Det tar bråkdelen av en sekund, och händer varje gång du öppnar en sida.</p>
+    <aside class="notes">
+      <ul>
+        <li>DNS fungerar som telefonkatalogen: namnet ai-kurs.hellman.cloud översätts till en sifferadress.</li>
+        <li>Servern är bara en dator någonstans som alltid är på och svarar på frågor.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 6 -->
+  <section>
+    <div class="kicker">Klient och server</div>
+    <h2>Två roller</h2>
+    <div class="cols">
+      <div class="card">
+        <span class="e">📱</span>
+        <h3>Klienten</h3>
+        <p>Webbläsaren på din dator eller mobil. Den <strong>frågar</strong> efter sidor, visar dem och kör appens kod.</p>
+      </div>
+      <div class="card hot">
+        <span class="e">🖥️</span>
+        <h3>Servern</h3>
+        <p>En dator på nätet som alltid är på. Den <strong>svarar</strong> med filer och data, och kan dela data mellan många användare.</p>
+      </div>
+    </div>
+    <div class="card sun frag" style="margin-top:28px">
+      <p style="color:var(--ink)">🍽️ <strong>Som på en restaurang:</strong> du (klienten) beställer från menyn, köket (servern) lagar maten och skickar ut den. Du ser aldrig köket, bara det som kommer ut.</p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section>
+    <div class="kicker">Klient och server</div>
+    <h2>GitHub Pages är en enkel server</h2>
+    <div class="cols wide-left">
+      <ul class="nice">
+        <li>Den skickar bara <strong>färdiga filer</strong>, samma filer till alla</li>
+        <li class="frag">Ingen databas, ingen inloggning, ingen kod som körs på servern</li>
+        <li class="frag">Allt det smarta händer i <strong>webbläsaren</strong> hos den som besöker sidan</li>
+        <li class="frag">Gratis, snabbt och räcker långt för egna verktyg</li>
+      </ul>
+      <div class="card sun">
+        <span class="e">🗂️</span>
+        <h3>Statisk webbplats</h3>
+        <p>Kallas så för att filerna ser likadana ut för alla besökare. Det är precis det vi publicerade i övning 1.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Motsatsen kallas dynamisk: servern bygger ett eget svar till varje användare, till exempel din inkorg i Gmail.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 8 -->
+  <section class="divider">
+    <div class="num">2</div>
+    <h2>Webbens tre byggstenar</h2>
+    <p class="lead">HTML, CSS och JavaScript</p>
+  </section>
+
+  <!-- 9 -->
+  <section>
+    <div class="kicker">Byggstenarna</div>
+    <h2>Som ett hus</h2>
+    <div class="trio">
+      <div class="card html frag"><span class="e">🧱</span><h3>HTML</h3><p><strong>Väggar och rum.</strong> Vad som finns på sidan: rubriker, text, bilder, knappar.</p></div>
+      <div class="card css frag"><span class="e">🎨</span><h3>CSS</h3><p><strong>Färg och möbler.</strong> Hur det ser ut: färger, typsnitt, storlekar, var saker hamnar.</p></div>
+      <div class="card js frag"><span class="e">⚡</span><h3>JavaScript</h3><p><strong>El och vatten.</strong> Vad som händer: när du klickar, skriver eller sparar.</p></div>
+    </div>
+    <p class="lead frag bottom">Webbläsaren förstår bara de här tre. Allt annat görs om till dem till slut.</p>
+    <aside class="notes">
+      <ul>
+        <li>JavaScript förkortas ofta JS. Det har inget med programspråket Java att göra.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 10 -->
+  <section>
+    <div class="kicker">Byggstenarna · HTML</div>
+    <h2>HTML: vad som finns på sidan</h2>
+    <div class="cols">
+      <div class="snip html">
+        <span class="tag">index.html</span>
+        <div class="term"><pre><span class="t">&lt;h1&gt;</span>Fikalistan<span class="t">&lt;/h1&gt;</span>
+<span class="t">&lt;p&gt;</span>Vad ska vi ha till fikat?<span class="t">&lt;/p&gt;</span>
+<span class="t">&lt;button&gt;</span>Lägg till<span class="t">&lt;/button&gt;</span></pre></div>
+      </div>
+      <div class="browser frag">
+        <div class="browser-bar"><i></i><i></i><i></i><span class="url">index.html</span></div>
+        <div class="browser-body plain-page">
+          <h4>Fikalistan</h4>
+          <p>Vad ska vi ha till fikat?</p>
+          <span class="demo-btn plain">Lägg till</span>
+        </div>
+      </div>
+    </div>
+    <ul class="nice" style="margin-top:34px">
+      <li class="frag">Taggar inom <code>&lt;</code> och <code>&gt;</code> säger vad varje bit är: rubrik, stycke, knapp</li>
+      <li class="frag">Utan CSS ser det ut som ett dokument från 1995</li>
+    </ul>
+  </section>
+
+  <!-- 11 -->
+  <section>
+    <div class="kicker">Byggstenarna · CSS</div>
+    <h2>CSS: hur det ser ut</h2>
+    <div class="cols">
+      <div class="snip css">
+        <span class="tag">style.css</span>
+        <div class="term"><pre><span class="k">h1</span> {
+  color: <span class="s">plum</span>;
+  font-family: <span class="s">"Fredoka"</span>;
+}
+<span class="k">button</span> {
+  background: <span class="s">orange</span>;
+  border-radius: <span class="s">12px</span>;
+}</pre></div>
+      </div>
+      <div class="browser frag">
+        <div class="browser-bar"><i></i><i></i><i></i><span class="url">index.html</span></div>
+        <div class="browser-body">
+          <h4>Fikalistan</h4>
+          <p>Vad ska vi ha till fikat?</p>
+          <span class="demo-btn">Lägg till</span>
+        </div>
+      </div>
+    </div>
+    <p class="lead frag" style="margin-top:30px">Samma HTML, ny stil. CSS pekar ut delar av sidan och säger hur de ska se ut.</p>
+    <aside class="notes">
+      <ul>
+        <li>CSS styr också layout: att sidan ser annorlunda ut i mobilen än på datorn är CSS.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 12 -->
+  <section>
+    <div class="kicker">Byggstenarna · JavaScript</div>
+    <h2>JavaScript: vad som händer</h2>
+    <div class="cols">
+      <div class="snip js">
+        <span class="tag">app.js</span>
+        <div class="term"><pre><span class="c">// När någon klickar på knappen …</span>
+<span class="k">knapp</span>.addEventListener(<span class="s">"click"</span>, () =&gt; {
+  <span class="c">// … lägg till en rad i listan</span>
+  <span class="k">lista</span>.append(<span class="s">"🥐 Kanelbulle"</span>);
+  <span class="c">// … och spara den i webbläsaren</span>
+  <span class="k">spara</span>();
+});</pre></div>
+      </div>
+      <ul class="nice">
+        <li class="frag">Reagerar på klick, tangenter och tid</li>
+        <li class="frag">Ändrar sidan medan du tittar på den</li>
+        <li class="frag">Sparar data och hämtar data från andra servrar</li>
+        <li class="frag">Det är JS som gör en <strong>sida</strong> till en <strong>app</strong></li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Rader som börjar med // är kommentarer: förklaringar för människor som datorn hoppar över.</li>
+        <li>Vi behöver inte förstå koden. Poängen är att se att det är instruktioner: när X händer, gör Y.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 13 -->
+  <section>
+    <div class="kicker">Byggstenarna</div>
+    <h2>Så hänger de ihop</h2>
+    <div class="cols">
+      <div class="files">
+        <div>📁 fikalistan/</div>
+        <div class="in">📄 index.html <span class="note-tag">startar här</span></div>
+        <div class="in">🎨 style.css</div>
+        <div class="in">⚡ app.js</div>
+        <div class="in">🖼️ bilder/</div>
+      </div>
+      <div class="snip html">
+        <span class="tag">index.html</span>
+        <div class="term"><pre><span class="t">&lt;link</span> <span class="k">href</span>=<span class="s">"style.css"</span><span class="t">&gt;</span>
+<span class="t">&lt;script</span> <span class="k">src</span>=<span class="s">"app.js"</span><span class="t">&gt;</span></pre></div>
+      </div>
+    </div>
+    <ul class="nice" style="margin-top:30px">
+      <li class="frag">Webbläsaren hämtar alltid <code>index.html</code> först</li>
+      <li class="frag">HTML-filen pekar ut vilka andra filer som behövs, och webbläsaren hämtar dem också</li>
+      <li class="frag">Saknas en fil blir det ett fel. Det ser vi i Dev Tools i del 2</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Det är därför index.html måste ligga direkt i mappen på GitHub Pages: det är den webbläsaren frågar efter först.</li>
+        <li>Relativa sökvägar (style.css i stället för /style.css) betyder ”bredvid mig”. Därför stod det i kraven i övning 1.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 14 -->
+  <section>
+    <div class="kicker">Prova själv</div>
+    <h2>Titta i ditt eget projekt</h2>
+    <div class="cols wide-left">
+      <div class="term prompt" style="font-size:22px;line-height:1.5"><pre>Förklara för mig vilka filer som finns i det här projektet och vad var och en gör. Jag kan inte programmera, så visa ingen kod. Förklara också hur filerna hänger ihop när sidan öppnas i webbläsaren.</pre></div>
+      <div class="card sun">
+        <span class="e">📂</span>
+        <h3>Så gör du</h3>
+        <p>Öppna mappen från övning 1 i Claude- eller ChatGPT-appen och klistra in prompten. Öppna gärna samma mapp i VS Code och titta på filerna medan agenten förklarar.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Fem minuter. Låt några berätta vad deras agent sa. Alla har nog index.html, en CSS-fil och en JS-fil, men de kan heta olika.</li>
+        <li>Agenten är en utmärkt lärare: be den förklara när du inte förstår något.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 15 -->
+  <section class="divider">
+    <div class="num">3</div>
+    <h2>Vad kan en webbapp?</h2>
+    <p class="lead">Och vad kan den inte?</p>
+  </section>
+
+  <!-- 16 -->
+  <section>
+    <div class="kicker">Möjligheter</div>
+    <h2>Det här klarar webbläsaren</h2>
+    <div class="cards tight">
+      <div class="card frag"><span class="e">🖱️</span><h3>Reagera</h3><p>Knappar, formulär, dra och släpp, animationer och spel.</p></div>
+      <div class="card frag"><span class="e">💾</span><h3>Spara lokalt</h3><p>Data i webbläsaren med <strong>localStorage</strong>, finns kvar när du laddar om.</p></div>
+      <div class="card frag"><span class="e">🌦️</span><h3>Hämta data</h3><p>Fråga andra servrar via ett <strong>API</strong>, till exempel väder eller kollektivtrafik.</p></div>
+      <div class="card frag"><span class="e">📷</span><h3>Använda mobilen</h3><p>Kamera, plats och notiser, om användaren säger ja.</p></div>
+      <div class="card frag"><span class="e">📲</span><h3>Installeras</h3><p>Läggas på hemskärmen och fungera utan nät, en så kallad <strong>PWA</strong>.</p></div>
+      <div class="card frag"><span class="e">📄</span><h3>Filer</h3><p>Läsa en fil du väljer, och skapa filer som du laddar ner.</p></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>API betyder ungefär ”ett sätt för program att prata med varandra”. En väder-API svarar med väderdata i stället för en webbsida.</li>
+        <li>PWA: Progressive Web App. Ser ut som en vanlig app på mobilen men är en webbsida.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 17 -->
+  <section>
+    <div class="kicker">Begränsningar</div>
+    <h2>Datan bor i webbläsaren</h2>
+    <div class="devices" style="margin-top:6px">
+      <div class="device">
+        <span class="e">💻</span>
+        <h3>Datorn</h3>
+        <div class="store"><b>localStorage</b>🥛 Mjölk<br>🍞 Bröd<br>🧀 Ost</div>
+      </div>
+      <div class="wall frag">🚫<small>ingen koppling</small></div>
+      <div class="device frag">
+        <span class="e">📱</span>
+        <h3>Mobilen</h3>
+        <div class="store empty"><b>localStorage</b>Tom lista</div>
+      </div>
+    </div>
+    <p class="lead frag" style="margin-top:30px">Samma app, samma adress, men varje webbläsare har sin egen låda. Inköpslistan på datorn syns inte i mobilen.</p>
+    <aside class="notes">
+      <ul>
+        <li>Visa gärna live: öppna din app från övning 1 på datorn och i mobilen. Lägg till något på datorn, ladda om i mobilen. Ingenting.</li>
+        <li>Samma sak gäller en annan webbläsare på samma dator, och privat läge.</li>
+        <li>Rensar du webbläsarens data försvinner listan. localStorage är bekvämt men inte en säker förvaring.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 18 -->
+  <section>
+    <div class="kicker">Begränsningar</div>
+    <h2>Det här kan en webbapp inte göra själv</h2>
+    <div class="cards two">
+      <div class="card frag"><span class="e">🔄</span><h3>Dela data mellan enheter</h3><p>Datorn och mobilen vet inte om varandra. Det kräver en server med en databas.</p></div>
+      <div class="card frag"><span class="e">👥</span><h3>Dela med andra</h3><p>En gemensam lista för familjen kräver en server, och oftast inloggning.</p></div>
+      <div class="card frag"><span class="e">⏰</span><h3>Jobba när den är stängd</h3><p>Ingen kod körs när ingen har sidan öppen. Inga påminnelser kl 07.00.</p></div>
+      <div class="card frag hot"><span class="e">🔑</span><h3>Hålla hemligheter</h3><p>Alla kan läsa all kod i en webbapp. En API-nyckel i koden är en publik nyckel.</p></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Lösningen på de tre första är en server. Tjänster som Supabase och Firebase ger dig en färdig databas, men det är ett större steg.</li>
+        <li>En enkel lösning för att flytta data: be agenten lägga till export och import till en fil.</li>
+        <li>Den sista är viktigast: lägg aldrig lösenord eller nycklar i en webbapp. Vi ser i del 2 att vem som helst kan titta.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 19 -->
+  <section>
+    <div class="kicker">Begränsningar</div>
+    <h2>Fråga dig själv innan du bygger</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">🙋</span><span><strong>Är det bara jag, på en enhet?</strong> Då räcker en webbapp med localStorage.</span></li>
+      <li class="frag"><span class="e">🌍</span><span><strong>Behöver den data från nätet?</strong> Leta efter ett API. Kräver det en nyckel lär vi oss hantera den i del 2.</span></li>
+      <li class="frag"><span class="e">📱</span><span><strong>Vill jag ha samma data i mobilen och på datorn?</strong> Då behövs en server, eller export och import.</span></li>
+      <li class="frag"><span class="e">🔒</span><span><strong>Finns det något hemligt?</strong> Då hör det inte hemma i en webbapp.</span></li>
+    </ul>
+    <p class="small bottom">Osäker? Fråga agenten: ”Kan det här byggas som en statisk webbapp på GitHub Pages?”</p>
+  </section>
+
+  <!-- 20 -->
+  <section class="divider">
+    <div class="num">4</div>
+    <h2>Modern webbteknik</h2>
+    <p class="lead">Från tre filer till ett riktigt projekt</p>
+  </section>
+
+  <!-- 21 -->
+  <section>
+    <div class="kicker">Modern teknik</div>
+    <h2>Proffsens verktyg</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">⚛️</span><h3>Ramverk</h3><p><strong>React</strong> bygger sidan av små återanvändbara delar, så kallade komponenter. Bra när appen växer.</p></div>
+      <div class="card frag"><span class="e">⚡</span><h3>Byggverktyg</h3><p><strong>Vite</strong> visar appen medan du bygger och packar ihop allt till färdiga filer.</p></div>
+      <div class="card frag"><span class="e">📦</span><h3>Paket</h3><p><strong>npm</strong> hämtar färdiga byggblock som andra har skrivit, till exempel diagram och kartor.</p></div>
+    </div>
+    <p class="lead frag bottom">Agenterna är riktigt bra på just de här verktygen, eftersom de har sett så mycket kod som använder dem.</p>
+    <aside class="notes">
+      <ul>
+        <li>Det finns många ramverk (Vue, Svelte, Angular). React är det vanligaste, därför väljer vi det.</li>
+        <li>npm följde med när vi installerade Node.js förra gången. Det är därför vi installerade Node.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 22 -->
+  <section>
+    <div class="kicker">Modern teknik</div>
+    <h2>Byggsteget</h2>
+    <div class="flow" style="justify-content:center;margin-top:16px">
+      <div class="box">📁 src/<small>många små filer<br>som agenten skriver</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box sun frag">⚡ Vite bygger<small>npm run build</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">📦 dist/<small>färdig HTML,<br>CSS och JS</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">🌐 GitHub Pages<small>skickar dist/<br>till besökarna</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:44px">Webbläsaren förstår fortfarande bara HTML, CSS och JS. Byggsteget översätter projektet till det.</p>
+    <aside class="notes">
+      <ul>
+        <li>src står för source, källkod. dist står för distribution, det som delas ut.</li>
+        <li>Det är därför vi i övning 1 sa ”inget byggsteg”: då var filerna redan färdiga. Idag lägger vi till byggsteget.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 23 -->
+  <section>
+    <div class="kicker">Modern teknik</div>
+    <h2>Kommandon du kommer se agenten köra</h2>
+    <div class="cols wide-left">
+      <div class="term" style="font-size:20px"><div class="bar"><i></i><i></i><i></i></div><pre><span class="p">$</span> npm install
+<span class="c"># hämtar alla paket till mappen node_modules</span>
+
+<span class="p">$</span> npm run dev
+<span class="ok">  ➜  Local:   http://localhost:5173/</span>
+<span class="c"># startar en server på din egen dator</span>
+
+<span class="p">$</span> npm run build
+<span class="ok">  ✓ built in 812ms</span>
+<span class="c"># bygger de färdiga filerna till dist/</span></pre></div>
+      <div class="card sun">
+        <span class="e">🏠</span>
+        <h3>localhost</h3>
+        <p>Betyder ”den här datorn”. Under utvecklingen är din egen dator servern, och bara du kan se sidan.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>node_modules kan innehålla tiotusentals filer. Den ska aldrig in i Git, och agenten lägger den i .gitignore.</li>
+        <li>npm run dev uppdaterar sidan direkt när agenten ändrar en fil. Låt det fönstret stå öppet.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 24 -->
+  <section>
+    <div class="kicker">Modern teknik</div>
+    <h2>GitHub Actions publicerar åt dig</h2>
+    <div class="flow" style="justify-content:center;margin-top:16px">
+      <div class="box sun">💾 Du sparar<small>git push</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🤖 GitHub Actions<small>en dator hos GitHub<br>kör npm run build</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">🌐 GitHub Pages<small>publicerar<br>den nya versionen</small></div>
+    </div>
+    <ul class="nice" style="margin-top:44px">
+      <li class="frag">Ett <strong>workflow</strong> är ett recept i projektet som säger vad GitHub ska göra vid varje push</li>
+      <li class="frag">Du följer bygget under fliken <strong>Actions</strong> på GitHub: gul prick betyder pågår, grön bock klart, rött kryss fel</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Workflow-filen ligger i .github/workflows/. Agenten skriver den.</li>
+        <li>Vid rött kryss: klicka in, kopiera felet och ge det till agenten. Precis som med fel i webbläsaren.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 25 -->
+  <section>
+    <div class="kicker">Sammanfattning</div>
+    <h2>Det här tar vi med oss</h2>
+    <div class="layers">
+      <div class="layer l1"><span class="e">🌐</span><b>Klient/server</b><span>Webbläsaren frågar, servern svarar. GitHub Pages skickar bara filer.</span></div>
+      <div class="layer l2"><span class="e">🧱</span><b>HTML · CSS · JS</b><span>Vad som finns, hur det ser ut och vad som händer.</span></div>
+      <div class="layer l3"><span class="e">💾</span><b>Begränsningar</b><span>Datan bor i webbläsaren. Delning kräver en server. Inga hemligheter i koden.</span></div>
+      <div class="layer l4"><span class="e">⚡</span><b>Modern teknik</b><span>React, Vite och npm. Byggsteget gör om allt till HTML, CSS och JS.</span></div>
+    </div>
+  </section>
+
+  <!-- 26 -->
+  <section class="title center">
+    <div style="font-size:120px;line-height:1">☕</div>
+    <h1>Paus</h1>
+    <p class="lead">Efter pausen tittar vi under huven med Dev Tools.</p>
+  </section>
+
+</div>
+</body>
+</html>

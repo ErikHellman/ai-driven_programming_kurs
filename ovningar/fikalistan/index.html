@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fikalistan</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☕</text></svg>">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <!-- Övning 2: den här appen har några fel inbyggda med flit. Hitta dem med Dev Tools! -->
+  <main>
+    <header>
+      <img class="bulle" src="bilder/kanelbulle.png" alt="En kanelbulle">
+      <h1 id="rubrik">Fikalistan</h1>
+      <p>Vad ska vi ha till fikat?</p>
+    </header>
+
+    <form id="formular">
+      <input id="ny" type="text" placeholder="Till exempel kanelbulle" autocomplete="off" aria-label="Nytt fika">
+      <button type="submit">Lägg till</button>
+    </form>
+
+    <ul id="lista"></ul>
+    <p id="tom" class="tom">Listan är tom. Lägg till något gott!</p>
+
+    <section class="forslag">
+      <h2>Förslag</h2>
+      <div id="forslag"></div>
+    </section>
+
+    <div class="knappar">
+      <button id="rakna" type="button">🧮 Räkna fikat</button>
+      <button id="gammal" type="button" class="sekundar">🕰️ Ladda gammal data</button>
+    </div>
+    <p id="svar" class="svar"></p>
+  </main>
+</body>
+</html>
