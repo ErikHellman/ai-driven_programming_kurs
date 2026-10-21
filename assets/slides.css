@@ -240,6 +240,8 @@ body { background: #3b1a2c; }
   inset: 50px;
   border: 6px dashed var(--peach);
   border-radius: 50%;
+  display: grid;
+  place-items: center;
 }
 .deck .loop .node {
   position: absolute;
@@ -260,7 +262,6 @@ body { background: #3b1a2c; }
 .deck .loop .n2 { left: 400px; top: 50%; }
 .deck .loop .n3 { left: 50%; top: 400px; }
 .deck .loop .n4 { left: 50px; top: 50%; }
-.deck .loop .ring { display: grid; place-items: center; }
 .deck .loop .mid {
   font-family: var(--font-head);
   font-size: 26px;
@@ -349,7 +350,7 @@ body.show-notes .notes-box { display: block; }
     opacity: 1;
     visibility: visible;
     transform: none;
-    page-break-after: always;
+    break-after: page;
   }
   .deck .frag { opacity: 1; transform: none; }
   @page { size: 1280px 720px; margin: 0; }
@@ -604,7 +605,7 @@ body.show-overview .overview { display: block; }
 }
 
 /* Två enheter med var sin lagring */
-.deck .devices { display: grid; grid-template-columns: 1fr 120px 1fr; gap: 10px; align-items: center; }
+.deck .devices { display: grid; grid-template-columns: 1fr 120px 1fr; gap: 10px; align-items: stretch; }
 .deck .device {
   background: var(--paper);
   border: 3px solid var(--orange);
@@ -625,7 +626,7 @@ body.show-overview .overview { display: block; }
 }
 .deck .device .store b { display: block; font: 800 15px var(--font-body); color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.05em; }
 .deck .device .store.empty { color: var(--ink-soft); font-style: italic; }
-.deck .devices .wall { text-align: center; font-size: 56px; line-height: 1; }
+.deck .devices .wall { text-align: center; font-size: 56px; line-height: 1; align-self: center; }
 .deck .devices .wall small { display: block; font: 800 16px var(--font-body); color: var(--berry); margin-top: 6px; }
 
 /* Skiss av webbläsarens Dev Tools */
@@ -663,8 +664,6 @@ body.show-overview .overview { display: block; }
 .deck .cards.tight .card { padding: 18px 22px; font-size: 21px; }
 .deck .cards.tight .card .e { font-size: 38px; margin-bottom: 6px; }
 .deck .cards.tight .card h3 { font-size: 26px; margin-bottom: 4px; }
-.deck .devices { align-items: stretch; }
-.deck .devices .wall { align-self: center; }
 .deck .keyflow { display: grid; grid-template-columns: 1fr 40px 1fr 40px 1fr 40px 1fr; gap: 22px 8px; align-items: stretch; margin-top: 12px; }
 .deck .keyflow .box {
   background: var(--paper); border: 3px solid var(--orange); border-radius: 18px; padding: 14px 12px;

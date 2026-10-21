@@ -29,6 +29,18 @@ Materialet publiceras med GitHub Pages på <https://ai-kurs.hellman.cloud/>
 
 En slide är ett `<section>`-element. Element med klassen `frag` visas ett i taget, och talaranteckningar skrivs i `<aside class="notes">`. Lägg till `#5` i adressen för att hoppa direkt till slide 5. Skriv ut till PDF från webbläsaren för att få en slide per sida.
 
+## Tester och linting
+
+Varje PR kör GitHub Actions (`.github/workflows/ci.yml`) med två jobb, `Lint` och `Test`, som båda måste gå igenom innan PR:en kan mergas. Kör samma sak lokalt (kräver Node 22):
+
+```sh
+npm install
+npm run lint   # HTML (html-validate), CSS (stylelint) och JavaScript (ESLint)
+npm test       # interna länkar, ankare och grundkrav på sidorna
+```
+
+Fikalistan (`ovningar/fikalistan/`) har fel inbyggda med flit för övning 2. Den lintas inte med ESLint, och den saknade bilden är undantagen i länktestet.
+
 ## Publicering
 
 GitHub Pages: **Settings → Pages → Build and deployment → Deploy from a branch**, välj `main` och `/ (root)`.

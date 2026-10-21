@@ -12,11 +12,11 @@
   }
 
   function readSaved() {
-    try { return localStorage.getItem(KEY); } catch (e) { return null; }
+    try { return localStorage.getItem(KEY); } catch { return null; }
   }
 
   function save(os) {
-    try { localStorage.setItem(KEY, os); } catch (e) { /* privat läge, ignorera */ }
+    try { localStorage.setItem(KEY, os); } catch { /* privat läge, ignorera */ }
   }
 
   function setOs(os) {

@@ -1,0 +1,25 @@
+{
+  "name": "ai-driven_programming_kurs",
+  "private": true,
+  "description": "Kursinformation och undervisningsmaterial för kursen \"AI-driven programmering – Claude Code och Codex\" på Folkuniversitetet i Stockholm, hösten 2026.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test",
+    "lint:html": "html-validate \"**/*.html\"",
+    "lint:css": "stylelint \"**/*.css\"",
+    "lint:js": "eslint .",
+    "lint": "npm run lint:html && npm run lint:css && npm run lint:js"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
+    "html-validate": "^11.17.0",
+    "node-html-parser": "^9.0.5",
+    "stylelint": "^17.16.0",
+    "stylelint-config-standard": "^40.0.0"
+  }
+}
