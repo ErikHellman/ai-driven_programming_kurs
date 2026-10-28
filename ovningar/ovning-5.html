@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Övning 5: Plattformsspelet · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕹️</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=5">
+  <script src="../assets/site.js?v=4" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Tillfälle 2 · Övning 5 · extra</span>
+      <h1>🕹️ Plattformsspelet</h1>
+      <p>Bygg ett eget plattformsspel i 2D i stil med klassiska Super Mario Bros, med din egen hjälte, ditt eget namn och ditt eget tema. Precis som i Ruttplaneraren finns ingen färdig prompt. Du får kraven och skriver prompten själv.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="note tip"><p><strong>Syftet med övningen:</strong> att öva på att skriva en bra prompt för att bygga en app. Ett spel har många regler som känns självklara för dig men som agenten inte kan veta: hur högt man hoppar, vad som händer när man ramlar ned i ett hål, när man har vunnit. Det du inte skriver får agenten gissa.</p></div>
+    <div class="note"><p><strong>Innan du börjar:</strong> du behöver Node.js, Git, ett GitHub-konto med <code>gh</code> inloggat och Claude- eller ChatGPT-appen, precis som i <a href="ovning-3.html">övning 3</a>. Spelet behöver ingen API-nyckel. Har du inte gjort <a href="ovning-4.html">Ruttplaneraren</a>, läs steg 4 där om hur en bra prompt är uppbyggd.</p></div>
+
+    <ol class="steps">
+      <li>
+        <h3>Hitta på ditt spel</h3>
+        <p>Det här bestämmer du helt själv. Skriv ned det innan du skriver prompten:</p>
+        <ul>
+          <li><strong>Hjälten:</strong> vem eller vad är det du styr? En katt, en robot, en kanelbulle?</li>
+          <li><strong>Namnet:</strong> vad heter spelet?</li>
+          <li><strong>Temat:</strong> var utspelar det sig? I skogen, i rymden, under vattnet, i ett kök? Temat bestämmer färgerna och hur allt ser ut.</li>
+          <li><strong>Fienderna och det man samlar:</strong> vad ersätter svampgubbarna och mynten i ditt spel?</li>
+        </ul>
+        <div class="note"><p><strong>Varför inte bara Mario?</strong> Mario, figurerna och grafiken tillhör Nintendo. Spelidén, att springa och hoppa åt höger genom en bana, får vem som helst använda. Därför gör vi ett eget spel som fungerar på samma sätt.</p></div>
+      </li>
+
+      <li>
+        <h3>Läs kraven</h3>
+        <p>Det här ska spelet klara och så här ska det byggas. Allt ska med i din prompt, men med dina egna ord och anpassat till ditt tema.</p>
+        <p><strong>Hur spelet fungerar:</strong></p>
+        <ul>
+          <li>Banan scrollar i sidled. Hjälten springer åt höger och kameran följer efter.</li>
+          <li>Hjälten påverkas av tyngdkraften, kan hoppa och kan stå på marken och plattformar.</li>
+          <li>Banan har hål att ramla ned i och block att hoppa upp på.</li>
+          <li>Det finns fiender som går fram och tillbaka. Hoppar man på en fiende försvinner den. Går man in i den förlorar man ett liv.</li>
+          <li>Det finns saker att samla som ger poäng.</li>
+          <li>Banan slutar vid ett mål. Når man målet har man vunnit.</li>
+          <li>Man har tre liv. När de är slut blir det <em>Game over</em> och man kan börja om.</li>
+          <li>Poäng och liv syns hela tiden på skärmen.</li>
+          <li>Spelet har en startskärm med namnet och hur man spelar.</li>
+        </ul>
+        <p><strong>Hur det byggs:</strong></p>
+        <ul>
+          <li>Spelet körs helt i webbläsaren och publiceras på GitHub Pages med GitHub Actions.</li>
+          <li>Vite med JavaScript. Spelet ritas på en <em>canvas</em>, utan React och utan någon färdig spelmotor.</li>
+          <li>Styrs med tangentbordet: piltangenterna eller A och D för att gå, mellanslag eller pil upp för att hoppa.</li>
+          <li>All grafik är procedurellt genererad, alltså ritad med kod. Inga bildfiler.</li>
+          <li>Banan beskrivs som ett rutnät av tecken i en egen fil, så att du själv kan rita om banan (se nedan).</li>
+          <li>Spelet går i samma takt på alla datorer, oavsett hur snabb skärmen är.</li>
+        </ul>
+      </li>
+
+      <li>
+        <h3>Förstå orden</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Ord</th><th>Vad det betyder</th></tr>
+            <tr><td><strong>Procedurellt genererad grafik</strong></td><td>Grafik som skapas av kod i stället för att ritas i ett ritprogram och sparas som bildfiler. Koden säger till exempel <em>rita en orange cirkel här, två svarta prickar för ögon och en båge för munnen</em>. Fördelen är att vi inte behöver leta upp eller rita bilder, och att du kan ändra utseendet genom att be agenten. Procedurellt betyder att något skapas steg för steg av en uppsättning regler, ibland med lite slump, som när varje moln får en egen form.</td></tr>
+            <tr><td><strong>Canvas</strong></td><td>En rityta på webbsidan. JavaScript kan rita figurer, färger och text på den, bild för bild. Nästan alla webbspel i 2D ritas på en canvas.</td></tr>
+            <tr><td><strong>Spelloop</strong></td><td>Hjärtat i spelet. Ungefär 60 gånger per sekund gör spelet samma tre saker: läser vilka tangenter som är nedtryckta, räknar ut var allt ska vara, och ritar om hela bilden.</td></tr>
+            <tr><td><strong>Samma takt överallt</strong></td><td>En skärm kan visa 60 bilder per sekund, en annan 120. Utan det här kravet springer hjälten dubbelt så fort på den snabba skärmen. Agenten löser det genom att räkna med hur lång tid som har gått sedan förra bilden.</td></tr>
+            <tr><td><strong>Fysik och tyngdkraft</strong></td><td>Enkla regler för hur saker rör sig. Varje bild dras hjälten lite nedåt, och ett hopp är en snabb rörelse uppåt som tyngdkraften sedan bromsar.</td></tr>
+            <tr><td><strong>Kollision</strong></td><td>När två saker nuddar varandra: hjälten landar på en plattform, slår i en vägg eller går in i en fiende. Spelet kollar det i varje bild.</td></tr>
+            <tr><td><strong>Rutnät (tilemap)</strong></td><td>Banan delas in i rutor, som rutat papper. Varje tecken i en textfil blir en ruta i spelet, till exempel <code>#</code> för mark, <code>o</code> för något att samla och <code>E</code> för en fiende. Då kan du rita om banan själv i VS Code.</td></tr>
+            <tr><td><strong>Kamera</strong></td><td>Banan är längre än skärmen. Kameran bestämmer vilken del av banan som syns och följer efter hjälten.</td></tr>
+            <tr><td><strong>Spelmotor</strong></td><td>Ett färdigt bibliotek som sköter fysik, kollisioner och ritande åt dig, till exempel Phaser. Vi väljer bort det här så att koden blir liten nog att agenten kan förklara den för dig.</td></tr>
+          </table>
+        </div>
+        <details class="alt">
+          <summary>Exempel på en bana som rutnät</summary>
+          <div class="code"><span class="label">bana.txt</span>
+<pre>
+           ooo                      F
+          =====       o o o         #
+                     =======        #
+   o            E               E   #
+######### ########   ###########  ######</pre></div>
+          <p>Här kan <code>#</code> vara mark, <code>=</code> en plattform, <code>o</code> något att samla, <code>E</code> en fiende och <code>F</code> målet. Mellanrummen i marken är hål. Det är du som bestämmer tecknen. Skriv in i prompten vilka du vill ha.</p>
+        </details>
+      </li>
+
+      <li>
+        <h3>Skriv prompten</h3>
+        <p>Använd samma struktur som i <a href="ovning-4.html">Ruttplaneraren</a>: från helheten till detaljerna, med rubriker och punktlistor. För ett spel fungerar den här ordningen bra:</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Del</th><th>Vad den ska innehålla</th></tr>
+            <tr><td><strong>1. Mål</strong></td><td>En eller två meningar: ett plattformsspel i 2D för webbläsaren i stil med Super Mario Bros, i den här mappen.</td></tr>
+            <tr><td><strong>2. Ditt spel</strong></td><td>Namnet, hjälten, temat, fienderna och det man samlar. Beskriv utseendet så att agenten kan rita det med kod: färger, former, stämning.</td></tr>
+            <tr><td><strong>3. Regler</strong></td><td>Hur spelet fungerar: hopp, fiender, poäng, liv, mål, game over. En punkt per regel.</td></tr>
+            <tr><td><strong>4. Styrning</strong></td><td>Vilka tangenter som gör vad.</td></tr>
+            <tr><td><strong>5. Grafik och banan</strong></td><td>Att all grafik ritas med kod, och hur banan beskrivs som ett rutnät med vilka tecken.</td></tr>
+            <tr><td><strong>6. Teknik</strong></td><td>Vite, JavaScript, canvas, ingen spelmotor, samma takt på alla datorer.</td></tr>
+            <tr><td><strong>7. Publicering</strong></td><td>GitHub Pages med GitHub Actions, och att agenten ska ge dig instruktioner för det du måste göra själv.</td></tr>
+            <tr><td><strong>8. Arbetssätt</strong></td><td>Visa en plan först och vänta på ditt okej. Bygg i små steg, så att du kan testa spelet efter varje steg.</td></tr>
+          </table>
+        </div>
+        <p><strong>Tips när du skriver:</strong></p>
+        <ul>
+          <li>Skriv prompten i en fil, till exempel <code>prompt.md</code>, och spara den.</li>
+          <li>Beskriv känslan med vanliga ord. <em>Hoppet ska kännas fjädrande</em> eller <em>fienderna ska gå långsamt</em> räcker. Du behöver inga siffror.</li>
+          <li>Be agenten bygga i ordning: först en hjälte som kan gå och hoppa på marken, sedan plattformar och hål, sedan fiender och poäng, sist startskärm och game over. Det är lättare att hitta fel om man bygger lite i taget.</li>
+        </ul>
+        <details class="alt">
+          <summary>Kolla din prompt innan du skickar den</summary>
+          <ul>
+            <li>Har du med namn, hjälte och tema, och beskrivit hur de ser ut?</li>
+            <li>Finns alla regler med: hopp, hål, fiender, samla poäng, mål, liv och game over?</li>
+            <li>Står det vilka tangenter som styr?</li>
+            <li>Står det att all grafik ska ritas med kod, utan bildfiler?</li>
+            <li>Har du beskrivit banan som ett rutnät och vilka tecken som betyder vad?</li>
+            <li>Står det Vite, JavaScript, canvas och GitHub Pages?</li>
+            <li>Ber du om en plan först, och om att bygga i små steg?</li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <h3>Skicka prompten och granska planen</h3>
+        <p>Skapa en tom mapp, till exempel <code>kurs/plattformsspelet</code>, öppna den i Claude- eller ChatGPT-appen och klistra in din prompt. Jämför planen med kraven i steg 2. Saknas något, rätta det innan du säger <code>Kör!</code>, och skriv in det i din <code>prompt.md</code>.</p>
+      </li>
+
+      <li>
+        <h3>Spela, justera och felsök</h3>
+        <p>Öppna spelet på localhost och spela. Det är nu det roliga börjar: känns hoppet för lågt, går fienderna för fort, syns hjälten dåligt mot bakgrunden? Säg det till agenten med vanliga ord, en sak i taget.</p>
+        <p>Öppna sedan banfilen i VS Code och rita om banan. Spara och se hur spelet ändras.</p>
+        <p>Fryser spelet eller blir skärmen svart, öppna Console i Dev Tools och kopiera felet till agenten.</p>
+      </li>
+
+      <li>
+        <h3>Publicera</h3>
+        <p>Be agenten lägga upp spelet på GitHub och publicera det med GitHub Actions. Om agenten säger åt dig att aktivera GitHub Pages: öppna repot på GitHub, välj <strong>Settings → Pages</strong> och välj <strong>GitHub Actions</strong> under <em>Source</em>.</p>
+        <p>Skicka länken till någon och låt dem spela. 🎉 Spelet styrs med tangentbord, så det fungerar på datorn men inte i mobilen.</p>
+      </li>
+
+      <li>
+        <h3>Bygg vidare</h3>
+        <p>Har du tid över? Lägg till en sak i taget, till exempel ljudeffekter som också skapas med kod, en bana till, en bästa-poäng-lista som sparas i webbläsaren, eller knappar på skärmen så att spelet går att spela i mobilen.</p>
+      </li>
+    </ol>
+
+    <section>
+      <h2>Klart?</h2>
+      <ul class="checklist">
+        <li>Jag har skrivit en egen prompt med mitt tema och alla krav</li>
+        <li>Jag kan springa, hoppa, samla poäng, besegra fiender och nå målet</li>
+        <li>All grafik är ritad med kod, utan bildfiler</li>
+        <li>Jag har ritat om banan själv</li>
+        <li>Spelet är publicerat på GitHub Pages och någon annan har spelat det</li>
+      </ul>
+    </section>
+
+    <nav class="guide-nav">
+      <a href="ovning-4.html">← Övning 4: Ruttplaneraren</a>
+      <a href="../index.html">Allt kursmaterial →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>
