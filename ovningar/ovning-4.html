@@ -36,6 +36,7 @@
         <p><strong>Hur den byggs:</strong></p>
         <ul>
           <li>En Single-Page Application som publiceras på GitHub Pages.</li>
+          <li>Koden sparas med Git i ett eget publikt repo på GitHub, som agenten skapar med <code>gh</code>.</li>
           <li>React med Vite och JavaScript.</li>
           <li>MapBox ritar kartan, och MapBox Directions API räknar ut rutten. Ge agenten länken till MapBox dokumentation: <a href="https://docs.mapbox.com/">docs.mapbox.com</a>.</li>
           <li>Agenten ska ge dig tydliga instruktioner för allt du måste göra själv, till exempel hur du skaffar en MapBox-nyckel och hur du aktiverar GitHub Pages för appen.</li>
@@ -86,10 +87,12 @@
             <tr><td><strong>4. Dokumentation</strong></td><td>Länkar till dokumentationen för tjänsterna appen använder.</td><td>Agentens kunskap kan vara gammal. Med dokumentationen kan den läsa hur tjänsten fungerar i dag.</td></tr>
             <tr><td><strong>5. Hemligheter</strong></td><td>Vad nyckeln heter, var den ska läsas ifrån, att den inte får hamna i Git och att du lägger in den själv.</td><td>Det är lätt att glömma, och dyrt att rätta efteråt om nyckeln redan har hamnat på GitHub.</td></tr>
             <tr><td><strong>6. Övriga krav</strong></td><td>Sådant som gäller hela appen: mobil, språk, design, README, felmeddelanden när något går fel.</td><td>Detaljer som är lätta att lägga till sist, men som agenten inte vet om du inte säger det.</td></tr>
-            <tr><td><strong>7. Det du gör själv</strong></td><td>Be agenten ge dig steg-för-steg-instruktioner för allt den inte kan göra åt dig, till exempel token och inställningar på GitHub.</td><td>Då vet du vad du ska göra och när, i stället för att fastna.</td></tr>
-            <tr><td><strong>8. Arbetssätt</strong></td><td>Hur agenten ska jobba: visa en plan först och vänta på ditt okej, och vad den ska göra när den är klar.</td><td>Står sist så att det är det sista agenten läser innan den börjar.</td></tr>
+            <tr><td><strong>7. Git och GitHub</strong></td><td>Att koden ska sparas med Git, att agenten ska skapa ett publikt repo på GitHub med <code>gh</code> och vad det ska heta, och att appen ska publiceras på GitHub Pages med GitHub Actions.</td><td>Utan repo finns inget att publicera. Agenten skapar det inte av sig själv.</td></tr>
+            <tr><td><strong>8. Det du gör själv</strong></td><td>Be agenten ge dig steg-för-steg-instruktioner för allt den inte kan göra åt dig, till exempel token och inställningar på GitHub.</td><td>Då vet du vad du ska göra och när, i stället för att fastna.</td></tr>
+            <tr><td><strong>9. Arbetssätt</strong></td><td>Hur agenten ska jobba: visa en plan först och vänta på ditt okej, och vad den ska göra när den är klar.</td><td>Står sist så att det är det sista agenten läser innan den börjar.</td></tr>
           </table>
         </div>
+        <div class="note"><p><strong>Glöm inte GitHub-repot.</strong> GitHub Pages publicerar från ett repo, så projektet behöver ett eget repo på GitHub. Agenten kan skapa det åt dig med <code>gh</code>, men bara om du ber om det. Skriv in i prompten att agenten ska spara koden med Git, skapa ett publikt repo på ditt GitHub-konto med <code>gh</code>, ge det ett namn du väljer (till exempel <em>ruttplaneraren</em>) och pusha koden dit. Namnet blir en del av adressen: <code>https://ditt-namn.github.io/ruttplaneraren/</code>.</p></div>
         <p><strong>Tips när du skriver:</strong></p>
         <ul>
           <li>Skriv prompten i en fil i VS Code först, till exempel <code>prompt.md</code>. Då kan du ändra i lugn och ro och spara den till nästa gång.</li>
@@ -103,6 +106,7 @@
             <li>Står det vad appen gör, så att någon som inte har läst kraven förstår?</li>
             <li>Finns båda sätten att välja Från och Till med: sökning och klick på kartan?</li>
             <li>Står det React, Vite, JavaScript och GitHub Pages?</li>
+            <li>Ber du agenten skapa ett publikt repo på GitHub med <code>gh</code> och pusha koden dit?</li>
             <li>Har du med länken till MapBox dokumentation?</li>
             <li>Står det var token ska ligga, och att agenten inte ska be om den i chatten?</li>
             <li>Ber du agenten om instruktioner för det du måste göra själv?</li>
@@ -131,7 +135,7 @@
       <li>
         <h3>Testa, felsök och publicera</h3>
         <p>Testa appen på localhost. Sök fram två platser, klicka på kartan och kontrollera att rutten ritas. Öppna fliken Network i Dev Tools: där ser du frågorna till MapBox.</p>
-        <p>Ser du något rött i Console, kopiera felet till agenten. När allt fungerar, be agenten publicera på GitHub Pages och öppna länken i mobilen. 🎉</p>
+        <p>Ser du något rött i Console, kopiera felet till agenten. När allt fungerar, be agenten pusha till GitHub och publicera på GitHub Pages, om den inte redan har gjort det. Öppna sedan länken i mobilen. 🎉</p>
         <details class="alt">
           <summary>Ingen karta, eller ingen rutt?</summary>
           <ul>

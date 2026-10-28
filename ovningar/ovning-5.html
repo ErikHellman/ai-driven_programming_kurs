@@ -54,6 +54,7 @@
         <p><strong>Hur det byggs:</strong></p>
         <ul>
           <li>Spelet körs helt i webbläsaren och publiceras på GitHub Pages med GitHub Actions.</li>
+          <li>Koden sparas med Git i ett eget publikt repo på GitHub, som agenten skapar med <code>gh</code>.</li>
           <li>Vite med JavaScript. Spelet ritas på en <em>canvas</em>, utan React och utan någon färdig spelmotor.</li>
           <li>Styrs med tangentbordet: piltangenterna eller A och D för att gå, mellanslag eller pil upp för att hoppa.</li>
           <li>All grafik är procedurellt genererad, alltså ritad med kod. Inga bildfiler.</li>
@@ -103,10 +104,11 @@
             <tr><td><strong>4. Styrning</strong></td><td>Vilka tangenter som gör vad.</td></tr>
             <tr><td><strong>5. Grafik och banan</strong></td><td>Att all grafik ritas med kod, och hur banan beskrivs som ett rutnät med vilka tecken.</td></tr>
             <tr><td><strong>6. Teknik</strong></td><td>Vite, JavaScript, canvas, ingen spelmotor, samma takt på alla datorer.</td></tr>
-            <tr><td><strong>7. Publicering</strong></td><td>GitHub Pages med GitHub Actions, och att agenten ska ge dig instruktioner för det du måste göra själv.</td></tr>
+            <tr><td><strong>7. Git, GitHub och publicering</strong></td><td>Att koden ska sparas med Git, att agenten ska skapa ett publikt repo på GitHub med <code>gh</code> och vad det ska heta, att spelet publiceras på GitHub Pages med GitHub Actions, och att agenten ska ge dig instruktioner för det du måste göra själv.</td></tr>
             <tr><td><strong>8. Arbetssätt</strong></td><td>Visa en plan först och vänta på ditt okej. Bygg i små steg, så att du kan testa spelet efter varje steg.</td></tr>
           </table>
         </div>
+        <div class="note"><p><strong>Glöm inte GitHub-repot.</strong> GitHub Pages publicerar från ett repo, så projektet behöver ett eget repo på GitHub. Agenten kan skapa det åt dig med <code>gh</code>, men bara om du ber om det. Skriv in i prompten att agenten ska spara koden med Git, skapa ett publikt repo på ditt GitHub-konto med <code>gh</code>, ge det ett namn du väljer (till exempel <em>plattformsspelet</em>) och pusha koden dit. Namnet blir en del av adressen: <code>https://ditt-namn.github.io/plattformsspelet/</code>.</p></div>
         <p><strong>Tips när du skriver:</strong></p>
         <ul>
           <li>Skriv prompten i en fil, till exempel <code>prompt.md</code>, och spara den.</li>
@@ -122,6 +124,7 @@
             <li>Står det att all grafik ska ritas med kod, utan bildfiler?</li>
             <li>Har du beskrivit banan som ett rutnät och vilka tecken som betyder vad?</li>
             <li>Står det Vite, JavaScript, canvas och GitHub Pages?</li>
+            <li>Ber du agenten skapa ett publikt repo på GitHub med <code>gh</code> och pusha koden dit?</li>
             <li>Ber du om en plan först, och om att bygga i små steg?</li>
           </ul>
         </details>
@@ -141,7 +144,7 @@
 
       <li>
         <h3>Publicera</h3>
-        <p>Be agenten lägga upp spelet på GitHub och publicera det med GitHub Actions. Om agenten säger åt dig att aktivera GitHub Pages: öppna repot på GitHub, välj <strong>Settings → Pages</strong> och välj <strong>GitHub Actions</strong> under <em>Source</em>.</p>
+        <p>Har agenten inte redan gjort det, be den skapa repot på GitHub, pusha koden och publicera spelet med GitHub Actions. Om agenten säger åt dig att aktivera GitHub Pages: öppna repot på GitHub, välj <strong>Settings → Pages</strong> och välj <strong>GitHub Actions</strong> under <em>Source</em>.</p>
         <p>Skicka länken till någon och låt dem spela. 🎉 Spelet styrs med tangentbord, så det fungerar på datorn men inte i mobilen.</p>
       </li>
 
