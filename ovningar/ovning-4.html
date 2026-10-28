@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Övning 4: Ruttplaneraren · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗺️</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=5">
+  <script src="../assets/site.js?v=4" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Tillfälle 2 · Övning 4 · extra</span>
+      <h1>🗺️ Ruttplaneraren</h1>
+      <p>Bygg en app där du söker fram två platser, eller klickar på kartan, och får en rutt mellan dem. Den här gången finns ingen färdig prompt. Du får kraven och skriver prompten själv.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="note tip"><p><strong>Syftet med övningen:</strong> att öva på att skriva en bra prompt för att bygga en app. Agenten kan bara bygga det du berättar om. Allt du glömmer kommer den att gissa på.</p></div>
+    <div class="note"><p><strong>Innan du börjar:</strong> du behöver samma saker som i <a href="ovning-3.html">övning 3</a>: Node.js, Git, ett GitHub-konto med <code>gh</code> inloggat och Claude- eller ChatGPT-appen. Gör gärna övning 3 först, så känner du igen stegen.</p></div>
+
+    <ol class="steps">
+      <li>
+        <h3>Läs kraven</h3>
+        <p>Det här är vad appen ska göra och hur den ska byggas. Allt ska med i din prompt, men med dina egna ord.</p>
+        <p><strong>Vad appen gör:</strong></p>
+        <ul>
+          <li>Användaren väljer en startpunkt (<em>Från</em>) och ett mål (<em>Till</em>) genom att söka på en plats eller adress.</li>
+          <li>Användaren kan också välja Från och Till genom att klicka på kartan.</li>
+          <li>Appen ritar rutten mellan platserna på kartan.</li>
+        </ul>
+        <p><strong>Hur den byggs:</strong></p>
+        <ul>
+          <li>En Single-Page Application som publiceras på GitHub Pages.</li>
+          <li>React med Vite och JavaScript.</li>
+          <li>MapBox ritar kartan, och MapBox Directions API räknar ut rutten. Ge agenten länken till MapBox dokumentation: <a href="https://docs.mapbox.com/">docs.mapbox.com</a>.</li>
+          <li>Agenten ska ge dig tydliga instruktioner för allt du måste göra själv, till exempel hur du skaffar en MapBox-nyckel och hur du aktiverar GitHub Pages för appen.</li>
+        </ul>
+        <p>Tänk också på det du lärde dig i övning 3. Där fanns krav om API-nyckeln, <code>base</code> i Vite, <code>.gitignore</code>, mobilanpassning och svenska i gränssnittet. Behövs de här också?</p>
+      </li>
+
+      <li>
+        <h3>Förstå orden</h3>
+        <p>Du behöver inte kunna tekniken, men du behöver veta vad orden betyder för att kunna beskriva vad du vill ha.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Ord</th><th>Vad det betyder</th></tr>
+            <tr><td><strong>Single-Page Application (SPA)</strong></td><td>En webbapp som består av en enda sida. När du klickar runt byter JavaScript ut innehållet i stället för att ladda en ny sida från servern. Därför kan den ligga på en enkel webbserver som GitHub Pages.</td></tr>
+            <tr><td><strong>React</strong></td><td>Ett JavaScript-bibliotek för att bygga gränssnitt av små återanvändbara delar, så kallade komponenter. Till exempel en sökruta, en karta och en ruta med resultatet.</td></tr>
+            <tr><td><strong>Vite</strong></td><td>Verktyget som startar utvecklingsservern på localhost och bygger ihop appen till vanliga filer som kan publiceras. Det är byggsteget från del 1.</td></tr>
+            <tr><td><strong>JavaScript</strong></td><td>Programspråket som körs i webbläsaren. Vi väljer det framför TypeScript för att hålla det enkelt.</td></tr>
+            <tr><td><strong>MapBox</strong></td><td>En tjänst för kartor. Appen hämtar kartbilderna från MapBox och ritar dem med deras bibliotek Mapbox GL JS. MapBox kan också söka fram platser utifrån namn och adresser.</td></tr>
+            <tr><td><strong>API</strong></td><td>Ett sätt för ett program att fråga en annan tjänst om något. Appen skickar en fråga och får ett svar tillbaka, ungefär som när väderappen frågade OpenWeatherMap.</td></tr>
+            <tr><td><strong>Directions API</strong></td><td>MapBox API för vägbeskrivningar. Appen skickar Från och Till och får tillbaka rutten som en linje att rita på kartan, plus sträcka och restid.</td></tr>
+            <tr><td><strong>Token</strong></td><td>MapBox ord för API-nyckel. Den visar MapBox vem som frågar, så att de kan räkna hur mycket du använder.</td></tr>
+            <tr><td><strong>GitHub Pages</strong></td><td>GitHubs gratistjänst för att publicera webbsidor direkt från ett repo. Du får en adress som <code>https://ditt-namn.github.io/ruttplaneraren/</code>.</td></tr>
+          </table>
+        </div>
+      </li>
+
+      <li>
+        <h3>🔑 Skaffa en MapBox-token</h3>
+        <p>Gör det här själv, gärna innan du skriver prompten.</p>
+        <ol>
+          <li>Skapa ett konto på <a href="https://account.mapbox.com/">account.mapbox.com</a>. Låt lösenordshanteraren skapa och spara lösenordet. Gratisnivån räcker gott för en kursapp.</li>
+          <li>Logga in och öppna <a href="https://account.mapbox.com/access-tokens/">Access tokens</a>. Där finns redan en <em>Default public token</em> som börjar med <code>pk.</code>. Kopiera den.</li>
+          <li>Spara den i lösenordshanteraren på samma sätt som nyckeln i övning 3, till exempel som <em>MapBox token</em>.</li>
+        </ol>
+        <div class="note warn"><p><strong>Klistra inte in token i chatten med agenten.</strong> Den ska bara finnas i lösenordshanteraren, i <code>.env.local</code> på din dator och i GitHub Secrets. Skriv in i prompten att agenten ska läsa den från en miljövariabel och att du lägger in den själv.</p></div>
+        <p>En token som börjar med <code>pk.</code> är gjord för att synas i webbläsaren. När appen är publicerad kan du begränsa den till din adress på GitHub Pages under <em>URL restrictions</em>, så att ingen annan sida kan använda din kvot.</p>
+      </li>
+
+      <li>
+        <h3>Skriv prompten: struktur och ordning</h3>
+        <p>En bra prompt läses uppifrån och ned, precis som en beställning till en hantverkare. Börja med helheten och gå mot detaljerna. Använd rubriker och punktlistor så att inget drunknar i en lång text. Den här ordningen fungerar bra:</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Del</th><th>Vad den ska innehålla</th><th>Varför här</th></tr>
+            <tr><td><strong>1. Mål</strong></td><td>En eller två meningar om vad du vill bygga och var. Till exempel vad det är för slags app och att den ska skapas i den här mappen.</td><td>Agenten tolkar allt annat utifrån målet. Kommer det först gissar den rätt oftare.</td></tr>
+            <tr><td><strong>2. Funktioner</strong></td><td>Vad användaren ska kunna göra, en punkt per sak. Skriv ur användarens perspektiv: <em>Jag kan …</em></td><td>Det här är kärnan. Det som inte står här blir inte byggt.</td></tr>
+            <tr><td><strong>3. Teknik</strong></td><td>Vilka verktyg och tjänster som ska användas, och var appen ska publiceras.</td><td>Utan det väljer agenten själv, och kanske något som inte fungerar på GitHub Pages.</td></tr>
+            <tr><td><strong>4. Dokumentation</strong></td><td>Länkar till dokumentationen för tjänsterna appen använder.</td><td>Agentens kunskap kan vara gammal. Med dokumentationen kan den läsa hur tjänsten fungerar i dag.</td></tr>
+            <tr><td><strong>5. Hemligheter</strong></td><td>Vad nyckeln heter, var den ska läsas ifrån, att den inte får hamna i Git och att du lägger in den själv.</td><td>Det är lätt att glömma, och dyrt att rätta efteråt om nyckeln redan har hamnat på GitHub.</td></tr>
+            <tr><td><strong>6. Övriga krav</strong></td><td>Sådant som gäller hela appen: mobil, språk, design, README, felmeddelanden när något går fel.</td><td>Detaljer som är lätta att lägga till sist, men som agenten inte vet om du inte säger det.</td></tr>
+            <tr><td><strong>7. Det du gör själv</strong></td><td>Be agenten ge dig steg-för-steg-instruktioner för allt den inte kan göra åt dig, till exempel token och inställningar på GitHub.</td><td>Då vet du vad du ska göra och när, i stället för att fastna.</td></tr>
+            <tr><td><strong>8. Arbetssätt</strong></td><td>Hur agenten ska jobba: visa en plan först och vänta på ditt okej, och vad den ska göra när den är klar.</td><td>Står sist så att det är det sista agenten läser innan den börjar.</td></tr>
+          </table>
+        </div>
+        <p><strong>Tips när du skriver:</strong></p>
+        <ul>
+          <li>Skriv prompten i en fil i VS Code först, till exempel <code>prompt.md</code>. Då kan du ändra i lugn och ro och spara den till nästa gång.</li>
+          <li>Var konkret. <em>Rutten ska ritas som en tjock blå linje</em> säger mer än <em>visa rutten snyggt</em>.</li>
+          <li>Skriv vad som ska hända när något går fel, till exempel om ingen rutt hittas eller om token saknas.</li>
+          <li>Titta på startprompterna i <a href="ovning-3.html">övning 3</a>. De följer samma ordning. Men skriv din egen.</li>
+        </ul>
+        <details class="alt">
+          <summary>Kolla din prompt innan du skickar den</summary>
+          <ul>
+            <li>Står det vad appen gör, så att någon som inte har läst kraven förstår?</li>
+            <li>Finns båda sätten att välja Från och Till med: sökning och klick på kartan?</li>
+            <li>Står det React, Vite, JavaScript och GitHub Pages?</li>
+            <li>Har du med länken till MapBox dokumentation?</li>
+            <li>Står det var token ska ligga, och att agenten inte ska be om den i chatten?</li>
+            <li>Ber du agenten om instruktioner för det du måste göra själv?</li>
+            <li>Ber du om en plan först?</li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <h3>Skicka prompten och granska planen</h3>
+        <p>Skapa en tom mapp, till exempel <code>kurs/ruttplaneraren</code>, öppna den i Claude- eller ChatGPT-appen och klistra in din prompt.</p>
+        <p>Läs planen noga och jämför den med kraven i steg 1. Saknas något, eller har agenten valt något du inte ville? Rätta det innan du säger <code>Kör!</code>. Skriv också in det i din <code>prompt.md</code>, så blir prompten bättre till nästa gång.</p>
+      </li>
+
+      <li>
+        <h3>Gör det agenten ber dig om</h3>
+        <p>Har du skrivit prompten rätt säger agenten till när du ska göra något själv. Det här är vad som brukar behövas:</p>
+        <ul>
+          <li><strong>🔑 Token lokalt:</strong> skapa filen <code>.env.local</code> i projektmappen och skriv in din token från lösenordshanteraren, under det namn agenten har valt. Be sedan agenten starta om utvecklingsservern.</li>
+          <li><strong>🔑 Token på GitHub:</strong> lägg in den i GitHub Secrets med <code>gh secret set</code> och namnet på variabeln, precis som i övning 3.</li>
+          <li><strong>Aktivera GitHub Pages:</strong> öppna repot på GitHub, välj <strong>Settings → Pages</strong> och välj <strong>GitHub Actions</strong> under <em>Source</em>. Agenten kan ofta göra det åt dig med <code>gh</code>, men det är bra att veta var inställningen finns.</li>
+        </ul>
+        <p>Säger agenten inte till? Då saknades det i prompten. Fråga: <code>Vad behöver jag göra själv för att det här ska fungera?</code></p>
+      </li>
+
+      <li>
+        <h3>Testa, felsök och publicera</h3>
+        <p>Testa appen på localhost. Sök fram två platser, klicka på kartan och kontrollera att rutten ritas. Öppna fliken Network i Dev Tools: där ser du frågorna till MapBox.</p>
+        <p>Ser du något rött i Console, kopiera felet till agenten. När allt fungerar, be agenten publicera på GitHub Pages och öppna länken i mobilen. 🎉</p>
+        <details class="alt">
+          <summary>Ingen karta, eller ingen rutt?</summary>
+          <ul>
+            <li><strong>Grå ruta i stället för karta:</strong> token saknas eller är fel. Leta efter <code>401</code> i Network.</li>
+            <li><strong>Fungerar lokalt men inte på GitHub Pages:</strong> kolla att din secret heter exakt samma sak som variabeln, och kör om bygget under Actions.</li>
+            <li><strong>Slutade fungera efter URL restrictions:</strong> adressen i listan stämmer inte med adressen till appen. Lägg till <code>http://localhost:5173</code> också om du vill kunna testa lokalt.</li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <h3>Jämför med någon annan</h3>
+        <p>Visa din prompt och din app för någon bredvid dig. Vad skrev ni olika, och hur märks det i apparna? Vad skulle du lägga till i din prompt om du började om?</p>
+      </li>
+    </ol>
+
+    <section>
+      <h2>Klart?</h2>
+      <ul class="checklist">
+        <li>Jag har skrivit en egen prompt med alla krav, i en bra ordning</li>
+        <li>Jag kan söka fram Från och Till, eller klicka på kartan, och se rutten</li>
+        <li>🔑 Token finns i lösenordshanteraren, <code>.env.local</code> och GitHub Secrets, men inte i koden</li>
+        <li>Appen är publicerad på GitHub Pages och fungerar i mobilen</li>
+        <li>Jag har sparat min prompt och vet vad jag skulle göra bättre nästa gång</li>
+      </ul>
+    </section>
+
+    <nav class="guide-nav">
+      <a href="ovning-3.html">← Övning 3</a>
+      <a href="../index.html">Allt kursmaterial →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>
