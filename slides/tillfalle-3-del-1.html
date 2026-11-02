@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tillfälle 3 · Del 1: Jobba smart med agenten</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/slides.css?v=12">
+  <script src="../assets/slides.js?v=7" defer></script>
+</head>
+<body>
+<a class="home" href="../index.html">⌂ Kursmaterial</a>
+<div class="deck">
+
+  <!-- 1 -->
+  <section class="title">
+    <div class="kicker">Folkuniversitetet · Tillfälle 3 · Del 1</div>
+    <h1>Jobba smart<br>med agenten</h1>
+    <p class="lead">Bättre prompter, flera sessioner och pull requests. Så bygger du större saker utan att tappa kontrollen.</p>
+    <div class="badge-row">
+      <span class="badge">✍️ Prompten</span>
+      <span class="badge">🧩 Dela upp arbetet</span>
+      <span class="badge">🔀 Pull requests</span>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Välkommen tillbaka. Fråga vem som fick upp sin React-app från övning 3, och om någon testade ruttplaneraren eller plattformsspelet.</li>
+        <li>Fråga: vad var svårast? Oftast är svaret ”agenten gjorde något annat än jag tänkte”. Det är precis det vi jobbar med idag.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <div class="kicker">Idag</div>
+    <h2>Dagens plan</h2>
+    <div class="layers">
+      <div class="layer l1"><span class="e">🧭</span><b>Del 1</b><span>Jobba smart med agenten: prompten, sessioner och pull requests. Sedan övning 6</span></div>
+      <div class="layer l2"><span class="e">☕</span><b>Paus</b><span>Sträck på benen</span></div>
+      <div class="layer l3"><span class="e">🖥️</span><b>Del 2</b><span>Vad är en backend? Servrar, HTTP, REST och var datan bor</span></div>
+      <div class="layer l4"><span class="e">🚀</span><b>Övningar</b><span>Prata HTTP och bygg en app med egen backend, i flera sessioner och med PR:er</span></div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <div class="kicker">Från små appar till större projekt</div>
+    <h2>Det som fungerade för en liten app räcker inte hela vägen</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">🌀</span><h3>Agenten gissar</h3><p>Det du inte skrev fyller den i själv. Ju större app, desto fler gissningar.</p></div>
+      <div class="card frag"><span class="e">🧠</span><h3>Minnet blir fullt</h3><p>En lång session blir sämre. Agenten glömmer det ni bestämde i början.</p></div>
+      <div class="card frag"><span class="e">💥</span><h3>Allt på en gång</h3><p>En ändring som förstör något annat är svår att hitta, och svår att ångra.</p></div>
+    </div>
+    <p class="lead frag bottom">Tre verktyg idag: en <span class="hl">bättre prompt</span>, <span class="hl">flera sessioner</span> och <span class="hl">pull requests</span>.</p>
+    <aside class="notes">
+      <ul>
+        <li>Varje problem har sitt verktyg. Prompten minskar gissningarna, sessioner håller minnet fräscht och pull requests gör ändringar lätta att granska och ångra.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Prompten -->
+  <section class="divider">
+    <div class="num">1</div>
+    <h2>Prompten</h2>
+    <p class="lead">Vad som bör stå i en bra beställning</p>
+  </section>
+
+  <section>
+    <div class="kicker">Prompten</div>
+    <h2>Agenten vet bara det som står i kontexten</h2>
+    <div class="cols wide-left">
+      <ul class="nice">
+        <li>Kommer du ihåg <strong>kontextfönstret</strong> från tillfälle 1? Det är agentens arbetsminne</li>
+        <li class="frag">Där finns din prompt, filerna den har läst och allt ni har skrivit i sessionen</li>
+        <li class="frag">Det som finns i ditt huvud men inte i kontexten <strong>finns inte</strong> för agenten</li>
+      </ul>
+      <div class="card sun frag">
+        <span class="e">👷</span>
+        <h3>Som en ny kollega</h3>
+        <p>Smart, snabb och kunnig, men första dagen på jobbet. Den har aldrig sett ditt projekt och vet inte vad du gillar.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Fråga: vad skulle du berätta för en ny kollega som ska göra den här uppgiften? Det är din prompt.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Prompten</div>
+    <h2>Fem delar i en bra prompt</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">🎯</span><span><strong>Mål:</strong> vad ska byggas eller ändras, och varför?</span></li>
+      <li class="frag"><span class="e">🗺️</span><span><strong>Sammanhang:</strong> vilka filer, vilken del av appen, vad som redan finns</span></li>
+      <li class="frag"><span class="e">📏</span><span><strong>Krav och gränser:</strong> teknik, utseende, och vad agenten <em>inte</em> ska röra</span></li>
+      <li class="frag"><span class="e">✅</span><span><strong>Klart när:</strong> hur ni båda vet att det fungerar, till exempel ett test eller något du ska kunna göra i appen</span></li>
+      <li class="frag"><span class="e">🛠️</span><span><strong>Arbetssätt:</strong> plan först, branch, pull request, vad den ska göra när den är klar</span></li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Övning 4 och 5 hade en längre lista i nio delar för att bygga en helt ny app. De här fem delarna fungerar för alla uppgifter, även små ändringar i en app som redan finns.</li>
+        <li>”Klart när” är den del som oftast saknas, och den som gör störst skillnad.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Prompten · före och efter</div>
+    <h2>Samma önskan, två prompter</h2>
+    <div class="cols">
+      <div class="card bad">
+        <span class="e">🤷</span>
+        <h3>Före</h3>
+        <div class="term"><pre>Lägg till mörkt läge.</pre></div>
+        <p style="margin-top:14px">Var ska knappen sitta? Ska valet sparas? Vilka färger? Agenten gissar.</p>
+      </div>
+      <div class="card good frag">
+        <span class="e">🎯</span>
+        <h3>Efter</h3>
+        <div class="term"><pre>Lägg till ett mörkt läge i receptboken.
+Knappen sitter uppe till höger, valet
+sparas i localStorage och följer
+datorns inställning första gången.
+Använd mörkbruna toner, inte svart.
+Ändra inte i receptlistans logik.
+Klart när jag kan byta läge och valet
+finns kvar efter omladdning.
+Jobba på en branch och visa en plan.</pre></div>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Peka ut de fem delarna i ”efter”: mål (mörkt läge), sammanhang (receptboken, knappen), krav och gränser (färger, rör inte logiken), klart när, arbetssätt.</li>
+        <li>Den korta prompten är inte fel. Den fungerar bra om du är nöjd med vad agenten väljer. Men då ska du inte bli förvånad.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Prompten · klart när</div>
+    <h2>Ge agenten ett sätt att kolla sitt arbete</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">🧪</span><h3>Tester</h3><p>”Skriv tester för det här och kör dem.” Agenten ser själv om något gick sönder.</p></div>
+      <div class="card frag"><span class="e">🌐</span><h3>Öppna appen</h3><p>”Starta appen och testa den i en webbläsare. Kolla att det inte blir fel i Console.”</p></div>
+      <div class="card frag"><span class="e">📸</span><h3>Visa en bild</h3><p>Ge agenten en skärmbild av hur det ser ut, eller hur du vill att det ska se ut.</p></div>
+    </div>
+    <p class="lead frag bottom">En agent som kan kontrollera sitt arbete rättar sina egna fel innan du ens ser dem.</p>
+    <aside class="notes">
+      <ul>
+        <li>Det här är det viktigaste tipset för att få bättre resultat. Utan ett sätt att kolla gissar agenten att det fungerar.</li>
+        <li>Agenten kan styra en webbläsare med verktyg som Playwright. Be om det.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Prompten · planläge</div>
+    <h2>Planera först, bygg sedan</h2>
+    <div class="flow" style="justify-content:center;margin-top:10px">
+      <div class="box sun">✍️ Du beskriver<small>mål och krav</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🔍 Agenten läser<small>koden och frågar</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">📋 En plan<small>som du läser</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">🔨 Kör!<small>först nu skrivs kod</small></div>
+    </div>
+    <ul class="nice" style="margin-top:40px">
+      <li class="frag">Claude Code har ett <strong>planläge</strong>: agenten får läsa men inte ändra något förrän du godkänner planen</li>
+      <li class="frag">Det är billigt att rätta en plan och dyrt att rätta färdig kod. Läs planen noga</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>I Claude-appen väljer du läget i rutan där du skriver. I terminalen växlar du med Shift+Tab.</li>
+        <li>I Codex och utan planläge: skriv sist i prompten ”Visa en plan och vänta på mitt okej innan du ändrar något”. Det har vi gjort sedan övning 1.</li>
+        <li>Be gärna agenten ställa frågor: ”Fråga mig om det är något du är osäker på.”</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Prompten · minnet</div>
+    <h2>CLAUDE.md: projektets minneslapp</h2>
+    <div class="cols">
+      <div class="snip">
+        <span class="tag">CLAUDE.md</span>
+        <div class="term"><pre><span class="k"># Receptboken</span>
+En receptbok för familjen.
+
+<span class="k">## Teknik</span>
+- React och Vite med JavaScript
+- Publiceras på GitHub Pages
+
+<span class="k">## Regler</span>
+- Svenska i hela gränssnittet
+- Kör npm test innan du säger
+  att något är klart
+- Jobba alltid på en branch</pre></div>
+      </div>
+      <ul class="nice">
+        <li class="frag">En vanlig textfil i projektmappen som agenten läser <strong>i början av varje session</strong></li>
+        <li class="frag">Skriv det som alltid gäller, så slipper du upprepa det i varje prompt</li>
+        <li class="frag">Kommandot <code>/init</code> låter agenten skriva en första version åt dig</li>
+        <li class="frag">Codex läser filen <code>AGENTS.md</code> på samma sätt</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Filen hamnar i kontexten varje gång. Håll den kort, annars äter den arbetsminne.</li>
+        <li>Tips: när agenten gör samma misstag två gånger, be den lägga till en regel i CLAUDE.md.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Sessioner -->
+  <section class="divider">
+    <div class="num">2</div>
+    <h2>Dela upp arbetet</h2>
+    <p class="lead">En session per uppgift</p>
+  </section>
+
+  <section>
+    <div class="kicker">Sessioner</div>
+    <h2>Långa sessioner blir sämre</h2>
+    <div class="ctx">
+      <div class="ctx-stack">
+        <div class="ctx-layer sys"><span class="e">⚙️</span><span><b>Instruktioner och CLAUDE.md</b></span></div>
+        <div class="ctx-layer chat"><span class="e">💬</span><span><b>Mörkt läge</b><small>prompt, filer, ändringar, felsökning …</small></span></div>
+        <div class="ctx-layer chat frag"><span class="e">💬</span><span><b>Exportknapp</b><small>prompt, filer, ändringar …</small></span></div>
+        <div class="ctx-layer chat frag"><span class="e">💬</span><span><b>Fixa mobilvyn</b><small>prompt, filer …</small></span></div>
+        <div class="ctx-layer free frag">nästan fullt</div>
+      </div>
+      <ul class="nice">
+        <li class="frag">Allt i sessionen ligger kvar i kontexten, även det som inte längre spelar roll</li>
+        <li class="frag">Gammalt brus gör agenten långsammare, dyrare och mer förvirrad</li>
+        <li class="frag">När det blir fullt sammanfattas det gamla, och detaljer försvinner</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Koppla till tillfälle 1 del 2: varje varv i agentloopen skickar hela kontexten igen. Det kostar.</li>
+        <li>Kommandot /clear tömmer sessionen. /compact sammanfattar den. Men en ny session är oftast enklast.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Sessioner</div>
+    <h2>En session per uppgift</h2>
+    <div class="flow" style="justify-content:center">
+      <div class="box sun">📋 Session 1<small>planera och skriv<br>PLAN.md</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🗄️ Session 2<small>backend<br>steg 1 i planen</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🎨 Session 3<small>gränssnittet<br>steg 2 i planen</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">🔍 Session 4<small>granska<br>med fräscha ögon</small></div>
+    </div>
+    <ul class="nice" style="margin-top:40px">
+      <li class="frag">Varje session börjar med tomt minne och läser bara det den behöver</li>
+      <li class="frag">Planen sparas i en <strong>fil</strong>, så att nästa session kan fortsätta där förra slutade</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Planen i en fil är som en överlämning mellan skift på ett sjukhus. Det som inte står i filen vet nästa session inte om.</li>
+        <li>Session 4 är ett riktigt bra knep: en ny session har inte ”skrivit” koden själv och hittar fler fel.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Sessioner · överlämning</div>
+    <h2>Så låter det i praktiken</h2>
+    <div class="cols">
+      <div>
+        <p class="small" style="margin-bottom:8px"><strong>Session 1</strong></p>
+        <div class="term prompt" style="font-size:19px;line-height:1.5"><pre style="padding-top:56px">Jag vill bygga en gemensam fikalista med en egen backend. Ställ frågor tills du förstår vad jag vill ha. Skriv sedan en plan i PLAN.md, uppdelad i steg som var och en går att göra i en egen session. Skriv ingen kod än.</pre></div>
+      </div>
+      <div class="frag">
+        <p class="small" style="margin-bottom:8px"><strong>Session 2, 3, 4 …</strong></p>
+        <div class="term prompt" style="font-size:19px;line-height:1.5"><pre style="padding-top:56px">Läs PLAN.md och gör steg 2. Jobba på en ny branch. När du är klar: kör testerna, bocka av steget i PLAN.md och öppna en pull request.</pre></div>
+      </div>
+    </div>
+    <p class="lead frag bottom">Nästa steg? Ny session, samma korta prompt.</p>
+    <aside class="notes">
+      <ul>
+        <li>Att bocka av i PLAN.md gör att nästa session vet var den ska börja.</li>
+        <li>Det här är precis vad vi gör i övning 8.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Sessioner · parallellt</div>
+    <h2>Flera agenter samtidigt</h2>
+    <div class="wt">
+      <div class="files b1">
+        <div class="head">🤖 Session A <span class="branch-tag main">mork-lage</span></div>
+        <div class="in">📁 receptbok-mork/</div>
+        <div class="in dim">lägger till mörkt läge</div>
+      </div>
+      <div class="files b2 frag">
+        <div class="head">🤖 Session B <span class="branch-tag br">export</span></div>
+        <div class="in">📁 receptbok-export/</div>
+        <div class="in dim">bygger en exportknapp</div>
+      </div>
+    </div>
+    <ul class="nice" style="margin-top:28px">
+      <li class="frag">Kommer du ihåg <strong>worktree</strong> från förra gången? En mapp per branch</li>
+      <li class="frag">Claude-appen kan skapa en worktree för varje ny session, så att agenterna inte skriver i varandras filer</li>
+      <li class="frag">Välj uppgifter som inte rör samma filer, annars krockar det när de ska slås ihop</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Börja med en session i taget. Parallella sessioner är ett steg för den som redan känner sig trygg.</li>
+        <li>Det är din uppmärksamhet som är flaskhalsen: du måste ändå granska allt som agenterna gör.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Sessioner</div>
+    <h2>Dags för en ny session när …</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">✅</span><span>… en uppgift är <strong>klar</strong> och du ska börja på nästa</span></li>
+      <li class="frag"><span class="e">🔁</span><span>… agenten <strong>gör samma fel</strong> igen, eller går runt i cirklar</span></li>
+      <li class="frag"><span class="e">🙃</span><span>… den har <strong>glömt</strong> något ni bestämde tidigare</span></li>
+      <li class="frag"><span class="e">🧭</span><span>… du har <strong>bytt riktning</strong> och gamla idéer stör</span></li>
+    </ul>
+    <p class="small bottom">Be först agenten skriva ner vad den har lärt sig i CLAUDE.md eller PLAN.md, så följer det med till nästa session.</p>
+  </section>
+
+  <!-- Pull requests -->
+  <section class="divider">
+    <div class="num">3</div>
+    <h2>Pull requests</h2>
+    <p class="lead">Granska innan det hamnar i main</p>
+  </section>
+
+  <section>
+    <div class="kicker">Pull requests</div>
+    <h2>Vad är en pull request?</h2>
+    <svg class="gitsvg" viewBox="0 0 1100 260" role="img" aria-label="En branch med två commits blir en pull request som slås ihop med main">
+      <path class="line-main" d="M60 190 H1040"/>
+      <path class="line-br" d="M240 190 C 300 190, 300 70, 380 70 H 640 C 720 70, 720 190, 780 190"/>
+      <circle class="c-br" cx="430" cy="70" r="18"/>
+      <circle class="c-br" cx="590" cy="70" r="18"/>
+      <text class="lbl br" x="380" y="30">mork-lage</text>
+      <circle class="c-main" cx="100" cy="190" r="18"/>
+      <circle class="c-main" cx="240" cy="190" r="18"/>
+      <circle class="c-main" cx="960" cy="190" r="18"/>
+      <g class="frag">
+        <rect class="pr-pill" x="640" y="96" width="210" height="44" rx="22"/>
+        <text x="662" y="126">🔀 pull request</text>
+      </g>
+      <g class="frag">
+        <circle class="c-merge" cx="780" cy="190" r="22"/>
+        <text x="740" y="246">merge</text>
+      </g>
+      <text class="lbl main" x="40" y="150">main</text>
+    </svg>
+    <ul class="nice" style="margin-top:14px">
+      <li class="frag">En <strong>pull request</strong> (PR) är en begäran på GitHub: ”slå ihop min branch med main”</li>
+      <li class="frag">Innan dess kan du läsa alla ändringar, kommentera och låta GitHub köra tester</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Samma branch-bild som förra gången, men nu sker sammanslagningen på GitHub i stället för på din dator.</li>
+        <li>Namnet är lite bakvänt: du ber main att ”dra in” (pull) dina ändringar.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Pull requests</div>
+    <h2>Flödet</h2>
+    <div class="flow" style="justify-content:center">
+      <div class="box sun">🌿 Branch<small>agenten jobbar<br>vid sidan av main</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">⬆️ Push + PR<small>gh pr create</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🧪 Kontroller<small>GitHub kör<br>testerna</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">👀 Granska<small>du läser och<br>kommenterar</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">✅ Merge<small>in i main och<br>publiceras</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:44px">Blev det fel? Stäng PR:en. Main har aldrig rörts.</p>
+    <aside class="notes">
+      <ul>
+        <li>gh är GitHub-kommandot vi installerade första gången. Agenten använder det för att skapa PR:en åt dig.</li>
+        <li>Kontrollerna är GitHub Actions, samma sak som publicerade appen i övning 3, men nu kör de tester.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Pull requests</div>
+    <h2>Varför PR:er när jag jobbar ensam?</h2>
+    <div class="cards two">
+      <div class="card frag"><span class="e">👀</span><h3>Se alla ändringar</h3><p>Fliken <strong>Files changed</strong> visar exakt vad agenten ändrade. Grönt är nytt, rött är borttaget.</p></div>
+      <div class="card frag"><span class="e">🧪</span><h3>Automatiska tester</h3><p>Grön bock eller rött kryss innan något når main. Agenten kan rätta det röda själv.</p></div>
+      <div class="card frag"><span class="e">↩️</span><h3>Lätt att ångra</h3><p>En PR är ett paket. Ska ändringen bort finns en <strong>Revert</strong>-knapp.</p></div>
+      <div class="card frag"><span class="e">📚</span><h3>En historik</h3><p>Varje PR beskriver vad och varför. Bra för dig om en månad, och för agenten.</p></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Visa gärna kursmaterialets eget repo: allt material har kommit till som pull requests från en agent, med tester som körs på varje PR.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Pull requests · granska</div>
+    <h2>Så granskar du en PR utan att kunna koda</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">📝</span><span><strong>Läs beskrivningen.</strong> Stämmer den med det du bad om?</span></li>
+      <li class="frag"><span class="e">📂</span><span><strong>Kolla vilka filer som ändrats.</strong> Är det några som inte borde röras?</span></li>
+      <li class="frag"><span class="e">🟢</span><span><strong>Är kontrollerna gröna?</strong> Rött kryss? Be agenten rätta det</span></li>
+      <li class="frag"><span class="e">🔍</span><span><strong>Be en ny session granska.</strong> ”Granska PR nummer 3 och leta efter fel.”</span></li>
+      <li class="frag"><span class="e">🖱️</span><span><strong>Prova själv.</strong> Starta appen från branchen och testa</span></li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Du behöver inte förstå varje rad. Du letar efter överraskningar: filer som inte borde ändras, eller mycket mer kod än väntat.</li>
+        <li>Claude Code har också ett inbyggt granskningskommando. Fråga agenten hur du granskar en PR med det.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Pull requests · be agenten</div>
+    <h2>Fyra meningar du kommer använda</h2>
+    <div class="cards two">
+      <div class="card frag"><span class="e">🚀</span><h3>Öppna</h3><p>”Pusha branchen och öppna en pull request med <code>gh</code>. Beskriv vad du har ändrat.”</p></div>
+      <div class="card frag"><span class="e">🧪</span><h3>Kolla</h3><p>”Kolla om kontrollerna på PR:en har gått igenom. Rätta det som är rött.”</p></div>
+      <div class="card frag"><span class="e">💬</span><h3>Svara</h3><p>”Läs kommentarerna jag har skrivit på PR:en och gör ändringarna.”</p></div>
+      <div class="card frag"><span class="e">✅</span><h3>Slå ihop</h3><p>”Slå ihop PR:en med main och gå tillbaka till main lokalt.”</p></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Kommentarer på PR:en är ett bra sätt att ge feedback på exakt en rad: klicka på plustecknet bredvid raden under Files changed.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Sammanfattning -->
+  <section>
+    <div class="kicker">Sammanfattning</div>
+    <h2>Arbetsflödet</h2>
+    <div class="layers">
+      <div class="layer l1"><span class="e">✍️</span><b>Prompt</b><span>Mål, sammanhang, krav, klart när och arbetssätt. Plan först.</span></div>
+      <div class="layer l2"><span class="e">📌</span><b>CLAUDE.md</b><span>Det som alltid gäller. Planen i en fil.</span></div>
+      <div class="layer l3"><span class="e">🧩</span><b>Sessioner</b><span>En uppgift per session. Ny session när det börjar spåra.</span></div>
+      <div class="layer l4"><span class="e">🔀</span><b>Pull request</b><span>Branch, PR, gröna tester, granska, merge.</span></div>
+    </div>
+  </section>
+
+  <section class="divider">
+    <div class="num">🔀</div>
+    <h2>Övning 6: Din första pull request</h2>
+    <p class="lead">En ny funktion i din app, via en PR · 25 minuter</p>
+  </section>
+
+  <section>
+    <div class="kicker">Övning 6</div>
+    <h2>Gör så här</h2>
+    <div class="cols wide-left">
+      <ul class="emoji">
+        <li><span class="e">📁</span><span>Öppna appen från övning 1 eller 3 i Claude- eller ChatGPT-appen</span></li>
+        <li><span class="e">📌</span><span>Låt agenten skriva <code>CLAUDE.md</code> med <code>/init</code></span></li>
+        <li><span class="e">✍️</span><span>Skriv en prompt för en ny funktion med alla fem delarna</span></li>
+        <li><span class="e">🔀</span><span>Agenten jobbar på en branch och öppnar en PR</span></li>
+        <li><span class="e">👀</span><span>Granska på GitHub, kommentera, merge</span></li>
+      </ul>
+      <div class="card sun">
+        <span class="e">🔗</span>
+        <h3>Steg och tips</h3>
+        <p>Kurssidan → <strong>Övning 6</strong>. Där finns en mall för prompten och en checklista för granskningen.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Den som inte har en app på GitHub sedan tidigare kan be agenten bygga en liten app först, eller göra övningen på en kompis repo via en fork.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section class="title center">
+    <div style="font-size:120px;line-height:1">☕</div>
+    <h1>Paus</h1>
+    <p class="lead">Efter pausen kliver vi in i köket: vad är en backend?</p>
+  </section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Övning 6: Din första pull request · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔀</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=5">
+  <script src="../assets/site.js?v=4" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Tillfälle 3 · Övning 6 · 25 minuter</span>
+      <h1>🔀 Din första pull request</h1>
+      <p>Lägg till en ny funktion i en app du redan har byggt. Den här gången med en riktig prompt, en minneslapp för agenten och en pull request som du granskar innan något ändras i main.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="note tip"><p><strong>Syftet med övningen:</strong> att öva på arbetsflödet från del 1. Prompt med fem delar, plan först, branch, pull request, granskning och merge. Själva funktionen är inte det viktiga.</p></div>
+    <div class="note"><p><strong>Innan du börjar:</strong> du behöver en app som redan ligger på GitHub, till exempel från <a href="ovning-1.html">övning 1</a> eller <a href="ovning-3.html">övning 3</a>. Har du ingen? Be agenten bygga en liten app och lägga upp den på GitHub med <code>gh</code> först, som i övning 1.</p></div>
+
+    <ol class="steps">
+      <li>
+        <h3>Öppna projektet och kolla läget</h3>
+        <p>Öppna appens mapp i Claude-appen (fliken <em>Code</em>) eller ChatGPT-appen (<em>Codex</em>). Börja med en ny session och fråga:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Vilken branch är jag på, finns det ändringar som inte är sparade, och är allt pushat till GitHub? Ändra ingenting.</pre></div>
+        <p>Står det att du har osparade ändringar? Be agenten spara dem med en commit och pusha, så att du börjar från ett rent läge på <code>main</code>.</p>
+      </li>
+
+      <li>
+        <h3>Skapa minneslappen CLAUDE.md</h3>
+        <p>Skriv <code>/init</code> i chatten och tryck Enter. Agenten läser igenom projektet och skriver filen <code>CLAUDE.md</code> med det viktigaste om appen. Använder du Codex heter filen <code>AGENTS.md</code>, och du kan också skriva <code>/init</code> där.</p>
+        <p>Öppna filen i VS Code och läs den. Stämmer det? Lägg till två regler längst ner, med egna ord:</p>
+        <div class="code wrap"><span class="label">Lägg till i CLAUDE.md</span>
+<pre>## Arbetssätt
+- Jobba alltid på en ny branch, aldrig direkt på main.
+- När du är klar: pusha branchen och öppna en pull request med gh.</pre></div>
+        <p>Nu behöver du inte skriva det i varje prompt. Filen följer med till alla framtida sessioner.</p>
+      </li>
+
+      <li>
+        <h3>Välj en funktion och skriv prompten</h3>
+        <p>Välj något litet som går att göra på en kvart. Några idéer:</p>
+        <ul>
+          <li>Ett mörkt läge med en knapp för att byta.</li>
+          <li>En sökruta som filtrerar listan.</li>
+          <li>En knapp som exporterar allt till en fil, och en som importerar.</li>
+          <li>En räknare som visar hur många saker som finns i listan.</li>
+        </ul>
+        <p>Skriv prompten med de fem delarna från del 1. Börja gärna i en fil i VS Code, så kan du ändra i lugn och ro.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Del</th><th>Fråga dig själv</th><th>Exempel</th></tr>
+            <tr><td><strong>🎯 Mål</strong></td><td>Vad ska byggas, och varför?</td><td><em>Lägg till en sökruta i receptboken så att jag snabbt hittar ett recept.</em></td></tr>
+            <tr><td><strong>🗺️ Sammanhang</strong></td><td>Var i appen? Vad finns redan?</td><td><em>Sökrutan ska ligga ovanför receptlistan.</em></td></tr>
+            <tr><td><strong>📏 Krav och gränser</strong></td><td>Hur ska det bete sig och se ut? Vad ska inte röras?</td><td><em>Sök på både namn och ingredienser. Stora och små bokstäver spelar ingen roll. Ändra inte hur recepten sparas.</em></td></tr>
+            <tr><td><strong>✅ Klart när</strong></td><td>Hur vet ni att det fungerar?</td><td><em>Klart när jag kan skriva ”lök” och bara se recept med lök. Testa det själv i en webbläsare innan du säger att du är klar.</em></td></tr>
+            <tr><td><strong>🛠️ Arbetssätt</strong></td><td>Hur ska agenten jobba?</td><td><em>Visa en kort plan först och vänta på mitt okej.</em></td></tr>
+          </table>
+        </div>
+        <details class="alt">
+          <summary>Kolla din prompt innan du skickar den</summary>
+          <ul>
+            <li>Skulle en ny kollega förstå vad du vill ha, utan att fråga?</li>
+            <li>Står det var i appen funktionen ska finnas?</li>
+            <li>Står det något som agenten <em>inte</em> ska ändra?</li>
+            <li>Står det hur ni vet att det fungerar?</li>
+            <li>Ber du om en plan först?</li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <h3>Planläge: läs planen innan något byggs</h3>
+        <p>Välj <strong>planläget</strong> i Claude-appen innan du skickar prompten (i terminalen växlar du dit med <kbd>Shift</kbd> + <kbd>Tab</kbd>). Då får agenten läsa koden men inte ändra något. I Codex räcker det att prompten ber om en plan först.</p>
+        <p>Läs planen. Står det att den skapar en branch? Ändrar den filer du inte väntade dig? Rätta planen med ett svar i chatten, och säg <code>Kör!</code> när du är nöjd.</p>
+      </li>
+
+      <li>
+        <h3>Låt agenten öppna en pull request</h3>
+        <p>Har agenten läst din <code>CLAUDE.md</code> öppnar den en pull request av sig själv när den är klar. Annars:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Pusha branchen och öppna en pull request med gh. Skriv en tydlig beskrivning av vad du har ändrat och hur jag testar det. Ge mig länken.</pre></div>
+      </li>
+
+      <li>
+        <h3>Granska på GitHub</h3>
+        <p>Öppna länken. Du behöver inte förstå varje rad, du letar efter överraskningar:</p>
+        <ul>
+          <li><strong>Conversation:</strong> stämmer beskrivningen med det du bad om?</li>
+          <li><strong>Files changed:</strong> vilka filer har ändrats? Grönt är nytt, rött är borttaget. Är det några filer som inte borde röras, eller mycket mer kod än du väntade dig?</li>
+          <li><strong>Checks:</strong> har repot tester eller ett bygge, ser du en grön bock eller ett rött kryss längst ner.</li>
+        </ul>
+        <p>Skriv en kommentar på en rad: håll musen över raden under <em>Files changed</em> och klicka på det blå plustecknet. Till exempel <em>Kan sökrutan få samma rundade hörn som knapparna?</em> Klicka <strong>Add single comment</strong>. Be sedan agenten:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Läs kommentarerna på pull requesten och gör ändringarna. Pusha till samma branch.</pre></div>
+        <p>Ladda om sidan på GitHub. Ändringen syns i samma pull request.</p>
+      </li>
+
+      <li>
+        <h3>Andra ögon: låt en ny session granska</h3>
+        <p>Starta en <strong>ny session</strong> i samma projekt. Den har inte skrivit koden själv och ser den med fräscha ögon:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Granska den öppna pull requesten i det här repot med gh. Leta efter fel, saker som saknas och saker som kan förenklas. Ändra ingenting, berätta bara vad du hittar.</pre></div>
+        <p>Hittade den något? Be den rätta det, eller gå tillbaka till den första sessionen.</p>
+      </li>
+
+      <li>
+        <h3>Merge och publicera</h3>
+        <p>När du är nöjd: klicka på <strong>Merge pull request</strong> på GitHub, eller be agenten:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Slå ihop pull requesten med main, ta bort branchen och gå tillbaka till main lokalt.</pre></div>
+        <p>Publiceras appen på GitHub Pages ser du ändringen där om en minut eller två. Öppna den i mobilen. 🎉</p>
+      </li>
+    </ol>
+
+    <details class="alt">
+      <summary>Det gick inte som tänkt?</summary>
+      <ul>
+        <li><strong>Agenten jobbade direkt på main:</strong> den läste inte regeln, eller så saknades den. Be den: <code>Flytta mina ändringar till en ny branch och återställ main till hur den var på GitHub.</code></li>
+        <li><strong>gh säger att du inte är inloggad:</strong> kör <code>gh auth login</code> i terminalen, se <a href="../guider/github.html">guiden för GitHub</a>.</li>
+        <li><strong>Blev det helt fel?</strong> Stäng pull requesten på GitHub med <strong>Close pull request</strong>. Main har aldrig rörts. Börja om med en ny session och en bättre prompt.</li>
+      </ul>
+    </details>
+
+    <section>
+      <h2>Klart?</h2>
+      <ul class="checklist">
+        <li>Mitt projekt har en <code>CLAUDE.md</code> (eller <code>AGENTS.md</code>) som jag har läst och lagt till regler i</li>
+        <li>Jag har skrivit en prompt med mål, sammanhang, krav och gränser, klart när och arbetssätt</li>
+        <li>Jag har läst planen innan agenten började bygga</li>
+        <li>Jag har öppnat, kommenterat och granskat en pull request på GitHub</li>
+        <li>Pull requesten är ihopslagen med main</li>
+      </ul>
+    </section>
+
+    <nav class="guide-nav">
+      <a href="../slides/tillfalle-3-del-1.html">← Presentationen del 1</a>
+      <a href="ovning-7.html">Övning 7: Prata HTTP →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>

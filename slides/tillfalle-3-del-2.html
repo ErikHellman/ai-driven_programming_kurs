@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tillfälle 3 · Del 2: Vad är en backend?</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖥️</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/slides.css?v=12">
+  <script src="../assets/slides.js?v=7" defer></script>
+</head>
+<body>
+<a class="home" href="../index.html">⌂ Kursmaterial</a>
+<div class="deck">
+
+  <!-- 1 -->
+  <section class="title">
+    <div class="kicker">Folkuniversitetet · Tillfälle 3 · Del 2</div>
+    <h1>Vad är en<br>backend?</h1>
+    <p class="lead">Servrar, HTTP och REST, och var datan bor när den inte bara ska finnas i din webbläsare.</p>
+    <div class="badge-row">
+      <span class="badge">🖥️ Servern</span>
+      <span class="badge">✉️ HTTP</span>
+      <span class="badge">🧭 REST</span>
+      <span class="badge">🗄️ Databasen</span>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <div class="kicker">Repetition</div>
+    <h2>Det här kunde webbappen inte</h2>
+    <div class="cards two">
+      <div class="card"><span class="e">🔄</span><h3>Dela data mellan enheter</h3><p>Inköpslistan på datorn syns inte i mobilen.</p></div>
+      <div class="card"><span class="e">👥</span><h3>Dela med andra</h3><p>En gemensam lista för hela fikagänget.</p></div>
+      <div class="card"><span class="e">⏰</span><h3>Jobba när den är stängd</h3><p>Ingen kod körs när ingen har sidan öppen.</p></div>
+      <div class="card hot"><span class="e">🔑</span><h3>Hålla hemligheter</h3><p>Allt i webbläsaren kan läsas av alla.</p></div>
+    </div>
+    <p class="lead frag bottom">Svaret på alla fyra: en <span class="hl">backend</span>.</p>
+    <aside class="notes">
+      <ul>
+        <li>Samma slide som i tillfälle 2 del 1. Då sa vi ”det kräver en server”. Idag tittar vi på vad det betyder.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Frontend och backend -->
+  <section class="divider">
+    <div class="num">1</div>
+    <h2>Frontend och backend</h2>
+    <p class="lead">Matsalen och köket</p>
+  </section>
+
+  <section>
+    <div class="kicker">Frontend och backend</div>
+    <h2>Tillbaka till restaurangen</h2>
+    <div class="flow big" style="margin-top:6px">
+      <div class="box sun">🍽️ Matsalen<small><strong>frontend</strong><br>det gästen ser</small></div>
+      <div class="arrow frag">⇄</div>
+      <div class="box frag">👩‍🍳 Köket<small><strong>backend</strong><br>där jobbet görs</small></div>
+      <div class="arrow frag">⇄</div>
+      <div class="box alt frag">🥫 Skafferiet<small><strong>databasen</strong><br>där allt förvaras</small></div>
+    </div>
+    <ul class="nice" style="margin-top:40px">
+      <li class="frag"><strong>Frontend</strong> är det vi har byggt hittills: HTML, CSS och JavaScript i webbläsaren</li>
+      <li class="frag"><strong>Backend</strong> är ett program på en server. Gästen kommer aldrig in i köket, servitören (HTTP) bär beställningar och mat fram och tillbaka</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>I tillfälle 2 var restaurangen klient och server. Nu öppnar vi köksdörren.</li>
+        <li>Frontend och backend tillsammans kallas ofta fullstack.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Frontend och backend</div>
+    <h2>Vad gör en backend?</h2>
+    <div class="cards tight">
+      <div class="card frag"><span class="e">📨</span><h3>Tar emot</h3><p>Frågor från många klienter samtidigt: webben, mobilen, andra program.</p></div>
+      <div class="card frag"><span class="e">🛂</span><h3>Kontrollerar</h3><p>Vem är du? Får du göra det här? Är det du skickade rimligt?</p></div>
+      <div class="card frag"><span class="e">🗄️</span><h3>Sparar</h3><p>Data i en databas som alla klienter delar.</p></div>
+      <div class="card frag"><span class="e">🔑</span><h3>Håller hemligheter</h3><p>API-nycklar och lösenord stannar på servern och syns aldrig i webbläsaren.</p></div>
+      <div class="card frag"><span class="e">⏰</span><h3>Jobbar själv</h3><p>Skickar påminnelser, mejl och sammanställningar även när ingen tittar.</p></div>
+      <div class="card frag"><span class="e">↩️</span><h3>Svarar</h3><p>Oftast med data, inte med en färdig sida. Frontenden visar datan.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">Frontend och backend</div>
+    <h2>En server är ett program som lyssnar</h2>
+    <div class="cols">
+      <div class="snip js">
+        <span class="tag">server.js</span>
+        <div class="term"><pre><span class="k">const</span> app = express();
+
+<span class="c">// När någon frågar efter fikorna …</span>
+app.get(<span class="s">"/api/fikor"</span>, (req, res) =&gt; {
+  <span class="c">// … hämta dem ur databasen och svara</span>
+  res.json(hamtaFikor());
+});
+
+<span class="c">// Lyssna på port 3000</span>
+app.listen(<span class="s">3000</span>);</pre></div>
+      </div>
+      <ul class="nice">
+        <li class="frag">Ett program som startar och sedan <strong>väntar på frågor</strong>, dygnet runt</li>
+        <li class="frag">Skrivs ofta i JavaScript med <strong>Node.js</strong> och <strong>Express</strong>, men kan skrivas i nästan vilket språk som helst</li>
+        <li class="frag">En <strong>port</strong> är som en dörr med ett nummer. Samma dator kan ha många servrar på olika portar</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Nu förstår vi varför vi installerade Node.js första gången: det kör JavaScript utanför webbläsaren, till exempel en server.</li>
+        <li>Express är ett paket från npm som gör det enkelt att skriva en server. Agenten väljer det ofta.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Frontend och backend</div>
+    <h2>Två servrar på din dator</h2>
+    <div class="flow" style="justify-content:center;margin-top:10px">
+      <div class="box sun">🌐 Webbläsaren<small>klienten</small></div>
+      <div class="arrow">→</div>
+      <div class="box">⚡ localhost:5173<small>Vite skickar<br>frontendens filer</small></div>
+    </div>
+    <div class="flow frag" style="justify-content:center;margin-top:24px">
+      <div class="box sun">🌐 Webbläsaren<small>appens JavaScript</small></div>
+      <div class="arrow">→</div>
+      <div class="box alt">🖥️ localhost:3000<small>din backend<br>svarar med data</small></div>
+      <div class="arrow">→</div>
+      <div class="box">🗄️ fika.db<small>databasen</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:36px">Två terminalfönster, två program. Stänger du backenden fungerar sidan, men all data är borta.</p>
+    <aside class="notes">
+      <ul>
+        <li>Under utvecklingen är din dator både klient och två servrar. Agenten startar dem åt dig.</li>
+        <li>Ofta ordnar agenten så att ett kommando startar båda, till exempel npm run dev.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- HTTP -->
+  <section class="divider">
+    <div class="num">2</div>
+    <h2>HTTP</h2>
+    <p class="lead">Språket klient och server pratar</p>
+  </section>
+
+  <section>
+    <div class="kicker">HTTP</div>
+    <h2>En fråga, ett svar</h2>
+    <div class="http">
+      <div class="http-msg">
+        <div class="head">Fråga · request</div>
+        <pre><span class="m">GET</span> /api/fikor HTTP/1.1
+<span class="h">Host: localhost:3000
+Accept: application/json</span></pre>
+      </div>
+      <div class="http-msg res frag">
+        <div class="head">Svar · response</div>
+        <pre>HTTP/1.1 <span class="ok">200 OK</span>
+<span class="h">Content-Type: application/json</span>
+
+[{ <span class="k">"id"</span>: 1, <span class="k">"namn"</span>: <span class="s">"Kanelbulle"</span> },
+ { <span class="k">"id"</span>: 2, <span class="k">"namn"</span>: <span class="s">"Kaffe"</span> }]</pre>
+      </div>
+    </div>
+    <ul class="nice" style="margin-top:34px">
+      <li class="frag">Allt på webben är frågor och svar som ser ut så här, i vanlig text</li>
+      <li class="frag">Klienten frågar alltid först. Servern svarar på exakt en fråga i taget</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>HTTP står för HyperText Transfer Protocol. Ett protokoll är en överenskommelse om hur man pratar.</li>
+        <li>Det här är vad Network-fliken i Dev Tools visar. Varje rad där är en sådan fråga och ett sådant svar.</li>
+        <li>HTTPS är samma sak, men inslaget i ett krypterat kuvert så att ingen på vägen kan läsa det.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">HTTP</div>
+    <h2>Fyra delar i en fråga</h2>
+    <div class="cols">
+      <div class="http-msg">
+        <div class="head">Fråga · request</div>
+        <pre><span class="m">POST</span> /api/fikor HTTP/1.1
+<span class="h">Content-Type: application/json
+Authorization: Bearer hemlig-nyckel</span>
+
+{ <span class="k">"namn"</span>: <span class="s">"Semla"</span> }</pre>
+      </div>
+      <ul class="emoji">
+        <li class="frag"><span class="e">🏷️</span><span><strong>Metod:</strong> vad du vill göra, här <code>POST</code> för att skapa något</span></li>
+        <li class="frag"><span class="e">📍</span><span><strong>Adress:</strong> vad det gäller, här <code>/api/fikor</code></span></li>
+        <li class="frag"><span class="e">📎</span><span><strong>Headers:</strong> extra information, till exempel format och nyckel</span></li>
+        <li class="frag"><span class="e">📦</span><span><strong>Body:</strong> själva innehållet. En <code>GET</code> har ingen</span></li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Svaret har samma form: en statuskod i stället för metod och adress, sedan headers och body.</li>
+        <li>Authorization-headern är där API-nycklar och inloggningar oftast skickas.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">HTTP</div>
+    <h2>Metoderna: vad vill du göra?</h2>
+    <div class="cards four">
+      <div class="card frag"><span class="verb get">GET</span><h3 style="margin-top:14px">Hämta</h3><p>Visa alla fikor. Ändrar ingenting.</p></div>
+      <div class="card frag"><span class="verb post">POST</span><h3 style="margin-top:14px">Skapa</h3><p>Lägg till en ny fika i listan.</p></div>
+      <div class="card frag"><span class="verb put">PUT</span><h3 style="margin-top:14px">Ändra</h3><p>Byt namn på en fika. <code>PATCH</code> ändrar en del.</p></div>
+      <div class="card frag"><span class="verb del">DELETE</span><h3 style="margin-top:14px">Ta bort</h3><p>Stryk en fika från listan.</p></div>
+    </div>
+    <p class="lead frag bottom">När du skriver en adress i webbläsaren gör den alltid en <code>GET</code>.</p>
+    <aside class="notes">
+      <ul>
+        <li>Det här är skapa, läsa, ändra och ta bort. På engelska CRUD: Create, Read, Update, Delete. Nästan alla appar är CRUD i grunden.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">HTTP</div>
+    <h2>Statuskoder: hur gick det?</h2>
+    <div class="cards tight">
+      <div class="card frag"><span class="e">✅</span><h3>200 OK</h3><p>Det gick bra, här är svaret.</p></div>
+      <div class="card frag"><span class="e">🆕</span><h3>201 Created</h3><p>Det gick bra, något nytt har skapats.</p></div>
+      <div class="card frag"><span class="e">🙅</span><h3>400 Bad Request</h3><p>Det du skickade var fel, till exempel ett tomt namn.</p></div>
+      <div class="card frag"><span class="e">🔒</span><h3>401 / 403</h3><p>Vem är du? / Du får inte göra det här.</p></div>
+      <div class="card frag"><span class="e">🔍</span><h3>404 Not Found</h3><p>Det finns inget på den adressen.</p></div>
+      <div class="card frag"><span class="e">💥</span><h3>500 Server Error</h3><p>Något gick sönder i backenden.</p></div>
+    </div>
+    <p class="small bottom">Tumregel: 2 = gick bra, 3 = titta någon annanstans, 4 = klientens fel, 5 = serverns fel.</p>
+    <aside class="notes">
+      <ul>
+        <li>Vi såg 200, 304, 404 och 500 i Network-fliken förra gången. Nu kommer 201, 400, 401 och 403 till.</li>
+        <li>401 såg vi också när OpenWeatherMap-nyckeln inte var aktiv än.</li>
+        <li>Vid 500: titta i terminalen där backenden körs. Där står felet, inte i webbläsaren.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">HTTP</div>
+    <h2>JSON: data som text</h2>
+    <div class="cols">
+      <div class="snip">
+        <span class="tag">JSON</span>
+        <div class="term"><pre>[
+  {
+    <span class="k">"id"</span>: 1,
+    <span class="k">"namn"</span>: <span class="s">"Kanelbulle"</span>,
+    <span class="k">"antal"</span>: 12,
+    <span class="k">"glutenfri"</span>: false
+  },
+  {
+    <span class="k">"id"</span>: 2,
+    <span class="k">"namn"</span>: <span class="s">"Kaffe"</span>,
+    <span class="k">"antal"</span>: 8,
+    <span class="k">"glutenfri"</span>: true
+  }
+]</pre></div>
+      </div>
+      <ul class="nice">
+        <li class="frag">Det vanligaste formatet för data mellan frontend och backend</li>
+        <li class="frag"><code>[ ]</code> är en lista, <code>{ }</code> är en sak med egenskaper: namn och värde</li>
+        <li class="frag">Text står inom citattecken, siffror och <code>true</code>/<code>false</code> utan</li>
+        <li class="frag">Lätt för både människor och program att läsa</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>JSON står för JavaScript Object Notation. Vi såg det i Application-fliken förra gången: localStorage sparade fikalistan som JSON.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- REST -->
+  <section class="divider">
+    <div class="num">3</div>
+    <h2>REST</h2>
+    <p class="lead">Ett sätt att ordna adresserna</p>
+  </section>
+
+  <section>
+    <div class="kicker">REST</div>
+    <h2>Varje sak har en adress</h2>
+    <div class="cols">
+      <div class="files">
+        <div>🌐 localhost:3000</div>
+        <div class="in">📁 /api/fikor <span class="note-tag">alla fikor</span></div>
+        <div class="in2">📄 /api/fikor/1 <span class="note-tag">kanelbullen</span></div>
+        <div class="in2">📄 /api/fikor/2 <span class="note-tag">kaffet</span></div>
+        <div class="in frag">📁 /api/personer</div>
+        <div class="in2 frag">📄 /api/personer/7</div>
+      </div>
+      <ul class="nice">
+        <li class="frag"><strong>REST</strong> är ett mönster för hur ett API ordnar sina adresser</li>
+        <li class="frag">Sakerna kallas <strong>resurser</strong>: fikor, personer, recept</li>
+        <li class="frag">Adressen säger <em>vad</em>, metoden säger <em>vad du vill göra</em> med det</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>REST är inget program, bara en överenskommelse om hur adresserna ska se ut. De flesta API:er man stöter på följer det, till exempel GitHubs och OpenWeatherMaps.</li>
+        <li>API betydde ”ett sätt för program att prata med varandra”. Ett REST-API är ett sådant, över HTTP.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">REST</div>
+    <h2>Metod + adress = handling</h2>
+    <table class="rest">
+      <tr><th>Metod</th><th>Adress</th><th>Betyder</th><th>Svar</th></tr>
+      <tr class="frag"><td><span class="verb get">GET</span></td><td><code>/api/fikor</code></td><td>Hämta alla fikor</td><td>200 + lista</td></tr>
+      <tr class="frag"><td><span class="verb get">GET</span></td><td><code>/api/fikor/2</code></td><td>Hämta fika nummer 2</td><td>200 eller 404</td></tr>
+      <tr class="frag"><td><span class="verb post">POST</span></td><td><code>/api/fikor</code></td><td>Skapa en ny fika</td><td>201 + den nya</td></tr>
+      <tr class="frag"><td><span class="verb put">PUT</span></td><td><code>/api/fikor/2</code></td><td>Ändra fika nummer 2</td><td>200</td></tr>
+      <tr class="frag"><td><span class="verb del">DELETE</span></td><td><code>/api/fikor/2</code></td><td>Ta bort fika nummer 2</td><td>204, tomt svar</td></tr>
+    </table>
+    <aside class="notes">
+      <ul>
+        <li>Det här är hela API:et för en enkel app. Fem rader. Agenten skriver dem, men du kan läsa den här tabellen och förstå vad appen kan.</li>
+        <li>Be agenten: ”Visa mig en tabell över alla adresser i API:et.” Det är ett utmärkt sätt att granska en backend.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">REST</div>
+    <h2>Frontenden frågar med fetch</h2>
+    <div class="cols">
+      <div class="snip js">
+        <span class="tag">app.js · i webbläsaren</span>
+        <div class="term"><pre><span class="c">// Lägg till en fika</span>
+<span class="k">const</span> svar = <span class="k">await</span> fetch(<span class="s">"/api/fikor"</span>, {
+  method: <span class="s">"POST"</span>,
+  headers: { <span class="s">"Content-Type"</span>: <span class="s">"application/json"</span> },
+  body: JSON.stringify({ namn: <span class="s">"Semla"</span> }),
+});
+
+<span class="k">if</span> (svar.status === 201) {
+  visaFikor();
+}</pre></div>
+      </div>
+      <ul class="nice">
+        <li class="frag"><code>fetch</code> är webbläsarens sätt att skicka en HTTP-fråga från JavaScript</li>
+        <li class="frag">Känner du igen delarna? Metod, adress, headers och body</li>
+        <li class="frag">Den syns som typ <strong>fetch</strong> i Network-fliken. Klicka på raden för att se frågan och svaret</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Samma sak som väderappen gjorde mot OpenWeatherMap. Skillnaden är att servern nu är din egen.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Prova själv</div>
+    <h2>Prata HTTP från terminalen</h2>
+    <div class="term" style="font-size:18px;flex:none"><div class="bar"><i></i><i></i><i></i></div><pre><span class="p">$</span> curl https://jsonplaceholder.typicode.com/users/1
+<span class="ok">{ "id": 1, "name": "Leanne Graham", "username": "Bret", … }</span>
+
+<span class="p">$</span> curl -i https://jsonplaceholder.typicode.com/users/999
+<span class="ok">HTTP/2 404</span>
+<span class="c"># -i visar svarets första rad och headers också</span>
+
+<span class="p">$</span> curl -X POST localhost:3000/api/fikor -H "Content-Type: application/json" -d '{"namn":"Semla"}'
+<span class="c"># så testar du din egen backend utan någon frontend</span></pre></div>
+    <p class="lead frag" style="margin-top:20px;font-size:28px"><code>curl</code> finns på både Windows och Mac. Det är också så agenten testar backenden.</p>
+    <aside class="notes">
+      <ul>
+        <li>Visa live. JSONPlaceholder är ett gratis övnings-API som vi använder i övning 7. Det låtsas spara det du skickar.</li>
+        <li>I PowerShell på Windows: skriv curl.exe i stället för curl, annars används ett annat inbyggt kommando. Det står i övning 7.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Data -->
+  <section class="divider">
+    <div class="num">4</div>
+    <h2>Var bor datan?</h2>
+    <p class="lead">Från arbetsminne till databas</p>
+  </section>
+
+  <section>
+    <div class="kicker">Datalagring</div>
+    <h2>Fyra ställen att spara data på</h2>
+    <div class="cards four">
+      <div class="card frag"><span class="e">💭</span><h3>Minnet</h3><p>Enklast, men allt försvinner när servern startas om.</p></div>
+      <div class="card frag"><span class="e">📄</span><h3>En fil</h3><p>Till exempel <code>fika.json</code>. Okej för lite data och en användare i taget.</p></div>
+      <div class="card sun frag"><span class="e">🗄️</span><h3>En databas</h3><p><strong>SQLite</strong> är en hel databas i en enda fil. Perfekt för att börja.</p></div>
+      <div class="card frag"><span class="e">☁️</span><h3>En databastjänst</h3><p><strong>PostgreSQL</strong> hos till exempel Supabase. För appar på riktigt.</p></div>
+    </div>
+    <p class="lead frag bottom">Idag: SQLite. Samma tänk gäller för de stora databaserna.</p>
+    <aside class="notes">
+      <ul>
+        <li>localStorage från förra gången var också ett sätt att spara, men i webbläsaren. Nu sparar vi på servern, så att alla klienter ser samma data.</li>
+        <li>Node har SQLite inbyggt (node:sqlite), så inga extra installationer behövs.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Datalagring</div>
+    <h2>En databas är tabeller</h2>
+    <div class="cols wide-left">
+      <table class="dbt">
+        <caption>Tabellen fikor</caption>
+        <tr><th>id</th><th>namn</th><th>antal</th><th>tillagd_av</th></tr>
+        <tr><td class="num">1</td><td>Kanelbulle</td><td class="num">12</td><td>Anna</td></tr>
+        <tr><td class="num">2</td><td>Kaffe</td><td class="num">8</td><td>Ali</td></tr>
+        <tr><td class="num">3</td><td>Chokladboll</td><td class="num">6</td><td>Anna</td></tr>
+        <tr class="new frag"><td class="num">4</td><td>Semla</td><td class="num">10</td><td>Kim</td></tr>
+      </table>
+      <ul class="nice">
+        <li class="frag">Som ett kalkylark: en <strong>tabell</strong> per sorts sak, en <strong>rad</strong> per sak</li>
+        <li class="frag"><strong>Kolumnerna</strong> bestäms i förväg: namn är text, antal är ett tal</li>
+        <li class="frag">Varje rad får ett unikt <strong>id</strong>. Det är siffran i <code>/api/fikor/4</code></li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Hur tabellerna ser ut kallas databasens schema. Agenten föreslår det i sin plan. Läs det: saknas en kolumn du behöver?</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Datalagring</div>
+    <h2>SQL: språket databasen förstår</h2>
+    <div class="cols">
+      <div class="snip">
+        <span class="tag">SQL</span>
+        <div class="term"><pre><span class="c">-- Hämta alla fikor, flest först</span>
+<span class="k">SELECT</span> * <span class="k">FROM</span> fikor
+<span class="k">ORDER BY</span> antal <span class="k">DESC</span>;
+
+<span class="c">-- Lägg till en ny</span>
+<span class="k">INSERT INTO</span> fikor (namn, antal)
+<span class="k">VALUES</span> (<span class="s">'Semla'</span>, 10);
+
+<span class="c">-- Ta bort nummer 2</span>
+<span class="k">DELETE FROM</span> fikor <span class="k">WHERE</span> id = 2;</pre></div>
+      </div>
+      <ul class="nice">
+        <li class="frag">Backenden översätter HTTP-frågor till SQL</li>
+        <li class="frag"><code>GET</code> blir <code>SELECT</code>, <code>POST</code> blir <code>INSERT</code>, <code>DELETE</code> blir <code>DELETE</code></li>
+        <li class="frag">Agenten skriver all SQL. Det räcker att du känner igen den</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>SQL uttalas ”es-ku-ell” eller ”sequel”. Språket är 50 år gammalt och finns överallt.</li>
+        <li>Med ett verktyg som DB Browser for SQLite kan man öppna databasfilen och titta i tabellerna, som i ett kalkylark.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Hela kedjan</div>
+    <h2>Någon lägger till en semla</h2>
+    <div class="flow" style="justify-content:center">
+      <div class="box sun">🖱️ Klick<small>Kim trycker<br>Lägg till</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">✉️ POST<small>/api/fikor<br>{"namn":"Semla"}</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🛂 Backenden<small>kollar att namnet<br>inte är tomt</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🗄️ INSERT<small>ny rad i<br>tabellen</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">✅ 201<small>listan visas<br>på nytt</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:44px">Anna laddar om i sin mobil: semlan finns där. Datan bor inte längre i webbläsaren.</p>
+    <aside class="notes">
+      <ul>
+        <li>Det här är svaret på problemet från tillfälle 2: inköpslistan på datorn syns nu i mobilen.</li>
+        <li>Om något går fel kan du följa kedjan: syns frågan i Network? Vilken statuskod? Står det något i backendens terminal?</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Verkligheten -->
+  <section class="divider">
+    <div class="num">5</div>
+    <h2>Backend på riktigt</h2>
+    <p class="lead">Säkerhet, felsökning och publicering</p>
+  </section>
+
+  <section>
+    <div class="kicker">Säkerhet</div>
+    <h2>Lita aldrig på klienten</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">🕵️</span><span><strong>Vem som helst kan skicka vad som helst</strong> till din backend, med curl, utan att gå via din fina frontend</span></li>
+      <li class="frag"><span class="e">🛂</span><span><strong>Backenden kontrollerar allt:</strong> tomma fält, för långa texter, fel typ av data</span></li>
+      <li class="frag"><span class="e">🔑</span><span><strong>Hemligheter bor på servern</strong> i en <code>.env</code>-fil som aldrig hamnar i Git. Nu kan nyckeln äntligen hållas hemlig</span></li>
+      <li class="frag"><span class="e">🚪</span><span><strong>Publicerar du?</strong> Då behövs inloggning, annars kan alla ändra i din data</span></li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Koppla till API-nycklarna förra gången: i en webbapp syns nyckeln. Med en backend kan frontenden fråga din server, som i sin tur frågar OpenWeatherMap med nyckeln. Nyckeln lämnar aldrig servern.</li>
+        <li>Skriv in i prompten: ”Kontrollera all data som kommer in till API:et och svara med 400 och ett tydligt felmeddelande om något är fel.”</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Felsökning</div>
+    <h2>Vanliga fel och vad de betyder</h2>
+    <div class="cards two">
+      <div class="card frag"><span class="e">🔌</span><h3>Failed to fetch</h3><p>Frontenden når inte backenden. Är servern igång? Rätt port?</p></div>
+      <div class="card frag"><span class="e">🚧</span><h3>CORS error</h3><p>Webbläsaren stoppar frågan för att frontend och backend har olika adresser. Ge felet till agenten.</p></div>
+      <div class="card frag"><span class="e">🚪</span><h3>EADDRINUSE</h3><p>Porten är upptagen. En gammal server kör redan. Stäng den eller byt port.</p></div>
+      <div class="card frag"><span class="e">💥</span><h3>500 i Network</h3><p>Felet syns inte i webbläsaren. Titta i <strong>terminalen där backenden körs</strong>.</p></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>CORS är det klassiska backendfelet. Det är en säkerhetsfunktion i webbläsaren, och lösningen är en inställning i backenden. Agenten vet hur.</li>
+        <li>Med en backend finns det två ställen att leta efter fel: Console i webbläsaren och backendens terminal. Ge agenten båda.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Publicering</div>
+    <h2>GitHub Pages räcker inte längre</h2>
+    <div class="cols wide-left">
+      <ul class="nice">
+        <li>GitHub Pages skickar bara <strong>färdiga filer</strong>. Den kan inte köra ett program</li>
+        <li class="frag">En backend behöver en dator som alltid är på: en <strong>molntjänst</strong> som Render, Railway eller Fly.io</li>
+        <li class="frag">Databasen behöver ofta en egen tjänst, till exempel Supabase</li>
+        <li class="frag">Gratisnivåerna somnar ofta när ingen använder dem och har gränser. Läs villkoren</li>
+      </ul>
+      <div class="card sun">
+        <span class="e">🏠</span>
+        <h3>Idag: localhost</h3>
+        <p>Vi kör backenden på vår egen dator. Det räcker för att förstå hur allt hänger ihop.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Fråga agenten: ”Hur kan jag publicera den här appen med backend gratis, och vad är begränsningarna?” Den vet vilka tjänster som passar.</li>
+        <li>En SQLite-fil på en gratis molntjänst kan försvinna vid omstart. Därför används ofta en separat databastjänst när man publicerar.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Sammanfattning</div>
+    <h2>Det här tar vi med oss</h2>
+    <div class="layers">
+      <div class="layer l1"><span class="e">🖥️</span><b>Backend</b><span>Ett program på en server som tar emot, kontrollerar, sparar och svarar.</span></div>
+      <div class="layer l2"><span class="e">✉️</span><b>HTTP</b><span>Fråga och svar: metod, adress, headers, body. Statuskoden säger hur det gick.</span></div>
+      <div class="layer l3"><span class="e">🧭</span><b>REST</b><span>Varje resurs har en adress. Metoden säger vad du vill göra.</span></div>
+      <div class="layer l4"><span class="e">🗄️</span><b>Databas</b><span>Tabeller med rader. Backenden översätter HTTP till SQL.</span></div>
+    </div>
+  </section>
+
+  <!-- Övningar -->
+  <section class="divider">
+    <div class="num">🔭</div>
+    <h2>Övning 7: Prata HTTP</h2>
+    <p class="lead">Frågor och svar med curl och Dev Tools · 15 minuter</p>
+  </section>
+
+  <section>
+    <div class="kicker">Övning 7</div>
+    <h2>Fem uppdrag</h2>
+    <div class="cols wide-left">
+      <ul class="emoji">
+        <li><span class="e">📖</span><span>Hämta JSON med webbläsaren och <code>curl</code></span></li>
+        <li><span class="e">🔍</span><span>Framkalla en <code>404</code> och läs statusraden</span></li>
+        <li><span class="e">📮</span><span>Skicka en <code>POST</code> och få en <code>201</code> tillbaka</span></li>
+        <li><span class="e">📡</span><span>Hitta samma frågor i Network-fliken</span></li>
+        <li><span class="e">🧭</span><span>Läs ett REST-API och gissa adresserna</span></li>
+      </ul>
+      <div class="card sun">
+        <span class="e">🔗</span>
+        <h3>Uppdragen</h3>
+        <p>Kurssidan → <strong>Övning 7</strong>. Kommandon för både Windows och Mac.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="divider">
+    <div class="num">🍰</div>
+    <h2>Övning 8: En app med egen backend</h2>
+    <p class="lead">Fyra sessioner, fyra pull requests · resten av lektionen</p>
+  </section>
+
+  <section>
+    <div class="kicker">Övning 8</div>
+    <h2>Allt från idag på en gång</h2>
+    <div class="flow" style="justify-content:center">
+      <div class="box sun">📋 Planera<small>frågor, PLAN.md<br>och CLAUDE.md</small></div>
+      <div class="arrow">→</div>
+      <div class="box">🗄️ Backend<small>REST-API, SQLite<br>och tester</small></div>
+      <div class="arrow">→</div>
+      <div class="box">🎨 Frontend<small>React som<br>pratar med API:et</small></div>
+      <div class="arrow">→</div>
+      <div class="box alt">🔍 Granska<small>ny session<br>letar fel</small></div>
+    </div>
+    <div class="cards four" style="margin-top:34px">
+      <div class="card"><span class="e">☕</span><h3>Fikalistan</h3><p>för jobbet</p></div>
+      <div class="card"><span class="e">📚</span><h3>Bokcirkeln</h3><p>böcker och betyg</p></div>
+      <div class="card"><span class="e">🛒</span><h3>Inköpslistan</h3><p>för hela familjen</p></div>
+      <div class="card"><span class="e">🏆</span><h3>Topplistan</h3><p>för spelkvällen</p></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Varje steg är en egen session och en egen PR. Startprompten för session 1 finns på kurssidan, sedan skriver deltagarna själva.</li>
+        <li>Hinner man inte allt: backenden räcker. Testa den med curl.</li>
+        <li>Övning 9, Länkförkortaren, är en extraövning för den som vill bygga ett eget API från en kravlista.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Till nästa gång</div>
+    <h2>Hemuppgift</h2>
+    <ul class="emoji">
+      <li><span class="e">🍰</span><span>Gör klart <strong>övning 8</strong>, minst backenden med tester</span></li>
+      <li><span class="e">📌</span><span>Läs <code>CLAUDE.md</code> i dina projekt. Lägg till en regel du saknade</span></li>
+      <li><span class="e">📡</span><span>Öppna Network på en sida du använder ofta. Hittar du <code>fetch</code>-frågor med JSON?</span></li>
+      <li><span class="e">🔗</span><span>Extra: <strong>övning 9</strong>, bygg Länkförkortaren från en kravlista</span></li>
+    </ul>
+    <p class="small bottom">Allt material finns på kurssidan.</p>
+  </section>
+
+  <section class="title center">
+    <div style="font-size:120px;line-height:1">🙌</div>
+    <h1>Frågor?</h1>
+    <p class="lead">Tack för idag! Vi ses nästa gång.</p>
+  </section>
+
+</div>
+</body>
+</html>

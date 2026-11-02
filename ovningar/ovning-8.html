@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Övning 8: En app med egen backend · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍰</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=5">
+  <script src="../assets/site.js?v=4" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Tillfälle 3 · Övning 8 · 60 minuter</span>
+      <h1>🍰 En app med egen backend</h1>
+      <p>Bygg en app där alla ser samma data, med en backend, en databas och en frontend. Du delar upp arbetet i flera sessioner, och varje steg blir en egen pull request.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="note tip"><p><strong>Syftet med övningen:</strong> att använda allt från idag på en gång. En plan i en fil, en session per steg, pull requests och en backend med REST-API och databas. Hinner du inte allt räcker det att backenden fungerar.</p></div>
+    <div class="note"><p><strong>Innan du börjar:</strong> du behöver Node.js, Git, ett GitHub-konto med <code>gh</code> inloggat och Claude- eller ChatGPT-appen. Kolla med <code>node --version</code> i terminalen att du har version 22.13 eller senare, annars saknas den inbyggda databasen. Se <a href="../guider/node.html">guiden för Node.js</a>.</p></div>
+
+    <ol class="steps">
+      <li>
+        <h3>Välj ett projekt</h3>
+        <p>Alla fyra projekten är samma sorts app: en lista som många delar. Välj det som låter roligast. Startprompten nedan är för fikalistan. Väljer du ett annat projekt byter du ut första stycket och raderna under <em>Funktioner</em> mot dem som står under ditt projekt, och namnet på repot.</p>
+        <details class="alt project" open>
+          <summary>☕ Fikalistan för jobbet</summary>
+          <div class="code wrap"><span class="label">Startprompt · session 1</span>
+<pre>Jag vill bygga en gemensam fikalista för jobbet: en webbapp med en egen backend och databas, så att alla ser samma lista. Planera bara, skriv ingen kod än.
+
+Funktioner:
+- Jag kan skriva mitt namn och vad jag tar med till fikat.
+- Alla ser samma lista, med det senaste först.
+- Jag kan ta bort något jag har lagt till.
+- Listan finns kvar när servern startas om.
+
+Teknik:
+- Backend: Node.js med Express och ett REST-API under /api.
+- Databas: SQLite med Nodes inbyggda modul node:sqlite. Databasfilen ska inte in i Git.
+- Backenden kontrollerar all data som kommer in och svarar med 400 och ett tydligt felmeddelande på svenska om något är fel.
+- Frontend: React och Vite med JavaScript. Vite ska skicka vidare /api till backenden, så att det inte blir några CORS-fel.
+- Backend och frontend i samma repo, i mapparna server och client. Ett kommando i projektets rot ska starta båda.
+- Tester för API:et med Nodes inbyggda testverktyg (node --test), och ett GitHub Actions-workflow som kör testerna på varje pull request.
+- Svenska i hela gränssnittet, mobilanpassat och en glad design med varma färger.
+
+Så här jobbar vi:
+- Ställ frågor till mig tills du förstår vad jag vill ha.
+- Skriv sedan planen i PLAN.md. Dela upp den i steg som var och en går att göra i en egen session och blir en egen pull request. Varje steg ska ha en rad om hur vi vet att det är klart.
+- Ta med en tabell över API:ets adresser (metod, adress, vad den gör och vilka statuskoder den svarar med) och hur tabellerna i databasen ska se ut.
+- Skriv en kort CLAUDE.md med det som alltid gäller i projektet. Bland annat att varje steg görs på en egen branch och avslutas med en pull request som öppnas med gh, att testerna ska gå igenom innan pull requesten öppnas, och att steget bockas av i PLAN.md.
+- Spara med Git, skapa ett publikt repo på GitHub med gh som heter fikalistan-backend och pusha.</pre></div>
+        </details>
+        <details class="alt project">
+          <summary>📚 Bokcirkeln</summary>
+          <div class="code wrap"><span class="label">Byt ut mot</span>
+<pre>Jag vill bygga en app för vår bokcirkel: en webbapp med en egen backend och databas, så att alla medlemmar ser samma böcker och betyg. Planera bara, skriv ingen kod än.
+
+Funktioner:
+- Jag kan lägga till en bok med titel och författare.
+- Jag kan ge en bok ett betyg från 1 till 5 och en kort kommentar, under mitt namn.
+- Alla ser samma lista med böcker, med snittbetyget och antal betyg. Bäst betyg först.
+- Jag kan klicka på en bok och se allas betyg och kommentarer.
+- Allt finns kvar när servern startas om.</pre></div>
+          <p>Repot kan heta <code>bokcirkeln</code>.</p>
+        </details>
+        <details class="alt project">
+          <summary>🛒 Inköpslistan för familjen</summary>
+          <div class="code wrap"><span class="label">Byt ut mot</span>
+<pre>Jag vill bygga en gemensam inköpslista för familjen: en webbapp med en egen backend och databas, så att alla ser samma lista i sina mobiler. Planera bara, skriv ingen kod än.
+
+Funktioner:
+- Jag kan lägga till en vara, och ett antal om jag vill.
+- Jag kan bocka av en vara när den ligger i korgen. Avbockade varor hamnar längst ner.
+- Jag kan rensa bort alla avbockade varor med en knapp.
+- Alla ser samma lista, och den uppdateras när jag laddar om sidan.
+- Listan finns kvar när servern startas om.</pre></div>
+          <p>Repot kan heta <code>inkopslistan</code>.</p>
+        </details>
+        <details class="alt project">
+          <summary>🏆 Topplistan för spelkvällen</summary>
+          <div class="code wrap"><span class="label">Byt ut mot</span>
+<pre>Jag vill bygga en topplista för våra spelkvällar: en webbapp med en egen backend och databas, så att alla ser samma resultat. Planera bara, skriv ingen kod än.
+
+Funktioner:
+- Jag kan lägga till ett resultat: vem, vilket spel, poäng och datum.
+- Jag kan välja ett spel och se topp tio för det spelet.
+- Jag ser vem som har vunnit flest spelkvällar totalt.
+- Jag kan ta bort ett resultat om jag skrev fel.
+- Allt finns kvar när servern startas om.</pre></div>
+          <p>Repot kan heta <code>topplistan</code>.</p>
+        </details>
+      </li>
+
+      <li>
+        <h3>📋 Session 1: planera</h3>
+        <p>Skapa en tom mapp, till exempel <code>kurs/fikalistan-backend</code>, och öppna den i Claude-appen (fliken <em>Code</em>) eller ChatGPT-appen (<em>Codex</em>). Klistra in startprompten.</p>
+        <p>Agenten ställer frågor. Svara på dem. Den skriver sedan <code>PLAN.md</code> och <code>CLAUDE.md</code>, skapar repot och pushar. Öppna båda filerna i VS Code och läs dem:</p>
+        <ul>
+          <li>Hur många steg blev det? Är det ungefär <em>backend</em>, <em>frontend</em> och <em>finputs</em>? Är ett steg för stort, be agenten dela upp det.</li>
+          <li>Läs tabellen över API:et. Känner du igen metoderna och statuskoderna från del 2? Saknas något användaren ska kunna göra?</li>
+          <li>Läs hur databasens tabeller ser ut. Finns det en kolumn för allt som ska sparas?</li>
+        </ul>
+        <p>Vill du ändra något, säg det i chatten och be agenten uppdatera filerna och pusha.</p>
+      </li>
+
+      <li>
+        <h3>🗄️ Session 2: backenden</h3>
+        <p>Starta en <strong>ny session</strong> i samma mapp. Agenten minns ingenting från session 1, men den läser <code>CLAUDE.md</code> och kan läsa planen:</p>
+        <div class="code wrap"><span class="label">Prompt · session 2, 3 och 4</span>
+<pre>Läs PLAN.md och gör nästa steg som inte är avbockat. Visa en kort plan för steget först och vänta på mitt okej. När du är klar: kör testerna, starta appen så att jag kan prova den, bocka av steget i PLAN.md, öppna en pull request med gh och ge mig länken.</pre></div>
+        <p>Samma prompt fungerar för alla steg. Det är planen i filen som säger vad som ska göras.</p>
+        <p>När backenden kör: öppna <code>http://localhost:3000/api/fikor</code> i webbläsaren (adressen kan se lite annorlunda ut i din app, kolla tabellen i <code>PLAN.md</code>). Du ser JSON, precis som i övning 7. Vill du testa mer, be agenten:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Ge mig curl-kommandon som jag kan köra själv för att prova varje adress i API:et. Jag använder Windows/Mac (välj ett). Förklara vilken statuskod jag ska få.</pre></div>
+      </li>
+
+      <li>
+        <h3>🔀 Granska och slå ihop</h3>
+        <p>Öppna länken till pull requesten på GitHub.</p>
+        <ul>
+          <li><strong>Checks:</strong> kör GitHub Actions testerna? Vänta på grön bock. Rött kryss? Be agenten: <code>Kolla varför kontrollerna på pull requesten misslyckas och rätta det.</code></li>
+          <li><strong>Files changed:</strong> ser du mapparna <code>server</code> och testerna? Är databasfilen med? Det ska den inte vara.</li>
+        </ul>
+        <p>När allt är grönt: <strong>Merge pull request</strong>. Be sedan agenten <code>Gå tillbaka till main och hämta det senaste från GitHub.</code></p>
+      </li>
+
+      <li>
+        <h3>🎨 Session 3: frontenden</h3>
+        <p>Ny session, samma prompt som i session 2. Nu bygger agenten gränssnittet i React. När den är klar, öppna adressen den ger dig (oftast <code>http://localhost:5173</code>) och prova appen.</p>
+        <p>Öppna <strong>Network</strong> i Dev Tools och lägg till något i listan. Hittar du din <code>POST</code> och statuskoden <code>201</code>? Öppna sedan samma adress i en annan webbläsare. Syns samma lista? Det är backenden som gör det. 🎉</p>
+        <p>Granska och slå ihop pull requesten precis som förut.</p>
+      </li>
+
+      <li>
+        <h3>🔍 Session 4: andra ögon</h3>
+        <p>En ny session har inte skrivit koden själv och hittar ofta saker de tidigare missade:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Granska hela projektet med fräscha ögon. Leta efter fel, säkerhetsproblem och data som backenden inte kontrollerar. Prova också att skicka konstiga saker till API:et, till exempel ett tomt namn eller en jättelång text. Skriv vad du hittar i en lista, och fråga mig vad jag vill att du rättar.</pre></div>
+        <p>Välj det viktigaste och låt agenten rätta det på en branch med en pull request.</p>
+      </li>
+    </ol>
+
+    <details class="alt">
+      <summary>Det fungerar inte?</summary>
+      <ul>
+        <li><strong>Failed to fetch eller en tom lista:</strong> backenden kör inte. Kolla terminalen, eller be agenten starta den.</li>
+        <li><strong>CORS-fel i Console:</strong> frontenden frågar backenden direkt i stället för via Vite. Ge felet till agenten och påminn om att Vite ska skicka vidare <code>/api</code>.</li>
+        <li><strong>EADDRINUSE:</strong> en gammal server kör redan på porten. Be agenten stoppa den.</li>
+        <li><strong>500 i Network:</strong> felet står i terminalen där backenden kör. Kopiera det till agenten.</li>
+        <li><strong>node:sqlite finns inte:</strong> din Node.js är för gammal. Uppdatera enligt <a href="../guider/node.html">guiden</a> och starta om terminalen.</li>
+        <li><strong>Agenten minns inte vad ni bestämde:</strong> det står inte i <code>PLAN.md</code> eller <code>CLAUDE.md</code>. Be den skriva in det där.</li>
+      </ul>
+    </details>
+
+    <div class="note"><p><strong>Kan den publiceras?</strong> Inte på GitHub Pages, som bara skickar färdiga filer. Backenden behöver en molntjänst som kör den dygnet runt. Är du nyfiken, fråga agenten: <code>Hur kan jag publicera den här appen med backend gratis, och vad är begränsningarna?</code> Tänk på att alla som hittar adressen då kan ändra i listan, om du inte lägger till inloggning.</p></div>
+
+    <section>
+      <h2>Klart?</h2>
+      <ul class="checklist">
+        <li>Mitt projekt har en <code>PLAN.md</code> med steg och en tabell över API:et, och en <code>CLAUDE.md</code></li>
+        <li>Varje steg gjordes i en egen session och blev en egen pull request</li>
+        <li>Testerna körs av GitHub Actions på varje pull request</li>
+        <li>Jag har sett JSON från min egen backend i webbläsaren</li>
+        <li>Jag har sett min egen <code>POST</code> och statuskoden <code>201</code> i Network-fliken</li>
+        <li>Samma data syns i två olika webbläsare</li>
+      </ul>
+    </section>
+
+    <nav class="guide-nav">
+      <a href="ovning-7.html">← Övning 7</a>
+      <a href="ovning-9.html">Övning 9: Länkförkortaren →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>

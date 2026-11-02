@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Övning 9: Länkförkortaren · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔗</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=5">
+  <script src="../assets/site.js?v=4" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Tillfälle 3 · Övning 9 · extra</span>
+      <h1>🔗 Länkförkortaren</h1>
+      <p>Bygg en egen länkförkortare: klistra in en lång adress, få en kort, och se hur många som har klickat. Du får kraven och skriver prompten själv, och den här gången är det backenden som är huvudsaken.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="note tip"><p><strong>Syftet med övningen:</strong> att skriva en bra prompt för en backend, och att planera ett projekt i flera sessioner själv. Agenten bygger bara det du berättar om. Allt du glömmer kommer den att gissa på.</p></div>
+    <div class="note"><p><strong>Innan du börjar:</strong> gör gärna <a href="ovning-8.html">övning 8</a> först. Du behöver samma saker: Node.js 22.13 eller senare, Git, ett GitHub-konto med <code>gh</code> inloggat och Claude- eller ChatGPT-appen.</p></div>
+
+    <ol class="steps">
+      <li>
+        <h3>Läs kraven</h3>
+        <p>Allt här ska med i din prompt, men med dina egna ord.</p>
+        <p><strong>Vad appen gör:</strong></p>
+        <ul>
+          <li>Jag klistrar in en lång adress och får en kort, till exempel <code>http://localhost:3000/k3x9</code>.</li>
+          <li>Jag kan välja en egen kort kod, till exempel <code>semla</code>. Är koden redan tagen får jag ett tydligt felmeddelande.</li>
+          <li>När någon öppnar den korta adressen skickas hen direkt vidare till den långa.</li>
+          <li>Varje gång någon klickar räknas det. På en översiktssida ser jag alla länkar, när de skapades och hur många klick de har fått.</li>
+          <li>Jag kan ta bort en länk.</li>
+          <li>Skickar jag in något som inte är en adress får jag ett felmeddelande, och ingenting sparas.</li>
+        </ul>
+        <p><strong>Hur den byggs:</strong></p>
+        <ul>
+          <li>Node.js med Express och ett REST-API. Be agenten föreslå adresserna i API:et och visa dem som en tabell.</li>
+          <li>SQLite med Nodes inbyggda modul <code>node:sqlite</code>. Databasfilen ska inte in i Git.</li>
+          <li>Gränssnittet är en vanlig HTML-sida med CSS och JavaScript som backenden själv skickar ut. Ingen React och ingen Vite den här gången.</li>
+          <li>Tester för API:et med Nodes inbyggda testverktyg, och GitHub Actions som kör dem på varje pull request.</li>
+          <li>Koden sparas i ett eget publikt repo på GitHub, som agenten skapar med <code>gh</code>. Varje steg i planen görs på en egen branch och blir en egen pull request.</li>
+        </ul>
+      </li>
+
+      <li>
+        <h3>Förstå orden</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Ord</th><th>Vad det betyder</th></tr>
+            <tr><td><strong>Redirect</strong></td><td>När servern svarar <em>det du letar efter finns på en annan adress</em>. Webbläsaren går dit av sig själv. Det är så den korta länken skickar dig vidare.</td></tr>
+            <tr><td><strong>302 Found</strong></td><td>Statuskoden för en tillfällig redirect. Den finns också som <strong>301</strong>, permanent, men då kommer webbläsaren ihåg svaret och frågar inte servern nästa gång. Vad händer då med klickräknaren?</td></tr>
+            <tr><td><strong>409 Conflict</strong></td><td>Statuskoden när det du vill skapa krockar med något som redan finns, till exempel en kort kod som är tagen.</td></tr>
+            <tr><td><strong>Kort kod</strong></td><td>Den unika delen av den korta adressen, till exempel <code>k3x9</code>. Ofta kallad <em>slug</em> på engelska. Den måste vara unik i databasen.</td></tr>
+            <tr><td><strong>Statiska filer</strong></td><td>HTML, CSS och JavaScript som skickas som de är, som på GitHub Pages. Express kan skicka ut dem från en mapp, ofta <code>public</code>, bredvid API:et.</td></tr>
+            <tr><td><strong>Validering</strong></td><td>När backenden kontrollerar det som skickas in innan den sparar något. Är det en riktig adress? Är koden för lång? Innehåller den konstiga tecken?</td></tr>
+          </table>
+        </div>
+      </li>
+
+      <li>
+        <h3>Skriv prompten: struktur och ordning</h3>
+        <p>Det här är en planeringsprompt för session 1, som i övning 8. Agenten ska ställa frågor och skriva en plan, inte bygga. Den här ordningen fungerar bra för en backend:</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Del</th><th>Vad den ska innehålla</th></tr>
+            <tr><td><strong>1. Mål</strong></td><td>Vad du vill bygga, och att det här är en planeringssession utan kod.</td></tr>
+            <tr><td><strong>2. Funktioner</strong></td><td>Vad användaren ska kunna göra, en punkt per sak. Skriv ur användarens perspektiv: <em>Jag kan …</em></td></tr>
+            <tr><td><strong>3. API och data</strong></td><td>Be om en tabell över alla adresser med metod, vad de gör och vilka statuskoder de svarar med, och hur tabellerna i databasen ska se ut.</td></tr>
+            <tr><td><strong>4. Teknik</strong></td><td>Node.js, Express, SQLite med <code>node:sqlite</code> och en vanlig HTML-sida som backenden skickar ut.</td></tr>
+            <tr><td><strong>5. Kontroller och fel</strong></td><td>Vad backenden ska kontrollera, och vad som ska hända när något är fel. Vilken statuskod och vilket meddelande?</td></tr>
+            <tr><td><strong>6. Klart när</strong></td><td>Tester för API:et, och GitHub Actions som kör dem på varje pull request. Vad ska testerna kontrollera?</td></tr>
+            <tr><td><strong>7. Git och GitHub</strong></td><td>Ett publikt repo som agenten skapar med <code>gh</code>, vad det ska heta, och att varje steg blir en egen branch och pull request.</td></tr>
+            <tr><td><strong>8. Arbetssätt</strong></td><td>Ställ frågor först. Skriv planen i <code>PLAN.md</code> med steg som går att göra i egna sessioner. Skriv en kort <code>CLAUDE.md</code> med det som alltid gäller.</td></tr>
+          </table>
+        </div>
+        <details class="alt">
+          <summary>Kolla din prompt innan du skickar den</summary>
+          <ul>
+            <li>Står det både att man kan få en slumpad kod och välja en egen?</li>
+            <li>Står det vad som ska hända när koden är tagen, och när adressen är ogiltig?</li>
+            <li>Står det att klicken ska räknas, och var man ser dem?</li>
+            <li>Ber du om en tabell över API:et och databasens tabeller?</li>
+            <li>Står det att gränssnittet är en vanlig HTML-sida och inte React?</li>
+            <li>Ber du om tester och GitHub Actions?</li>
+            <li>Ber du agenten skapa ett repo med <code>gh</code>, och att varje steg blir en pull request?</li>
+            <li>Står det att det här är planering, och att planen ska sparas i <code>PLAN.md</code>?</li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <h3>Session 1: granska planen</h3>
+        <p>Skapa en tom mapp, till exempel <code>kurs/lankforkortaren</code>, öppna den i Claude- eller ChatGPT-appen och klistra in din prompt. Svara på agentens frågor.</p>
+        <p>Läs sedan <code>PLAN.md</code> noga och jämför med kraven i steg 1:</p>
+        <ul>
+          <li>Vilken metod och adress används för att skapa en länk? Vilken statuskod blir det?</li>
+          <li>Hur skiljer API:et på <code>/semla</code> (en kort länk) och <code>/api/…</code> (API:et) och översiktssidan?</li>
+          <li>Har agenten valt <code>301</code> eller <code>302</code>? Räknas klicken då rätt?</li>
+        </ul>
+        <p>Rätta det som saknas, och skriv in det i din egen prompt också, så blir den bättre till nästa gång.</p>
+      </li>
+
+      <li>
+        <h3>Session 2, 3 …: bygg ett steg i taget</h3>
+        <p>Starta en ny session för varje steg i planen och skriv din egen korta prompt som ber agenten läsa <code>PLAN.md</code> och göra nästa steg. Granska varje pull request på GitHub och slå ihop den när testerna är gröna.</p>
+      </li>
+
+      <li>
+        <h3>Testa som en hacker</h3>
+        <p>När allt fungerar, försök få den att gå sönder:</p>
+        <ul>
+          <li>Skapa en länk med en kod som redan finns. Får du <code>409</code> i Network-fliken?</li>
+          <li>Skicka in <code>hej hej</code> som adress. Får du <code>400</code>?</li>
+          <li>Öppna en kort adress som inte finns. Vad händer?</li>
+          <li>Klicka på en kort länk tre gånger. Står det tre klick på översiktssidan?</li>
+          <li>Kan någon skapa en kort kod som heter <code>api</code>? Vad händer då?</li>
+        </ul>
+        <p>Hittar du ett fel? Det är en ny session, en ny branch och en ny pull request.</p>
+      </li>
+    </ol>
+
+    <section>
+      <h2>Klart?</h2>
+      <ul class="checklist">
+        <li>Jag har skrivit en egen planeringsprompt med alla krav, i en bra ordning</li>
+        <li>Projektet har en <code>PLAN.md</code> med en tabell över API:et, och en <code>CLAUDE.md</code></li>
+        <li>Varje steg blev en egen pull request med gröna tester</li>
+        <li>Korta länkar skickar mig vidare, och klicken räknas</li>
+        <li>Jag har sett <code>302</code>, <code>400</code> och <code>409</code> i Network-fliken</li>
+        <li>Jag har sparat min prompt och vet vad jag skulle göra bättre nästa gång</li>
+      </ul>
+    </section>
+
+    <nav class="guide-nav">
+      <a href="ovning-8.html">← Övning 8</a>
+      <a href="../index.html">Allt kursmaterial →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>
