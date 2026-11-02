@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Övning 10: Publicera backenden på Fly.io · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎈</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=5">
+  <script src="../assets/site.js?v=4" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Tillfälle 3 · Övning 10 · bonus</span>
+      <h1>🎈 Publicera backenden på Fly.io</h1>
+      <p>Ta appen från övning 8 ut på nätet, så att alla i fikagänget kan använda den i sina mobiler. Du installerar Fly.io:s kommandoradsverktyg, loggar in själv, och låter sedan agenten sköta resten.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="note tip"><p><strong>Syftet med övningen:</strong> att se vad som krävs för att en backend ska köra dygnet runt på en riktig server, och att låta agenten använda ett nytt verktyg åt dig.</p></div>
+    <div class="note"><p><strong>Innan du börjar:</strong> du behöver en app med egen backend, till exempel från <a href="ovning-8.html">övning 8</a> eller <a href="ovning-9.html">övning 9</a>, som fungerar på din dator och ligger på GitHub.</p></div>
+
+    <ol class="steps">
+      <li>
+        <h3>💳 Först: det kostar pengar</h3>
+        <p><a href="https://fly.io/">Fly.io</a> är en molntjänst som kör din backend på deras servrar, i datorhallar runt om i världen. Till skillnad från GitHub Pages är det <strong>inte gratis</strong>. Du betalar för den tid servern är igång, per sekund, och priserna står i dollar.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Vad</th><th>Pris</th><th>Ungefär i kronor</th></tr>
+            <tr><td>Minsta servern (<em>shared-cpu-1x</em>, 256 MB minne), igång dygnet runt</td><td>2,19 dollar i månaden</td><td>drygt 20 kronor</td></tr>
+            <tr><td>Samma server med 512 MB minne, om 256 MB inte räcker</td><td>3,69 dollar i månaden</td><td>knappt 40 kronor</td></tr>
+            <tr><td>En disk (<em>volume</em>) för databasfilen, 1 GB</td><td>0,15 dollar i månaden</td><td>under 2 kronor</td></tr>
+            <tr><td>En stoppad server</td><td>0,15 dollar per GB i månaden för dess filer</td><td>nästan inget</td></tr>
+          </table>
+        </div>
+        <p>En liten kursapp kostar alltså runt <strong>25 kronor i månaden</strong> om den alltid är igång, och mindre om den får somna när ingen använder den. Fly.io stänger av servern när ingen besöker appen och startar den igen vid nästa besök. Det första besöket efter en paus tar då ett par sekunder.</p>
+        <ul>
+          <li><strong>Provperiod:</strong> nya konton får prova utan kreditkort, i 2 timmar serverdrift eller 7 dagar, det som kommer först. Det räcker för den här övningen.</li>
+          <li><strong>Sedan:</strong> för att appen ska fortsätta köra måste du lägga in ett kreditkort. Det finns ingen gratisnivå för nya konton.</li>
+          <li><strong>Sluta betala:</strong> ta bort appen med <code>fly apps destroy</code> när du inte vill ha den kvar. Då tas servern och disken bort, och kostnaden upphör.</li>
+        </ul>
+        <div class="note warn"><p><strong>Priserna ändras.</strong> Siffrorna ovan gällde i november 2026, och Fly.io höjde till exempel priset på minne i oktober 2026. Kolla alltid <a href="https://fly.io/docs/about/pricing/">Fly.io:s prissida</a> innan du lägger in ett kort, och titta under <em>Billing</em> på ditt konto då och då.</p></div>
+      </li>
+
+      <li>
+        <h3>📦 Installera flyctl</h3>
+        <p><strong>flyctl</strong> är Fly.io:s kommandoradsverktyg, ungefär som <code>gh</code> är GitHubs. Programmet heter flyctl, men kommandot du skriver är <code>fly</code>.</p>
+        <div class="os-switch" role="group" aria-label="Välj operativsystem">
+          <button type="button" data-os="windows">Windows</button>
+          <button type="button" data-os="mac">macOS</button>
+          <button type="button" data-os="linux">Linux</button>
+        </div>
+        <p class="os-note">Vi gissade ditt operativsystem. Byt om det blev fel.</p>
+        <div data-os-only="windows">
+          <div class="code"><span class="label">PowerShell</span>
+<pre>pwsh -Command "iwr https://fly.io/install.ps1 -useb | iex"</pre></div>
+          <p>Står det att <code>pwsh</code> inte finns? Byt ut det mot <code>powershell</code>. Stäng terminalen och öppna en ny efteråt.</p>
+        </div>
+        <div data-os-only="mac">
+          <div class="code"><span class="label">Terminal</span>
+<pre>brew install flyctl</pre></div>
+        </div>
+        <div data-os-only="linux">
+          <div class="code"><span class="label">Terminal</span>
+<pre>curl -L https://fly.io/install.sh | sh</pre></div>
+          <p>Skriptet säger till om du behöver lägga till en rad i din <code>.bashrc</code> eller <code>.zshrc</code>. Gör det och öppna en ny terminal.</p>
+        </div>
+        <p>Kolla att det fungerade:</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>fly version</pre></div>
+      </li>
+
+      <li>
+        <h3>🔐 Skapa konto och logga in, själv</h3>
+        <p>Det här gör du själv i terminalen, inte agenten. Kontot är ditt och inloggningen ska aldrig gå via chatten.</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>fly auth signup</pre></div>
+        <p>Webbläsaren öppnas. Skapa kontot, gärna genom att logga in med GitHub, och spara det i lösenordshanteraren. Har du redan ett konto skriver du <code>fly auth login</code> i stället. Kolla sedan:</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>fly auth whoami</pre></div>
+        <p>Står din e-postadress där är du inloggad. Nu kan agenten använda <code>fly</code> åt dig, eftersom den kör kommandon i samma terminal och med samma inloggning som du. Precis som med <code>gh</code>.</p>
+      </li>
+
+      <li>
+        <h3>🤖 Låt agenten publicera</h3>
+        <p>Öppna projektet i Claude- eller ChatGPT-appen och starta en <strong>ny session</strong>. Skicka en prompt som beskriver vad du vill ha. Den här fungerar för appen från övning 8:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Jag vill publicera den här appen på Fly.io. Jag har installerat flyctl och loggat in, så du kan använda kommandot fly. Kör fly auth whoami först för att kontrollera det.
+
+Krav:
+- Frontend och backend ska köra på samma server: backenden bygger och skickar ut frontendens filer, så att allt har samma adress och vi slipper CORS-problem.
+- SQLite-databasen ska ligga på en Fly-volym på 1 GB, så att datan finns kvar när appen startas om eller publiceras på nytt.
+- Kör exakt en server, med minsta storleken (shared-cpu-1x, 256 MB). Den får stängas av när ingen använder appen och startas igen vid nästa besök.
+- Välj regionen Stockholm (arn) om den finns, annars den närmaste i Europa.
+- Läs Fly.io:s dokumentation på https://fly.io/docs/ om du är osäker på något.
+
+Arbetssätt:
+- Jobba på en ny branch. Visa först en plan med alla fly-kommandon du tänker köra och vad de kostar, och vänta på mitt okej.
+- Fråga mig innan varje kommando som skapar något som kostar pengar.
+- När appen är publicerad: ge mig adressen, öppna en pull request och skriv i README.md hur man publicerar en ny version och hur man tar bort appen.</pre></div>
+        <p>Läs planen noga. Ser du kommandon som <code>fly launch</code>, <code>fly volumes create</code> och <code>fly deploy</code>? Agenten kommer att skapa några nya filer, bland annat <code>fly.toml</code> med inställningarna för Fly.io och en <code>Dockerfile</code> som beskriver hur servern byggs. Fråga agenten vad de gör om du är nyfiken.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Kommando</th><th>Vad det gör</th></tr>
+            <tr><td><code>fly launch</code></td><td>Skapar appen på Fly.io och skriver <code>fly.toml</code>. Körs en gång.</td></tr>
+            <tr><td><code>fly volumes create</code></td><td>Skapar en disk som databasfilen kan ligga på.</td></tr>
+            <tr><td><code>fly deploy</code></td><td>Bygger appen och publicerar den. Körs varje gång du vill publicera en ny version.</td></tr>
+            <tr><td><code>fly status</code></td><td>Visar om servern är igång.</td></tr>
+            <tr><td><code>fly logs</code></td><td>Visar backendens utskrifter. Här hittar du felet vid en <code>500</code>.</td></tr>
+            <tr><td><code>fly secrets set</code></td><td>Sparar en hemlighet, till exempel en API-nyckel, så att bara servern kan läsa den.</td></tr>
+            <tr><td><code>fly apps destroy</code></td><td>Tar bort appen helt. Då slutar den kosta.</td></tr>
+          </table>
+        </div>
+      </li>
+
+      <li>
+        <h3>🌍 Prova på riktigt</h3>
+        <p>Öppna adressen agenten ger dig, något i stil med <code>https://fikalistan-anna.fly.dev</code>. Öppna den sedan i mobilen och be någon bredvid dig göra samma sak. Lägg till en fika. Syns den hos alla? 🎉</p>
+        <p>Öppna Network i Dev Tools. Frågorna går nu till <code>/api</code> på samma adress, men servern står i en datorhall i stället för på din dator.</p>
+        <details class="alt">
+          <summary>Det fungerar inte?</summary>
+          <ul>
+            <li><strong>Sidan laddar länge första gången:</strong> servern sov. Vänta några sekunder och ladda om.</li>
+            <li><strong>500 eller en tom sida:</strong> be agenten köra <code>fly logs</code> och läsa felet.</li>
+            <li><strong>Datan försvann efter en ny publicering:</strong> databasen ligger inte på volymen. Be agenten kontrollera var databasfilen sparas.</li>
+            <li><strong>Out of memory i loggen:</strong> 256 MB räckte inte. Be agenten byta till 512 MB, och tänk på att det kostar lite mer.</li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <h3>🔒 Tänk efter: vem kan använda appen?</h3>
+        <p>Nu kan vem som helst som hittar adressen lägga till och ta bort saker i din lista. Det är okej för en övning, men inte för något du bryr dig om. Tre alternativ:</p>
+        <ul>
+          <li>Ta bort appen när du har provat: be agenten köra <code>fly apps destroy</code>, eller gör det själv.</li>
+          <li>Låt den vara kvar en kort tid och dela bara adressen med de du litar på.</li>
+          <li>Be agenten lägga till enkel inloggning. Det är ett större steg, men en bra nästa övning.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <section>
+      <h2>Klart?</h2>
+      <ul class="checklist">
+        <li>Jag vet vad appen kostar i månaden, och hur jag får den att sluta kosta</li>
+        <li>Jag har installerat flyctl och loggat in själv med <code>fly auth login</code></li>
+        <li>Agenten har publicerat appen på Fly.io via en pull request</li>
+        <li>Appen fungerar i mobilen, och datan finns kvar efter en ny publicering</li>
+        <li>Jag har bestämt om appen ska vara kvar eller tas bort</li>
+      </ul>
+    </section>
+
+    <nav class="guide-nav">
+      <a href="ovning-9.html">← Övning 9</a>
+      <a href="../index.html">Allt kursmaterial →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>
