@@ -762,3 +762,5 @@ body.show-overview .overview { display: block; }
 .deck table.rest th { font: 600 20px var(--font-head); color: var(--plum); }
 .deck table.rest code { font-size: 21px; }
 .deck .gitsvg .pr-pill { fill: #fff4d6; stroke: var(--sun); stroke-width: 3; }
+.deck .layers.tight { gap: 10px; }
+.deck .layers.tight .layer { padding: 12px 26px; }

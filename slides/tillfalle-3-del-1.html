@@ -17,8 +17,9 @@
   <section class="title">
     <div class="kicker">Folkuniversitetet · Tillfälle 3 · Del 1</div>
     <h1>Jobba smart<br>med agenten</h1>
-    <p class="lead">Bättre prompter, flera sessioner och pull requests. Så bygger du större saker utan att tappa kontrollen.</p>
+    <p class="lead">Välj teknik tillsammans med agenten, skriv bättre prompter, dela upp arbetet och använd pull requests. Så bygger du större saker utan att tappa kontrollen.</p>
     <div class="badge-row">
+      <span class="badge">🧭 Välj teknik</span>
       <span class="badge">✍️ Prompten</span>
       <span class="badge">🧩 Dela upp arbetet</span>
       <span class="badge">🔀 Pull requests</span>
@@ -36,7 +37,7 @@
     <div class="kicker">Idag</div>
     <h2>Dagens plan</h2>
     <div class="layers">
-      <div class="layer l1"><span class="e">🧭</span><b>Del 1</b><span>Jobba smart med agenten: prompten, sessioner och pull requests. Sedan övning 6</span></div>
+      <div class="layer l1"><span class="e">🧭</span><b>Del 1</b><span>Jobba smart med agenten: välja teknik, prompten, sessioner och pull requests. Sedan övning 6</span></div>
       <div class="layer l2"><span class="e">☕</span><b>Paus</b><span>Sträck på benen</span></div>
       <div class="layer l3"><span class="e">🖥️</span><b>Del 2</b><span>Vad är en backend? Servrar, HTTP, REST och var datan bor</span></div>
       <div class="layer l4"><span class="e">🚀</span><b>Övningar</b><span>Prata HTTP och bygg en app med egen backend, i flera sessioner och med PR:er</span></div>
@@ -52,17 +53,114 @@
       <div class="card frag"><span class="e">🧠</span><h3>Minnet blir fullt</h3><p>En lång session blir sämre. Agenten glömmer det ni bestämde i början.</p></div>
       <div class="card frag"><span class="e">💥</span><h3>Allt på en gång</h3><p>En ändring som förstör något annat är svår att hitta, och svår att ångra.</p></div>
     </div>
-    <p class="lead frag bottom">Tre verktyg idag: en <span class="hl">bättre prompt</span>, <span class="hl">flera sessioner</span> och <span class="hl">pull requests</span>.</p>
+    <p class="lead frag bottom">Idag: <span class="hl">rätt teknik</span>, en <span class="hl">bättre prompt</span>, <span class="hl">flera sessioner</span> och <span class="hl">pull requests</span>.</p>
     <aside class="notes">
       <ul>
-        <li>Varje problem har sitt verktyg. Prompten minskar gissningarna, sessioner håller minnet fräscht och pull requests gör ändringar lätta att granska och ångra.</li>
+        <li>Varje problem har sitt verktyg. Att välja teknik tillsammans med agenten gör att den slutar gissa på det viktigaste. Prompten minskar gissningarna, sessioner håller minnet fräscht och pull requests gör ändringar lätta att granska och ångra.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Välj teknik -->
+  <section class="divider">
+    <div class="num">1</div>
+    <h2>Välj rätt teknik</h2>
+    <p class="lead">Låt agenten intervjua dig först</p>
+  </section>
+
+  <section>
+    <div class="kicker">Välj teknik</div>
+    <h2>Du behöver inte kunna tekniken</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">🗣️</span><h3>Beskriv behovet</h3><p>Vad ska appen göra, och för vem? Inte <em>hur</em>. Det är agentens jobb att föreslå.</p></div>
+      <div class="card frag"><span class="e">⚖️</span><h3>Be om alternativ</h3><p>Två eller tre förslag med för- och nackdelar, i ord du förstår.</p></div>
+      <div class="card hot frag"><span class="e">✅</span><h3>Bestäm själv</h3><p>Du väljer. Agenten ger råd, men det är din app, dina pengar och din tid.</p></div>
+    </div>
+    <p class="lead frag bottom">Säger du inget väljer agenten själv. Ofta något större och krångligare än du behöver.</p>
+    <aside class="notes">
+      <ul>
+        <li>Agenten har sett otroligt mycket kod och kan nästan alla verktyg. Det den inte vet är vad <em>du</em> behöver.</li>
+        <li>Fallgrop: agenter föreslår gärna det proffsen använder i stora projekt. För en app till familjen är det enklaste oftast bäst.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Välj teknik · intervjun</div>
+    <h2>Be agenten intervjua dig</h2>
+    <div class="term prompt" style="font-size:20px;line-height:1.5"><pre style="padding-top:56px">Jag vill bygga en app där familjen kan planera veckans middagar. Jag är nybörjare och kan inte programmera.
+
+Intervjua mig innan du föreslår någon teknik. Ställ en fråga i taget om mina behov och begränsningar: vem som ska använda appen, på vilka enheter, vad den får kosta, var datan ska sparas och om något är hemligt.
+
+När du vet tillräckligt: ge mig två eller tre alternativ med för- och nackdelar, förklarade utan facktermer, och säg vilket du rekommenderar och varför. Skriv ingen kod.</pre></div>
+    <aside class="notes">
+      <ul>
+        <li>”En fråga i taget” gör att du hinner tänka, i stället för att få tio frågor på en gång.</li>
+        <li>Agenten frågar ofta saker du inte hade tänkt på. Det är hela poängen.</li>
+        <li>Fungerar lika bra i Claude Code som i Codex. I Claude Code kan man också använda planläget.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Välj teknik · behov och begränsningar</div>
+    <h2>Det här bör agenten få veta</h2>
+    <div class="cards tight">
+      <div class="card frag"><span class="e">👥</span><h3>Vem använder den?</h3><p>Bara jag, familjen, kollegorna eller vem som helst på nätet?</p></div>
+      <div class="card frag"><span class="e">📱</span><h3>Var?</h3><p>Mobil, dator eller båda? Måste den fungera utan nät?</p></div>
+      <div class="card frag"><span class="e">💰</span><h3>Vad får det kosta?</h3><p>Helt gratis, eller okej med någon tjugolapp i månaden?</p></div>
+      <div class="card frag"><span class="e">🗄️</span><h3>Vilken data?</h3><p>Ska den delas mellan enheter? Hur illa är det om den försvinner?</p></div>
+      <div class="card frag"><span class="e">🔒</span><h3>Något känsligt?</h3><p>Personuppgifter, lösenord eller API-nycklar?</p></div>
+      <div class="card frag"><span class="e">⏳</span><h3>Hur länge?</h3><p>Ett experiment i kväll, eller något som ska leva i flera år?</p></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Svaren styr tekniken. ”Bara jag, på datorn, gratis” blir en statisk webbapp på GitHub Pages. ”Familjen, i mobilen, delad lista” kräver en backend, som vi ser i del 2.</li>
+        <li>Kommer du inte på svaret? Säg det. ”Jag vet inte, vad skulle du rekommendera?” är ett bra svar.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Välj teknik · frågor att ställa</div>
+    <h2>Bra frågor för en nybörjare</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">🪶</span><span><strong>”Vad är det enklaste som fungerar?”</strong> Färre delar betyder färre saker som kan gå sönder</span></li>
+      <li class="frag"><span class="e">💸</span><span><strong>”Vad kostar det, nu och om fler börjar använda det?”</strong></span></li>
+      <li class="frag"><span class="e">🧰</span><span><strong>”Vad måste jag installera eller skapa konto för själv?”</strong></span></li>
+      <li class="frag"><span class="e">🌍</span><span><strong>”Är det här vanligt?”</strong> Vanlig teknik är den agenten kan bäst, och den du hittar hjälp för</span></li>
+      <li class="frag"><span class="e">↩️</span><span><strong>”Hur svårt blir det att ändra sig senare?”</strong></span></li>
+      <li class="frag"><span class="e">⚠️</span><span><strong>”Vad kan gå fel med det här valet?”</strong> Tvinga fram nackdelarna</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="kicker">Välj teknik · bra förslag</div>
+    <h2>Så får du bättre förslag</h2>
+    <div class="cols">
+      <ul class="nice" style="font-size:24px">
+        <li class="frag">Säg att du är <strong>nybörjare</strong>, så förklarar agenten i stället för att imponera</li>
+        <li class="frag">Be om en <strong>tabell</strong> där alternativen jämförs: kostnad, svårighet, var datan bor</li>
+        <li class="frag">Ifrågasätt: <em>”Behövs verkligen en databas för det här?”</em> Agenten håller gärna med dig, så be den argumentera emot</li>
+        <li class="frag">Fråga en <strong>ny session</strong> samma sak. Blir svaret ett annat är valet inte självklart</li>
+      </ul>
+      <div class="card sun frag">
+        <span class="e">📌</span>
+        <h3>Spara beslutet</h3>
+        <p>Be agenten skriva in det ni valde, och varför, i <code>AGENTS.md</code>. Då vet varje ny session vilken teknik som gäller och slutar föreslå annat.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Språkmodeller är tränade att vara hjälpsamma och håller ofta med. Därför är det värt att be om nackdelar och motargument rakt ut.</li>
+        <li>Koppla till övning 8: planeringssessionen börjar med att agenten ställer frågor tills den förstår.</li>
       </ul>
     </aside>
   </section>
 
   <!-- Prompten -->
   <section class="divider">
-    <div class="num">1</div>
+    <div class="num">2</div>
     <h2>Prompten</h2>
     <p class="lead">Vad som bör stå i en bra beställning</p>
   </section>
@@ -217,7 +315,7 @@ En receptbok för familjen.
 
   <!-- Sessioner -->
   <section class="divider">
-    <div class="num">2</div>
+    <div class="num">3</div>
     <h2>Dela upp arbetet</h2>
     <p class="lead">En session per uppgift</p>
   </section>
@@ -335,7 +433,7 @@ En receptbok för familjen.
 
   <!-- Pull requests -->
   <section class="divider">
-    <div class="num">3</div>
+    <div class="num">4</div>
     <h2>Pull requests</h2>
     <p class="lead">Granska innan det hamnar i main</p>
   </section>
@@ -451,7 +549,8 @@ En receptbok för familjen.
   <section>
     <div class="kicker">Sammanfattning</div>
     <h2>Arbetsflödet</h2>
-    <div class="layers">
+    <div class="layers tight">
+      <div class="layer l1"><span class="e">🧭</span><b>Teknik</b><span>Låt agenten intervjua dig, be om alternativ och bestäm själv.</span></div>
       <div class="layer l1"><span class="e">✍️</span><b>Prompt</b><span>Mål, sammanhang, krav, klart när och arbetssätt. Plan först.</span></div>
       <div class="layer l2"><span class="e">📌</span><b>AGENTS.md</b><span>Det som alltid gäller. Planen i en fil.</span></div>
       <div class="layer l3"><span class="e">🧩</span><b>Sessioner</b><span>En uppgift per session. Ny session när det börjar spåra.</span></div>
