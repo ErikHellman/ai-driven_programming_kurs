@@ -60,8 +60,56 @@
       block.appendChild(btn);
     });
 
+    lessonSwitch();
     resumeSlides();
   });
+
+  // Startsidan: knappar högst upp som visar ett tillfälle i taget.
+  // Knapparna byggs från alla .lesson med id och data-label, så ett nytt
+  // tillfälle får en knapp automatiskt. Senast valda sparas, annars visas
+  // det senaste tillfället. Utan JavaScript syns alla tillfällen.
+  function lessonSwitch() {
+    var LESSON_KEY = "kurs-tillfalle";
+    var bar = document.querySelector(".lesson-switch");
+    var lessons = Array.prototype.slice.call(document.querySelectorAll(".lesson[id][data-label]"));
+    if (!bar || lessons.length < 2) return;
+
+    function exists(id) {
+      return lessons.some(function (l) { return l.id === id; });
+    }
+
+    function show(id) {
+      lessons.forEach(function (l) { l.hidden = l.id !== id; });
+      bar.querySelectorAll("button").forEach(function (b) {
+        b.setAttribute("aria-pressed", b.dataset.lesson === id ? "true" : "false");
+      });
+    }
+
+    lessons.forEach(function (l) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.dataset.lesson = l.id;
+      btn.textContent = l.dataset.label;
+      btn.addEventListener("click", function () {
+        show(l.id);
+        try { localStorage.setItem(LESSON_KEY, l.id); } catch { /* privat läge, ignorera */ }
+        if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+      });
+      bar.appendChild(btn);
+    });
+    bar.hidden = false;
+
+    var fromHash = location.hash.slice(1);
+    var saved = null;
+    try { saved = localStorage.getItem(LESSON_KEY); } catch { /* ignorera */ }
+    var start = exists(fromHash) ? fromHash : exists(saved) ? saved : lessons[lessons.length - 1].id;
+    show(start);
+
+    window.addEventListener("hashchange", function () {
+      var id = location.hash.slice(1);
+      if (exists(id)) show(id);
+    });
+  }
 
   // Startsidan: H hoppar tillbaka till presentationen man lämnade med H
   // (sparas av slides.js). Att öppna en presentation via länkarna nollställer.

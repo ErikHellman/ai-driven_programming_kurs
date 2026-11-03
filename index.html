@@ -7,8 +7,8 @@
   <meta name="description" content="Kursmaterial för AI-driven programmering med Claude Code och Codex, Folkuniversitetet Stockholm hösten 2026.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌞</text></svg>">
   <link rel="stylesheet" href="assets/theme.css?v=3">
-  <link rel="stylesheet" href="assets/site.css?v=5">
-  <script src="assets/site.js?v=4" defer></script>
+  <link rel="stylesheet" href="assets/site.css?v=6">
+  <script src="assets/site.js?v=5" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -34,7 +34,8 @@
   <main class="wrap">
     <section>
       <h2>Lektioner</h2>
-      <div class="lesson">
+      <div class="lesson-switch" role="group" aria-label="Välj tillfälle" hidden></div>
+      <div class="lesson" id="tillfalle-1" data-label="Tillfälle 1">
         <div class="lesson-head">
           <h3>Tillfälle 1: Kom igång</h3>
           <span class="pill">14 oktober 2026</span>
@@ -60,7 +61,7 @@
           </a>
         </div>
       </div>
-      <div class="lesson">
+      <div class="lesson" id="tillfalle-2" data-label="Tillfälle 2">
         <div class="lesson-head">
           <h3>Tillfälle 2: Bygg riktiga webbappar</h3>
           <span class="pill">21 oktober 2026</span>
@@ -104,7 +105,7 @@
           </a>
         </div>
       </div>
-      <div class="lesson">
+      <div class="lesson" id="tillfalle-3" data-label="Tillfälle 3">
         <div class="lesson-head">
           <h3>Tillfälle 3: Claude Code och backend</h3>
           <span class="pill">4 november 2026</span>
