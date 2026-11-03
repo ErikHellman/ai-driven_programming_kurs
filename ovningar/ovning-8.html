@@ -51,7 +51,7 @@ Så här jobbar vi:
 - Ställ frågor till mig tills du förstår vad jag vill ha.
 - Skriv sedan planen i PLAN.md. Dela upp den i steg som var och en går att göra i en egen session och blir en egen pull request. Varje steg ska ha en rad om hur vi vet att det är klart.
 - Ta med en tabell över API:ets adresser (metod, adress, vad den gör och vilka statuskoder den svarar med) och hur tabellerna i databasen ska se ut.
-- Skriv en kort CLAUDE.md med det som alltid gäller i projektet. Bland annat att varje steg görs på en egen branch och avslutas med en pull request som öppnas med gh, att testerna ska gå igenom innan pull requesten öppnas, och att steget bockas av i PLAN.md.
+- Skriv en kort AGENTS.md med det som alltid gäller i projektet. Bland annat att varje steg görs på en egen branch och avslutas med en pull request som öppnas med gh, att testerna ska gå igenom innan pull requesten öppnas, och att steget bockas av i PLAN.md.
 - Spara med Git, skapa ett publikt repo på GitHub med gh som heter fikalistan-backend och pusha.</pre></div>
         </details>
         <details class="alt project">
@@ -98,7 +98,7 @@ Funktioner:
       <li>
         <h3>📋 Session 1: planera</h3>
         <p>Skapa en tom mapp, till exempel <code>kurs/fikalistan-backend</code>, och öppna den i Claude-appen (fliken <em>Code</em>) eller ChatGPT-appen (<em>Codex</em>). Klistra in startprompten.</p>
-        <p>Agenten ställer frågor. Svara på dem. Den skriver sedan <code>PLAN.md</code> och <code>CLAUDE.md</code>, skapar repot och pushar. Öppna båda filerna i VS Code och läs dem:</p>
+        <p>Agenten ställer frågor. Svara på dem. Den skriver sedan <code>PLAN.md</code> och <code>AGENTS.md</code>, skapar repot och pushar. Öppna båda filerna i VS Code och läs dem:</p>
         <ul>
           <li>Hur många steg blev det? Är det ungefär <em>backend</em>, <em>frontend</em> och <em>finputs</em>? Är ett steg för stort, be agenten dela upp det.</li>
           <li>Läs tabellen över API:et. Känner du igen metoderna och statuskoderna från del 2? Saknas något användaren ska kunna göra?</li>
@@ -109,7 +109,7 @@ Funktioner:
 
       <li>
         <h3>🗄️ Session 2: backenden</h3>
-        <p>Starta en <strong>ny session</strong> i samma mapp. Agenten minns ingenting från session 1, men den läser <code>CLAUDE.md</code> och kan läsa planen:</p>
+        <p>Starta en <strong>ny session</strong> i samma mapp. Agenten minns ingenting från session 1, men den läser <code>AGENTS.md</code> och kan läsa planen:</p>
         <div class="code wrap"><span class="label">Prompt · session 2, 3 och 4</span>
 <pre>Läs PLAN.md och gör nästa steg som inte är avbockat. Visa en kort plan för steget först och vänta på mitt okej. När du är klar: kör testerna, starta appen så att jag kan prova den, bocka av steget i PLAN.md, öppna en pull request med gh och ge mig länken.</pre></div>
         <p>Samma prompt fungerar för alla steg. Det är planen i filen som säger vad som ska göras.</p>
@@ -152,7 +152,7 @@ Funktioner:
         <li><strong>EADDRINUSE:</strong> en gammal server kör redan på porten. Be agenten stoppa den.</li>
         <li><strong>500 i Network:</strong> felet står i terminalen där backenden kör. Kopiera det till agenten.</li>
         <li><strong>node:sqlite finns inte:</strong> din Node.js är för gammal. Uppdatera enligt <a href="../guider/node.html">guiden</a> och starta om terminalen.</li>
-        <li><strong>Agenten minns inte vad ni bestämde:</strong> det står inte i <code>PLAN.md</code> eller <code>CLAUDE.md</code>. Be den skriva in det där.</li>
+        <li><strong>Agenten minns inte vad ni bestämde:</strong> det står inte i <code>PLAN.md</code> eller <code>AGENTS.md</code>. Be den skriva in det där.</li>
       </ul>
     </details>
 
@@ -161,7 +161,7 @@ Funktioner:
     <section>
       <h2>Klart?</h2>
       <ul class="checklist">
-        <li>Mitt projekt har en <code>PLAN.md</code> med steg och en tabell över API:et, och en <code>CLAUDE.md</code></li>
+        <li>Mitt projekt har en <code>PLAN.md</code> med steg och en tabell över API:et, och en <code>AGENTS.md</code></li>
         <li>Varje steg gjordes i en egen session och blev en egen pull request</li>
         <li>Testerna körs av GitHub Actions på varje pull request</li>
         <li>Jag har sett JSON från min egen backend i webbläsaren</li>

@@ -33,10 +33,12 @@
       </li>
 
       <li>
-        <h3>Skapa minneslappen CLAUDE.md</h3>
-        <p>Skriv <code>/init</code> i chatten och tryck Enter. Agenten läser igenom projektet och skriver filen <code>CLAUDE.md</code> med det viktigaste om appen. Använder du Codex heter filen <code>AGENTS.md</code>, och du kan också skriva <code>/init</code> där.</p>
+        <h3>Skapa minneslappen AGENTS.md</h3>
+        <p>Be agenten skriva filen. Den läser igenom projektet och skriver ner det viktigaste om appen. Filen läses av både Claude Code och Codex.</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Läs igenom projektet och skriv en kort AGENTS.md med det viktigaste om appen: vad den gör, vilken teknik den använder och hur man startar och testar den. Visa mig filen när du är klar.</pre></div>
         <p>Öppna filen i VS Code och läs den. Stämmer det? Lägg till två regler längst ner, med egna ord:</p>
-        <div class="code wrap"><span class="label">Lägg till i CLAUDE.md</span>
+        <div class="code wrap"><span class="label">Lägg till i AGENTS.md</span>
 <pre>## Arbetssätt
 - Jobba alltid på en ny branch, aldrig direkt på main.
 - När du är klar: pusha branchen och öppna en pull request med gh.</pre></div>
@@ -83,7 +85,7 @@
 
       <li>
         <h3>Låt agenten öppna en pull request</h3>
-        <p>Har agenten läst din <code>CLAUDE.md</code> öppnar den en pull request av sig själv när den är klar. Annars:</p>
+        <p>Har agenten läst din <code>AGENTS.md</code> öppnar den en pull request av sig själv när den är klar. Annars:</p>
         <div class="code wrap"><span class="label">Prompt</span>
 <pre>Pusha branchen och öppna en pull request med gh. Skriv en tydlig beskrivning av vad du har ändrat och hur jag testar det. Ge mig länken.</pre></div>
       </li>
@@ -131,7 +133,7 @@
     <section>
       <h2>Klart?</h2>
       <ul class="checklist">
-        <li>Mitt projekt har en <code>CLAUDE.md</code> (eller <code>AGENTS.md</code>) som jag har läst och lagt till regler i</li>
+        <li>Mitt projekt har en <code>AGENTS.md</code> som jag har läst och lagt till regler i</li>
         <li>Jag har skrivit en prompt med mål, sammanhang, krav och gränser, klart när och arbetssätt</li>
         <li>Jag har läst planen innan agenten började bygga</li>
         <li>Jag har öppnat, kommenterat och granskat en pull request på GitHub</li>
