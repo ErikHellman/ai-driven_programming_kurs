@@ -36,11 +36,11 @@
   <section>
     <div class="kicker">Idag</div>
     <h2>Dagens plan</h2>
-    <div class="layers">
-      <div class="layer l1"><span class="e">🧭</span><b>Del 1</b><span>Jobba smart med agenten: välja teknik, prompten, sessioner och pull requests. Sedan övning 6</span></div>
-      <div class="layer l2"><span class="e">☕</span><b>Paus</b><span>Sträck på benen</span></div>
-      <div class="layer l3"><span class="e">🖥️</span><b>Del 2</b><span>Vad är en backend? Servrar, HTTP, REST och var datan bor</span></div>
-      <div class="layer l4"><span class="e">🚀</span><b>Övningar</b><span>Prata HTTP och bygg en app med egen backend, i flera sessioner och med PR:er</span></div>
+    <div class="layers wide">
+      <div class="layer l1"><span class="e">🧭</span><b>Del 1 · 60 min</b><span>Välja teknik, prompten, sessioner och pull requests. Live-demo</span></div>
+      <div class="layer l2"><span class="e">☕</span><b>Paus · 15 min</b><span>Sträck på benen</span></div>
+      <div class="layer l3"><span class="e">🖥️</span><b>Del 2 · 60 min</b><span>Servrar, HTTP, REST och var datan bor. Live-demo</span></div>
+      <div class="layer l4"><span class="e">🏠</span><b>Hemuppgift · 15 min</b><span>Övningarna du gör efter lektionen, och frågor</span></div>
     </div>
   </section>
 
@@ -255,6 +255,35 @@ Jobba på en branch och visa en plan.</pre></div>
   </section>
 
   <section>
+    <div class="kicker">Prompten · klart när</div>
+    <h2>Vad är ett test?</h2>
+    <div class="cols">
+      <div class="snip js">
+        <span class="tag">fikor.test.js</span>
+        <div class="term"><pre><span class="k">test</span>(<span class="s">"en ny fika sparas"</span>, …);
+<span class="k">test</span>(<span class="s">"ett tomt namn ger 400"</span>, …);
+<span class="k">test</span>(<span class="s">"en borttagen fika syns inte"</span>, …);</pre></div>
+        <div class="term frag" style="margin-top:16px"><pre><span class="p">$</span> npm test
+<span class="ok">✔ en ny fika sparas
+✔ ett tomt namn ger 400
+✔ en borttagen fika syns inte</span></pre></div>
+      </div>
+      <ul class="nice">
+        <li class="frag">Ett test är <strong>kod som kontrollerar annan kod</strong>: gör det här, och kolla att resultatet blir det här</li>
+        <li class="frag">Agenten skriver testerna. Du läser <strong>namnen</strong>: de är en kravlista på vad appen ska klara</li>
+        <li class="frag">Testerna körs på några sekunder, varje gång något ändras. Grön bock eller rött kryss</li>
+        <li class="frag">Det är samma tester som GitHub kör på varje pull request</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Poängen: utan tester måste någon klicka runt i appen efter varje ändring. Med tester gör datorn det, och agenten ser själv om den förstörde något.</li>
+        <li>Be agenten: ”Lista namnen på alla tester och förklara vad de kontrollerar.” Saknas något du bryr dig om, be om ett test för det.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
     <div class="kicker">Prompten · planläge</div>
     <h2>Planera först, bygg sedan</h2>
     <div class="flow" style="justify-content:center;margin-top:10px">
@@ -365,6 +394,7 @@ En receptbok för familjen.
       <ul>
         <li>Planen i en fil är som en överlämning mellan skift på ett sjukhus. Det som inte står i filen vet nästa session inte om.</li>
         <li>Session 4 är ett riktigt bra knep: en ny session har inte ”skrivit” koden själv och hittar fler fel.</li>
+        <li>Om någon frågar om flera agenter samtidigt: det går, med en worktree per session (från förra gången) så att de inte skriver i varandras filer. Claude-appen kan skapa dem åt dig. Välj uppgifter som inte rör samma filer, och börja hellre med en session i taget.</li>
       </ul>
     </aside>
   </section>
@@ -387,34 +417,6 @@ En receptbok för familjen.
       <ul>
         <li>Att bocka av i PLAN.md gör att nästa session vet var den ska börja.</li>
         <li>Det här är precis vad vi gör i övning 8.</li>
-      </ul>
-    </aside>
-  </section>
-
-  <section>
-    <div class="kicker">Sessioner · parallellt</div>
-    <h2>Flera agenter samtidigt</h2>
-    <div class="wt">
-      <div class="files b1">
-        <div class="head">🤖 Session A <span class="branch-tag main">mork-lage</span></div>
-        <div class="in">📁 receptbok-mork/</div>
-        <div class="in dim">lägger till mörkt läge</div>
-      </div>
-      <div class="files b2 frag">
-        <div class="head">🤖 Session B <span class="branch-tag br">export</span></div>
-        <div class="in">📁 receptbok-export/</div>
-        <div class="in dim">bygger en exportknapp</div>
-      </div>
-    </div>
-    <ul class="nice" style="margin-top:28px">
-      <li class="frag">Kommer du ihåg <strong>worktree</strong> från förra gången? En mapp per branch</li>
-      <li class="frag">Claude-appen kan skapa en worktree för varje ny session, så att agenterna inte skriver i varandras filer</li>
-      <li class="frag">Välj uppgifter som inte rör samma filer, annars krockar det när de ska slås ihop</li>
-    </ul>
-    <aside class="notes">
-      <ul>
-        <li>Börja med en session i taget. Parallella sessioner är ett steg för den som redan känner sig trygg.</li>
-        <li>Det är din uppmärksamhet som är flaskhalsen: du måste ändå granska allt som agenterna gör.</li>
       </ul>
     </aside>
   </section>
@@ -558,15 +560,33 @@ En receptbok för familjen.
     </div>
   </section>
 
-  <section class="divider">
-    <div class="num">🔀</div>
-    <h2>Övning 6: Din första pull request</h2>
-    <p class="lead">En ny funktion i din app, via en PR · 25 minuter</p>
+  <section>
+    <div class="kicker">Live-demo · 15 minuter</div>
+    <h2>Från idé till pull request</h2>
+    <div class="flow" style="justify-content:center;margin-top:90px">
+      <div class="box sun">🎤 Intervju<small>agenten frågar<br>om behoven</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">✍️ Prompt<small>fem delar,<br>planläge</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🔀 Pull request<small>branch, tester<br>och gh</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">👀 Granskning<small>ny session<br>och merge</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:70px;text-align:center">Ropa in en funktion du vill se, så bygger vi den tillsammans.</p>
+    <aside class="notes">
+      <ul>
+        <li>Använd en liten app som redan ligger på GitHub, gärna receptboken. Ha AGENTS.md förberedd så att agenten jobbar på en branch och öppnar en PR.</li>
+        <li>Låt klassen välja funktionen och diktera de fem delarna i prompten. Visa planläget, läs planen högt och rätta något i den.</li>
+        <li>Medan agenten bygger: visa hur kontexten fylls. Visa sedan PR:en på GitHub (Conversation, Files changed, Checks), skriv en kommentar på en rad och låt agenten åtgärda den.</li>
+        <li>Starta en ny session som granskar PR:en. Merge. Det här är exakt övning 6, så deltagarna har sett hela flödet innan de gör det själva.</li>
+        <li>Om tiden är knapp: hoppa över granskningssessionen.</li>
+      </ul>
+    </aside>
   </section>
 
   <section>
-    <div class="kicker">Övning 6</div>
-    <h2>Gör så här</h2>
+    <div class="kicker">Efter lektionen · Övning 6</div>
+    <h2>Din första pull request</h2>
     <div class="cols wide-left">
       <ul class="emoji">
         <li><span class="e">📁</span><span>Öppna appen från övning 1 eller 3 i Claude- eller ChatGPT-appen</span></li>

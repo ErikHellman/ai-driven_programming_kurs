@@ -764,3 +764,4 @@ body.show-overview .overview { display: block; }
 .deck .gitsvg .pr-pill { fill: #fff4d6; stroke: var(--sun); stroke-width: 3; }
 .deck .layers.tight { gap: 10px; }
 .deck .layers.tight .layer { padding: 12px 26px; }
+.deck .layers.wide .layer b { min-width: 250px; white-space: nowrap; }

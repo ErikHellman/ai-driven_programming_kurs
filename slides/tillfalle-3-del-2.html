@@ -488,6 +488,30 @@ Authorization: Bearer hemlig-nyckel</span>
   </section>
 
   <!-- Verkligheten -->
+  <section>
+    <div class="kicker">Live-demo · 15 minuter</div>
+    <h2>En backend på tio minuter</h2>
+    <div class="flow" style="justify-content:center;margin-top:90px">
+      <div class="box sun">🤖 Agenten bygger<small>Express, SQLite<br>och en fikalista</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">⌨️ curl<small>GET, POST<br>och statuskoder</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">📡 Network<small>frontenden<br>frågar med fetch</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">🗄️ Databasen<small>raden finns<br>i tabellen</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:70px;text-align:center">Allt vi just pratat om, på riktigt, på en dator.</p>
+    <aside class="notes">
+      <ul>
+        <li>Be agenten: bygg en liten backend med Express och node:sqlite för en fikalista, med GET och POST på /api/fikor, och en enkel HTML-sida som visar listan med fetch. Plan först.</li>
+        <li>Starta servern och visa att den lyssnar på port 3000. Kör curl -i mot /api/fikor, skicka en POST och visa 201. Skicka en POST utan namn och visa 400.</li>
+        <li>Öppna sidan och Network-fliken. Lägg till en fika och klicka på fetch-frågan: metod, adress, status, body.</li>
+        <li>Be agenten visa raderna i tabellen med SQL. Det knyter ihop restaurangen: matsal, kök och skafferi.</li>
+        <li>Starta servern två gånger för att visa EADDRINUSE inför nästa avsnitt.</li>
+      </ul>
+    </aside>
+  </section>
+
   <section class="divider">
     <div class="num">5</div>
     <h2>Backend på riktigt</h2>
@@ -615,7 +639,7 @@ Authorization: Bearer hemlig-nyckel</span>
   <section class="divider">
     <div class="num">🔭</div>
     <h2>Övning 7: Prata HTTP</h2>
-    <p class="lead">Frågor och svar med curl och Dev Tools · 15 minuter</p>
+    <p class="lead">Frågor och svar med curl och Dev Tools · efter lektionen</p>
   </section>
 
   <section>
@@ -640,7 +664,7 @@ Authorization: Bearer hemlig-nyckel</span>
   <section class="divider">
     <div class="num">🍰</div>
     <h2>Övning 8: En app med egen backend</h2>
-    <p class="lead">Fyra sessioner, fyra pull requests · resten av lektionen</p>
+    <p class="lead">Fyra sessioner, fyra pull requests · efter lektionen</p>
   </section>
 
   <section>
@@ -674,8 +698,9 @@ Authorization: Bearer hemlig-nyckel</span>
     <div class="kicker">Till nästa gång</div>
     <h2>Hemuppgift</h2>
     <ul class="emoji">
-      <li><span class="e">🍰</span><span>Gör klart <strong>övning 8</strong>, minst backenden med tester</span></li>
-      <li><span class="e">📌</span><span>Läs <code>AGENTS.md</code> i dina projekt. Lägg till en regel du saknade</span></li>
+      <li><span class="e">🔀</span><span><strong>Övning 6</strong>: lägg till en funktion i din app via en pull request</span></li>
+      <li><span class="e">🔭</span><span><strong>Övning 7</strong>: prata HTTP med curl och Network-fliken</span></li>
+      <li><span class="e">🍰</span><span><strong>Övning 8</strong>: en app med egen backend, minst backenden med tester</span></li>
       <li><span class="e">📡</span><span>Öppna Network på en sida du använder ofta. Hittar du <code>fetch</code>-frågor med JSON?</span></li>
       <li><span class="e">🔗</span><span>Extra: <strong>övning 9</strong>, bygg Länkförkortaren från en kravlista</span></li>
       <li><span class="e">🎈</span><span>Bonus: <strong>övning 10</strong>, publicera din backend på Fly.io</span></li>
