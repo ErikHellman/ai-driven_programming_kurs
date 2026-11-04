@@ -68,7 +68,7 @@
     <aside class="notes">
       <ul>
         <li>I tillfälle 2 var restaurangen klient och server. Nu öppnar vi köksdörren.</li>
-        <li>Frontend och backend tillsammans kallas ofta fullstack.</li>
+        <li>Frontend, backend och databas tillsammans kallas fullstack. Mer om det om en stund.</li>
       </ul>
     </aside>
   </section>
@@ -137,6 +137,27 @@ app.listen(<span class="s">3000</span>);</pre></div>
       <ul>
         <li>Under utvecklingen är din dator både klient och två servrar. Agenten startar dem åt dig.</li>
         <li>Ofta ordnar agenten så att ett kommando startar båda, till exempel npm run dev.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Frontend och backend</div>
+    <h2>Fullstack: hela kedjan</h2>
+    <div class="layers tight">
+      <div class="layer l1"><span class="e">🍽️</span><b>Frontend</b><span>Det användaren ser och klickar på, i webbläsaren eller mobilen.</span></div>
+      <div class="layer l2 frag"><span class="e">👩‍🍳</span><b>Backend</b><span>Koden på servern som tar emot, kontrollerar och svarar.</span></div>
+      <div class="layer l3 frag"><span class="e">🥫</span><b>Databas</b><span>Där datan sparas så att den finns kvar och kan delas.</span></div>
+    </div>
+    <ul class="nice" style="margin-top:28px">
+      <li class="frag">En <strong>fullstack-app</strong> har alla tre delarna. En <strong>fullstack-utvecklare</strong> jobbar med alla tre</li>
+      <li class="frag">Med agenten bygger du fullstack redan idag. Ditt jobb är att förstå hur delarna pratar med varandra</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Stack betyder trave eller hög: lagren ligger ovanpå varandra. Full stack är hela högen, från skärmen till databasen.</li>
+        <li>Man hör också frontend-utvecklare och backend-utvecklare. I större företag delar man ofta upp jobbet så.</li>
+        <li>Det finns också tjänster som ger dig backend och databas färdigt, till exempel Supabase. Det kommer vi till i slutet.</li>
       </ul>
     </aside>
   </section>
@@ -557,10 +578,10 @@ Authorization: Bearer hemlig-nyckel</span>
     <h2>GitHub Pages räcker inte längre</h2>
     <div class="cols wide-left">
       <ul class="nice">
-        <li>GitHub Pages skickar bara <strong>färdiga filer</strong>. Den kan inte köra ett program</li>
-        <li class="frag">En backend behöver en dator som alltid är på: en <strong>molntjänst</strong> som Render, Railway eller Fly.io</li>
-        <li class="frag">Databasen behöver ofta en egen tjänst, till exempel Supabase</li>
-        <li class="frag">Gratisnivåerna somnar ofta när ingen använder dem och har gränser. Läs villkoren</li>
+        <li>GitHub Pages skickar bara <strong>färdiga filer</strong>. Den kan inte köra en backend eller spara data</li>
+        <li class="frag">Ett sätt: hyr en server hos en molntjänst och kör din egen backend där</li>
+        <li class="frag">Ett enklare sätt: en <strong>backend som tjänst</strong>, till exempel <strong>Supabase</strong>. Du får databas, REST-API och inloggning färdigt</li>
+        <li class="frag">Frontenden kan ligga kvar på GitHub Pages och prata med Supabase</li>
       </ul>
       <div class="card sun">
         <span class="e">🏠</span>
@@ -570,56 +591,58 @@ Authorization: Bearer hemlig-nyckel</span>
     </div>
     <aside class="notes">
       <ul>
-        <li>Fråga agenten: ”Hur kan jag publicera den här appen med backend gratis, och vad är begränsningarna?” Den vet vilka tjänster som passar.</li>
-        <li>En SQLite-fil på en gratis molntjänst kan försvinna vid omstart. Därför används ofta en separat databastjänst när man publicerar.</li>
+        <li>Fråga agenten: ”Hur kan jag publicera den här appen gratis, och vad är begränsningarna?” Den vet vilka tjänster som passar.</li>
+        <li>Backend som tjänst kallas ibland BaaS, backend as a service. Supabase, Firebase och liknande.</li>
       </ul>
     </aside>
   </section>
 
   <section>
-    <div class="kicker">Bonus · Fly.io</div>
-    <h2>Fly.io: en server som kostar en fika i månaden</h2>
+    <div class="kicker">Bonus · Supabase</div>
+    <h2>Supabase: databas och backend i molnet</h2>
     <div class="cols wide-left">
       <ul class="nice">
-        <li><strong>Fly.io</strong> kör din backend på riktiga servrar i datorhallar runt om i världen</li>
-        <li class="frag">Inte gratis: du betalar per sekund som servern är igång. Minsta servern kostar <strong>2,19 dollar i månaden</strong>, drygt 20 kronor, om den aldrig sover</li>
-        <li class="frag">En disk för SQLite-filen: 0,15 dollar per GB i månaden</li>
-        <li class="frag">Provperiod utan kort: 2 timmar serverdrift eller 7 dagar. Sedan krävs kreditkort</li>
+        <li><strong>Supabase</strong> ger dig en riktig databas (Postgres) på nätet, och gör automatiskt ett <strong>REST-API</strong> av dina tabeller</li>
+        <li class="frag"><code>GET /rest/v1/fikor</code> känns igen? Samma HTTP och REST som idag</li>
+        <li class="frag">Reglerna i databasen bestämmer vem som får läsa och ändra: <strong>Row Level Security</strong></li>
+        <li class="frag">Gratis: 2 projekt, 500 MB databas. Pausas efter en veckas tystnad. Pro: 25 dollar i månaden</li>
       </ul>
       <div class="card sun frag">
-        <span class="e">💤</span>
-        <h3>Servern får sova</h3>
-        <p>Fly.io stänger av servern när ingen använder appen och väcker den vid nästa besök. Då blir det ännu billigare.</p>
+        <span class="e">🌍</span>
+        <h3>Allt på nätet, gratis</h3>
+        <p>Frontenden på GitHub Pages, datan hos Supabase. Fikalistan syns i allas mobiler.</p>
       </div>
     </div>
     <aside class="notes">
       <ul>
-        <li>Priserna gällde i november 2026. Fly.io höjde priset på minne i oktober 2026, så be deltagarna kolla prissidan själva.</li>
-        <li>Viktigast: fly apps destroy tar bort appen och stoppar kostnaden.</li>
+        <li>Priserna gällde i november 2026. Be deltagarna kolla prissidan själva.</li>
+        <li>Ett pausat projekt startar du igen med ett klick på supabase.com. Datan finns kvar.</li>
+        <li>Med Supabase behövs inte vår egen Express-server när appen publiceras. Kontrollerna som backenden gjorde blir regler i databasen.</li>
       </ul>
     </aside>
   </section>
 
   <section>
-    <div class="kicker">Bonus · Fly.io</div>
-    <h2>Låt agenten publicera åt dig</h2>
+    <div class="kicker">Bonus · Supabase</div>
+    <h2>Låt agenten flytta datan till Supabase</h2>
     <div class="flow" style="justify-content:center">
-      <div class="box sun">📦 Installera<small>flyctl, kommandot<br>heter fly</small></div>
+      <div class="box sun">📦 Installera<small>Supabase CLI</small></div>
       <div class="arrow frag">→</div>
-      <div class="box sun frag">🔐 Logga in själv<small>fly auth login</small></div>
+      <div class="box sun frag">🔐 Logga in själv<small>konto på supabase.com<br>supabase login</small></div>
       <div class="arrow frag">→</div>
-      <div class="box frag">🤖 Agenten<small>fly launch<br>fly deploy</small></div>
+      <div class="box frag">🤖 Agenten<small>tabeller, regler<br>och supabase db push</small></div>
       <div class="arrow frag">→</div>
-      <div class="box alt frag">🌍 Ute på nätet<small>din-app.fly.dev</small></div>
+      <div class="box alt frag">🌍 Ute på nätet<small>GitHub Pages<br>+ Supabase</small></div>
     </div>
     <ul class="nice" style="margin-top:40px">
       <li class="frag">Precis som med <code>gh</code>: när du är inloggad i terminalen kan agenten använda verktyget åt dig</li>
-      <li class="frag">Be om en plan med alla kommandon och vad de kostar, och att den frågar innan den skapar något som kostar</li>
+      <li class="frag">Databasens lösenord och den hemliga nyckeln skriver du aldrig i chatten</li>
     </ul>
     <aside class="notes">
       <ul>
         <li>Hela gången med prompt finns i övning 10 på kurssidan.</li>
-        <li>Inloggningen gör deltagaren själv. Den ska aldrig gå via chatten.</li>
+        <li>Kontot och inloggningen gör deltagaren själv. De ska aldrig gå via chatten.</li>
+        <li>Supabase har två nycklar: den publika (publishable) får ligga i frontenden, den hemliga (secret) aldrig.</li>
       </ul>
     </aside>
   </section>
@@ -703,7 +726,7 @@ Authorization: Bearer hemlig-nyckel</span>
       <li><span class="e">🍰</span><span><strong>Övning 8</strong>: en app med egen backend, minst backenden med tester</span></li>
       <li><span class="e">📡</span><span>Öppna Network på en sida du använder ofta. Hittar du <code>fetch</code>-frågor med JSON?</span></li>
       <li><span class="e">🔗</span><span>Extra: <strong>övning 9</strong>, bygg Länkförkortaren från en kravlista</span></li>
-      <li><span class="e">🎈</span><span>Bonus: <strong>övning 10</strong>, publicera din backend på Fly.io</span></li>
+      <li><span class="e">⚡</span><span>Bonus: <strong>övning 10</strong>, publicera din app med Supabase</span></li>
     </ul>
     <p class="small bottom">Allt material finns på kurssidan.</p>
   </section>

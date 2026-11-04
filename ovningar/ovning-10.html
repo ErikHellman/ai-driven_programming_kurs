@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Övning 10: Publicera backenden på Fly.io · AI-driven programmering</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎈</text></svg>">
+  <title>Övning 10: Publicera med Supabase · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <link rel="stylesheet" href="../assets/theme.css?v=3">
   <link rel="stylesheet" href="../assets/site.css?v=5">
   <script src="../assets/site.js?v=4" defer></script>
@@ -14,40 +14,60 @@
     <div class="wrap">
       <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
       <span class="eyebrow">Tillfälle 3 · Övning 10 · bonus</span>
-      <h1>🎈 Publicera backenden på Fly.io</h1>
-      <p>Ta appen från övning 8 ut på nätet, så att alla i fikagänget kan använda den i sina mobiler. Du installerar Fly.io:s kommandoradsverktyg, loggar in själv, och låter sedan agenten sköta resten.</p>
+      <h1>⚡ Publicera med Supabase</h1>
+      <p>Ta appen från övning 8 ut på nätet, så att alla i fikagänget kan använda den i sina mobiler. Datan flyttar till Supabase, och frontenden publiceras på GitHub Pages. Du skapar konto, installerar Supabase CLI och loggar in själv. Sedan låter du agenten sköta resten.</p>
     </div>
   </header>
 
   <main class="wrap">
-    <div class="note tip"><p><strong>Syftet med övningen:</strong> att se vad som krävs för att en backend ska köra dygnet runt på en riktig server, och att låta agenten använda ett nytt verktyg åt dig.</p></div>
-    <div class="note"><p><strong>Innan du börjar:</strong> du behöver en app med egen backend, till exempel från <a href="ovning-8.html">övning 8</a> eller <a href="ovning-9.html">övning 9</a>, som fungerar på din dator och ligger på GitHub.</p></div>
+    <div class="note tip"><p><strong>Syftet med övningen:</strong> att se hur en fullstack-app kan köra på nätet utan att du har en egen server, och att låta agenten använda ett nytt verktyg åt dig.</p></div>
+    <div class="note"><p><strong>Innan du börjar:</strong> du behöver en app med egen backend, till exempel från <a href="ovning-8.html">övning 8</a>, som fungerar på din dator och ligger på GitHub.</p></div>
 
     <ol class="steps">
       <li>
-        <h3>💳 Först: det kostar pengar</h3>
-        <p><a href="https://fly.io/">Fly.io</a> är en molntjänst som kör din backend på deras servrar, i datorhallar runt om i världen. Till skillnad från GitHub Pages är det <strong>inte gratis</strong>. Du betalar för den tid servern är igång, per sekund, och priserna står i dollar.</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Vad</th><th>Pris</th><th>Ungefär i kronor</th></tr>
-            <tr><td>Minsta servern (<em>shared-cpu-1x</em>, 256 MB minne), igång dygnet runt</td><td>2,19 dollar i månaden</td><td>drygt 20 kronor</td></tr>
-            <tr><td>Samma server med 512 MB minne, om 256 MB inte räcker</td><td>3,69 dollar i månaden</td><td>knappt 40 kronor</td></tr>
-            <tr><td>En disk (<em>volume</em>) för databasfilen, 1 GB</td><td>0,15 dollar i månaden</td><td>under 2 kronor</td></tr>
-            <tr><td>En stoppad server</td><td>0,15 dollar per GB i månaden för dess filer</td><td>nästan inget</td></tr>
-          </table>
-        </div>
-        <p>En liten kursapp kostar alltså runt <strong>25 kronor i månaden</strong> om den alltid är igång, och mindre om den får somna när ingen använder den. Fly.io stänger av servern när ingen besöker appen och startar den igen vid nästa besök. Det första besöket efter en paus tar då ett par sekunder.</p>
+        <h3>🧩 Vad är Supabase?</h3>
+        <p><a href="https://supabase.com/">Supabase</a> är en <strong>backend som tjänst</strong>. Du får färdigt det som din Express-server och SQLite-fil gjorde i övning 8, fast på nätet:</p>
         <ul>
-          <li><strong>Provperiod:</strong> nya konton får prova utan kreditkort, i 2 timmar serverdrift eller 7 dagar, det som kommer först. Det räcker för den här övningen.</li>
-          <li><strong>Sedan:</strong> för att appen ska fortsätta köra måste du lägga in ett kreditkort. Det finns ingen gratisnivå för nya konton.</li>
-          <li><strong>Sluta betala:</strong> ta bort appen med <code>fly apps destroy</code> när du inte vill ha den kvar. Då tas servern och disken bort, och kostnaden upphör.</li>
+          <li><strong>En databas:</strong> Postgres, en av världens vanligaste databaser. Samma tabeller och samma SQL som i del 2.</li>
+          <li><strong>Ett REST-API:</strong> Supabase gör automatiskt ett API av varje tabell. Tabellen <code>fikor</code> får adressen <code>/rest/v1/fikor</code>, och du använder <code>GET</code>, <code>POST</code> och <code>DELETE</code> precis som förut.</li>
+          <li><strong>Regler i stället för kontroller:</strong> det som din backend kontrollerade blir regler i databasen. <em>Row Level Security</em> bestämmer vem som får läsa, lägga till och ta bort.</li>
+          <li><strong>Inloggning:</strong> finns färdigt om du vill bygga vidare.</li>
         </ul>
-        <div class="note warn"><p><strong>Priserna ändras.</strong> Siffrorna ovan gällde i november 2026, och Fly.io höjde till exempel priset på minne i oktober 2026. Kolla alltid <a href="https://fly.io/docs/about/pricing/">Fly.io:s prissida</a> innan du lägger in ett kort, och titta under <em>Billing</em> på ditt konto då och då.</p></div>
+        <p>Frontenden är fortfarande bara filer, så den kan ligga kvar på GitHub Pages och prata direkt med Supabase. Din egen Express-server behövs inte längre när appen är publicerad.</p>
       </li>
 
       <li>
-        <h3>📦 Installera flyctl</h3>
-        <p><strong>flyctl</strong> är Fly.io:s kommandoradsverktyg, ungefär som <code>gh</code> är GitHubs. Programmet heter flyctl, men kommandot du skriver är <code>fly</code>.</p>
+        <h3>💳 Vad det kostar</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Plan</th><th>Pris</th><th>Det här ingår</th></tr>
+            <tr><td><strong>Free</strong></td><td>0 dollar</td><td>2 aktiva projekt, 500 MB databas per projekt, 1 GB filer, 50 000 inloggade användare i månaden och 5 GB trafik.</td></tr>
+            <tr><td><strong>Pro</strong></td><td>från 25 dollar i månaden, drygt 250 kronor</td><td>Större gränser, projekt som aldrig pausas och dagliga säkerhetskopior. Fler projekt kostar från 10 dollar i månaden.</td></tr>
+          </table>
+        </div>
+        <ul>
+          <li><strong>Gratis räcker långt:</strong> en fikalista använder en bråkdel av gränserna.</li>
+          <li><strong>Projektet pausas:</strong> ett gratisprojekt som inte används på en vecka pausas. Datan finns kvar, och du startar projektet igen med en knapp på supabase.com.</li>
+          <li><strong>Pro har ett kostnadstak</strong> som är påslaget från början, så att du inte betalar för mer än det som ingår. Du behöver inte Pro för den här övningen.</li>
+        </ul>
+        <div class="note warn"><p><strong>Priserna ändras.</strong> Siffrorna ovan gällde i november 2026. Kolla alltid <a href="https://supabase.com/pricing">Supabases prissida</a> innan du väljer en plan som kostar.</p></div>
+      </li>
+
+      <li>
+        <h3>🔐 Skapa konto och ett projekt, själv</h3>
+        <p>Det här gör du själv, inte agenten. Kontot är ditt och inloggningen ska aldrig gå via chatten.</p>
+        <ol>
+          <li>Gå till <a href="https://supabase.com/dashboard/sign-up">supabase.com/dashboard/sign-up</a> och skapa ett konto. Spara inloggningen i lösenordshanteraren.</li>
+          <li>Klicka på <strong>New project</strong>. Ge det ett namn, till exempel <code>fikalistan</code>, och välj en region i Europa, gärna Stockholm om den finns.</li>
+          <li>Supabase ber om ett <strong>lösenord till databasen</strong>. Låt den skapa ett starkt lösenord och spara det i lösenordshanteraren. Det skriver du aldrig i chatten.</li>
+          <li>Välj planen <strong>Free</strong> och vänta någon minut medan projektet startar.</li>
+        </ol>
+        <p>Projektets adress ser ut så här: <code>https://abcdefghijkl.supabase.co</code>. Bokstäverna i början är projektets <strong>id</strong>, som agenten behöver senare.</p>
+      </li>
+
+      <li>
+        <h3>📦 Installera Supabase CLI</h3>
+        <p><strong>Supabase CLI</strong> är Supabases kommandoradsverktyg, ungefär som <code>gh</code> är GitHubs. Kommandot heter <code>supabase</code>.</p>
         <div class="os-switch" role="group" aria-label="Välj operativsystem">
           <button type="button" data-os="windows">Windows</button>
           <button type="button" data-os="mac">macOS</button>
@@ -55,89 +75,104 @@
         </div>
         <p class="os-note">Vi gissade ditt operativsystem. Byt om det blev fel.</p>
         <div data-os-only="windows">
+          <p>På Windows installeras det med <strong>Scoop</strong>, ett program som installerar andra program. Har du inte Scoop, installera det först i PowerShell:</p>
+          <div class="code"><span class="label">PowerShell · Scoop</span>
+<pre>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression</pre></div>
+          <p>Installera sedan Supabase CLI:</p>
           <div class="code"><span class="label">PowerShell</span>
-<pre>pwsh -Command "iwr https://fly.io/install.ps1 -useb | iex"</pre></div>
-          <p>Står det att <code>pwsh</code> inte finns? Byt ut det mot <code>powershell</code>. Stäng terminalen och öppna en ny efteråt.</p>
+<pre>scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+scoop install supabase</pre></div>
         </div>
         <div data-os-only="mac">
           <div class="code"><span class="label">Terminal</span>
-<pre>brew install flyctl</pre></div>
+<pre>brew install supabase/tap/supabase</pre></div>
         </div>
         <div data-os-only="linux">
           <div class="code"><span class="label">Terminal</span>
-<pre>curl -L https://fly.io/install.sh | sh</pre></div>
-          <p>Skriptet säger till om du behöver lägga till en rad i din <code>.bashrc</code> eller <code>.zshrc</code>. Gör det och öppna en ny terminal.</p>
+<pre>brew install supabase/tap/supabase</pre></div>
+          <p>Har du inte Homebrew finns färdiga paket under <em>Releases</em> på <a href="https://github.com/supabase/cli/releases">github.com/supabase/cli</a>.</p>
         </div>
-        <p>Kolla att det fungerade:</p>
+        <p>Stäng terminalen, öppna en ny och kolla att det fungerade:</p>
         <div class="code"><span class="label">Alla system</span>
-<pre>fly version</pre></div>
+<pre>supabase --version</pre></div>
+        <details class="alt">
+          <summary>Vill du inte installera något globalt?</summary>
+          <p>Supabase CLI kan också installeras i projektet med <code>npm install -D supabase</code>. Då skriver du <code>npx supabase</code> i stället för <code>supabase</code> i alla kommandon, och säger det till agenten.</p>
+        </details>
       </li>
 
       <li>
-        <h3>🔐 Skapa konto och logga in, själv</h3>
-        <p>Det här gör du själv i terminalen, inte agenten. Kontot är ditt och inloggningen ska aldrig gå via chatten.</p>
+        <h3>🔑 Logga in, själv</h3>
         <div class="code"><span class="label">Alla system</span>
-<pre>fly auth signup</pre></div>
-        <p>Webbläsaren öppnas. Skapa kontot, gärna genom att logga in med GitHub, och spara det i lösenordshanteraren. Har du redan ett konto skriver du <code>fly auth login</code> i stället. Kolla sedan:</p>
+<pre>supabase login</pre></div>
+        <p>Webbläsaren öppnas och du godkänner inloggningen. CLI:t sparar en nyckel på din dator. Nu kan agenten använda <code>supabase</code> åt dig, eftersom den kör kommandon på samma dator och med samma inloggning som du. Precis som med <code>gh</code>.</p>
+        <p>Kolla att det fungerade. Du ska se ditt projekt i listan:</p>
         <div class="code"><span class="label">Alla system</span>
-<pre>fly auth whoami</pre></div>
-        <p>Står din e-postadress där är du inloggad. Nu kan agenten använda <code>fly</code> åt dig, eftersom den kör kommandon i samma terminal och med samma inloggning som du. Precis som med <code>gh</code>.</p>
+<pre>supabase projects list</pre></div>
       </li>
 
       <li>
-        <h3>🤖 Låt agenten publicera</h3>
-        <p>Öppna projektet i Claude- eller ChatGPT-appen och starta en <strong>ny session</strong>. Skicka en prompt som beskriver vad du vill ha. Den här fungerar för appen från övning 8:</p>
+        <h3>🤖 Låt agenten flytta datan</h3>
+        <p>Öppna projektet i Claude- eller ChatGPT-appen och starta en <strong>ny session</strong>. Byt ut projektets id i prompten. Den här fungerar för appen från övning 8:</p>
         <div class="code wrap"><span class="label">Prompt</span>
-<pre>Jag vill publicera den här appen på Fly.io. Jag har installerat flyctl och loggat in, så du kan använda kommandot fly. Kör fly auth whoami först för att kontrollera det.
+<pre>Jag vill publicera den här appen med Supabase som backend och GitHub Pages för frontenden. Jag har skapat ett Supabase-projekt med id abcdefghijkl, installerat Supabase CLI och loggat in med supabase login. Kör supabase projects list först för att kontrollera det.
 
 Krav:
-- Frontend och backend ska köra på samma server: backenden bygger och skickar ut frontendens filer, så att allt har samma adress och vi slipper CORS-problem.
-- SQLite-databasen ska ligga på en Fly-volym på 1 GB, så att datan finns kvar när appen startas om eller publiceras på nytt.
-- Kör exakt en server, med minsta storleken (shared-cpu-1x, 256 MB). Den får stängas av när ingen använder appen och startas igen vid nästa besök.
-- Välj regionen Stockholm (arn) om den finns, annars den närmaste i Europa.
-- Läs Fly.io:s dokumentation på https://fly.io/docs/ om du är osäker på något.
+- Flytta databasen till Supabase. Skapa tabellerna som en migration i mappen supabase/migrations och skicka dem till projektet med supabase db push.
+- Slå på Row Level Security på alla tabeller, med regler för vad alla får läsa, lägga till och ta bort.
+- Kontrollerna som backenden gör idag, till exempel att namnet inte får vara tomt eller för långt, ska bli regler i databasen.
+- Frontenden ska prata direkt med Supabase med paketet @supabase/supabase-js. Använd projektets adress och den publika nyckeln (publishable key). Den hemliga nyckeln får aldrig finnas i frontenden.
+- Publicera frontenden på GitHub Pages med GitHub Actions.
+- Läs Supabases dokumentation på https://supabase.com/docs om du är osäker på något.
 
 Arbetssätt:
-- Jobba på en ny branch. Visa först en plan med alla fly-kommandon du tänker köra och vad de kostar, och vänta på mitt okej.
-- Fråga mig innan varje kommando som skapar något som kostar pengar.
-- När appen är publicerad: ge mig adressen, öppna en pull request och skriv i README.md hur man publicerar en ny version och hur man tar bort appen.</pre></div>
-        <p>Läs planen noga. Ser du kommandon som <code>fly launch</code>, <code>fly volumes create</code> och <code>fly deploy</code>? Agenten kommer att skapa några nya filer, bland annat <code>fly.toml</code> med inställningarna för Fly.io och en <code>Dockerfile</code> som beskriver hur servern byggs. Fråga agenten vad de gör om du är nyfiken.</p>
+- Jobba på en ny branch. Visa först en plan med alla kommandon du tänker köra, och vänta på mitt okej.
+- Behöver ett kommando databasens lösenord: be mig köra det själv i terminalen. Jag skriver aldrig lösenordet i chatten.
+- När appen är publicerad: ge mig adressen, öppna en pull request och skriv i README.md hur man ändrar tabellerna och publicerar en ny version.</pre></div>
+        <p>Läs planen noga. Agenten kommer att skapa en mapp som heter <code>supabase</code> med filen <code>config.toml</code> och en <code>.sql</code>-fil per ändring av databasen. Fråga agenten vad de gör om du är nyfiken.</p>
         <div class="table-wrap">
           <table>
             <tr><th>Kommando</th><th>Vad det gör</th></tr>
-            <tr><td><code>fly launch</code></td><td>Skapar appen på Fly.io och skriver <code>fly.toml</code>. Körs en gång.</td></tr>
-            <tr><td><code>fly volumes create</code></td><td>Skapar en disk som databasfilen kan ligga på.</td></tr>
-            <tr><td><code>fly deploy</code></td><td>Bygger appen och publicerar den. Körs varje gång du vill publicera en ny version.</td></tr>
-            <tr><td><code>fly status</code></td><td>Visar om servern är igång.</td></tr>
-            <tr><td><code>fly logs</code></td><td>Visar backendens utskrifter. Här hittar du felet vid en <code>500</code>.</td></tr>
-            <tr><td><code>fly secrets set</code></td><td>Sparar en hemlighet, till exempel en API-nyckel, så att bara servern kan läsa den.</td></tr>
-            <tr><td><code>fly apps destroy</code></td><td>Tar bort appen helt. Då slutar den kosta.</td></tr>
+            <tr><td><code>supabase init</code></td><td>Skapar mappen <code>supabase</code> i projektet. Körs en gång.</td></tr>
+            <tr><td><code>supabase link</code></td><td>Kopplar mappen till ditt projekt på supabase.com. Frågar efter databasens lösenord, så det kör du själv.</td></tr>
+            <tr><td><code>supabase migration new</code></td><td>Skapar en ny <code>.sql</code>-fil för en ändring i databasen, till exempel en ny tabell.</td></tr>
+            <tr><td><code>supabase db push</code></td><td>Skickar alla nya ändringar till databasen på nätet.</td></tr>
+            <tr><td><code>supabase projects list</code></td><td>Visar dina projekt. Bra för att kolla att du är inloggad.</td></tr>
           </table>
         </div>
+        <details class="alt">
+          <summary>Två nycklar: vilken får synas?</summary>
+          <ul>
+            <li><strong>Publishable key</strong> (börjar med <code>sb_publishable_</code>) är gjord för att ligga i frontenden. Alla kan se den. Det är reglerna i databasen som skyddar datan.</li>
+            <li><strong>Secret key</strong> (börjar med <code>sb_secret_</code>) går förbi alla regler. Den får aldrig ligga i frontenden, i Git eller i chatten.</li>
+          </ul>
+        </details>
       </li>
 
       <li>
         <h3>🌍 Prova på riktigt</h3>
-        <p>Öppna adressen agenten ger dig, något i stil med <code>https://fikalistan-anna.fly.dev</code>. Öppna den sedan i mobilen och be någon bredvid dig göra samma sak. Lägg till en fika. Syns den hos alla? 🎉</p>
-        <p>Öppna Network i Dev Tools. Frågorna går nu till <code>/api</code> på samma adress, men servern står i en datorhall i stället för på din dator.</p>
+        <p>Öppna adressen agenten ger dig, något i stil med <code>https://ditt-namn.github.io/fikalistan-backend/</code>. Öppna den sedan i mobilen och be någon bredvid dig göra samma sak. Lägg till en fika. Syns den hos alla? 🎉</p>
+        <p>Öppna Network i Dev Tools och lägg till något. Frågan går nu till <code>/rest/v1/fikor</code> hos <code>supabase.co</code>. Hittar du metoden <code>POST</code> och statuskoden <code>201</code>?</p>
+        <p>Öppna ditt projekt på supabase.com och klicka på <strong>Table Editor</strong>. Där ser du tabellen och raderna, precis som i del 2.</p>
         <details class="alt">
           <summary>Det fungerar inte?</summary>
           <ul>
-            <li><strong>Sidan laddar länge första gången:</strong> servern sov. Vänta några sekunder och ladda om.</li>
-            <li><strong>500 eller en tom sida:</strong> be agenten köra <code>fly logs</code> och läsa felet.</li>
-            <li><strong>Datan försvann efter en ny publicering:</strong> databasen ligger inte på volymen. Be agenten kontrollera var databasfilen sparas.</li>
-            <li><strong>Out of memory i loggen:</strong> 256 MB räckte inte. Be agenten byta till 512 MB, och tänk på att det kostar lite mer.</li>
+            <li><strong>Listan är tom fast det finns rader:</strong> reglerna i Row Level Security tillåter inte att man läser. Be agenten kontrollera reglerna.</li>
+            <li><strong>401 eller 403 i Network:</strong> fel nyckel eller en regel som stoppar. Ge felet till agenten.</li>
+            <li><strong>Sidan på GitHub Pages är tom:</strong> öppna Console. Be agenten läsa felet och kontrollera att bygget får projektets adress och nyckel.</li>
+            <li><strong>Inget svarar efter en tid:</strong> projektet har pausats. Starta det igen på supabase.com.</li>
           </ul>
         </details>
       </li>
 
       <li>
         <h3>🔒 Tänk efter: vem kan använda appen?</h3>
-        <p>Nu kan vem som helst som hittar adressen lägga till och ta bort saker i din lista. Det är okej för en övning, men inte för något du bryr dig om. Tre alternativ:</p>
+        <p>Nu kan vem som helst som hittar adressen lägga till och ta bort saker i din lista, om reglerna tillåter det. Det är okej för en övning, men inte för något du bryr dig om. Tre alternativ:</p>
         <ul>
-          <li>Ta bort appen när du har provat: be agenten köra <code>fly apps destroy</code>, eller gör det själv.</li>
-          <li>Låt den vara kvar en kort tid och dela bara adressen med de du litar på.</li>
-          <li>Be agenten lägga till enkel inloggning. Det är ett större steg, men en bra nästa övning.</li>
+          <li>Pausa eller ta bort projektet på supabase.com när du har provat.</li>
+          <li>Låt det vara kvar och dela bara adressen med de du litar på.</li>
+          <li>Be agenten lägga till inloggning med Supabase Auth, och regler som säger att man bara får ta bort det man själv har lagt till. En bra nästa övning.</li>
         </ul>
       </li>
     </ol>
@@ -145,11 +180,12 @@ Arbetssätt:
     <section>
       <h2>Klart?</h2>
       <ul class="checklist">
-        <li>Jag vet vad appen kostar i månaden, och hur jag får den att sluta kosta</li>
-        <li>Jag har installerat flyctl och loggat in själv med <code>fly auth login</code></li>
-        <li>Agenten har publicerat appen på Fly.io via en pull request</li>
-        <li>Appen fungerar i mobilen, och datan finns kvar efter en ny publicering</li>
-        <li>Jag har bestämt om appen ska vara kvar eller tas bort</li>
+        <li>Jag vet vad Supabase kostar, och vad som händer med ett gratisprojekt som inte används</li>
+        <li>Jag har skapat konto och projekt, installerat Supabase CLI och loggat in själv</li>
+        <li>Agenten har flyttat datan till Supabase och publicerat frontenden via en pull request</li>
+        <li>Jag har sett en fråga till <code>/rest/v1/</code> i Network-fliken</li>
+        <li>Appen fungerar i mobilen, och samma data syns hos alla</li>
+        <li>Jag har bestämt om projektet ska vara kvar eller tas bort</li>
       </ul>
     </section>
 
