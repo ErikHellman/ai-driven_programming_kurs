@@ -382,3 +382,33 @@ details.project summary { font-size: 1.2rem; }
   z-index: 10;
 }
 .resume-slides:hover { background: var(--berry); }
+
+/* Väljare för tillfällen på startsidan */
+.lesson-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: fit-content;
+  max-width: 100%;
+  background: var(--sand);
+  border-radius: 999px;
+  padding: 5px;
+  margin: 0 0 20px;
+}
+.lesson-switch[hidden] { display: none; }
+.lesson-switch button {
+  border: 0;
+  background: transparent;
+  color: var(--plum);
+  font: 800 1rem var(--font-body);
+  padding: 9px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.lesson-switch button:hover { color: var(--coral); }
+.lesson-switch button[aria-pressed="true"] {
+  background: var(--paper);
+  box-shadow: 0 2px 8px rgba(158, 72, 28, 0.15);
+  color: var(--coral);
+}
+.lesson[hidden] { display: none; }

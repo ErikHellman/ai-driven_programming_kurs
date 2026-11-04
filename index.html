@@ -7,8 +7,8 @@
   <meta name="description" content="Kursmaterial för AI-driven programmering med Claude Code och Codex, Folkuniversitetet Stockholm hösten 2026.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌞</text></svg>">
   <link rel="stylesheet" href="assets/theme.css?v=3">
-  <link rel="stylesheet" href="assets/site.css?v=5">
-  <script src="assets/site.js?v=4" defer></script>
+  <link rel="stylesheet" href="assets/site.css?v=6">
+  <script src="assets/site.js?v=5" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -34,7 +34,8 @@
   <main class="wrap">
     <section>
       <h2>Lektioner</h2>
-      <div class="lesson">
+      <div class="lesson-switch" role="group" aria-label="Välj tillfälle" hidden></div>
+      <div class="lesson" id="tillfalle-1" data-label="Tillfälle 1">
         <div class="lesson-head">
           <h3>Tillfälle 1: Kom igång</h3>
           <span class="pill">14 oktober 2026</span>
@@ -60,7 +61,7 @@
           </a>
         </div>
       </div>
-      <div class="lesson">
+      <div class="lesson" id="tillfalle-2" data-label="Tillfälle 2">
         <div class="lesson-head">
           <h3>Tillfälle 2: Bygg riktiga webbappar</h3>
           <span class="pill">21 oktober 2026</span>
@@ -100,6 +101,56 @@
             <span class="emoji">🕹️</span>
             <h3>Övning 5: Plattformsspelet</h3>
             <p>Extra: skriv din egen prompt och bygg ett plattformsspel i stil med Super Mario Bros, med egen hjälte, eget tema och grafik ritad med kod.</p>
+            <span class="meta">Till övningen →</span>
+          </a>
+        </div>
+      </div>
+      <div class="lesson" id="tillfalle-3" data-label="Tillfälle 3">
+        <div class="lesson-head">
+          <h3>Tillfälle 3: Claude Code och backend</h3>
+          <span class="pill">4 november 2026</span>
+        </div>
+        <div class="grid">
+          <a class="card big" href="slides/tillfalle-3-del-1.html">
+            <span class="emoji">🧭</span>
+            <h3>Del 1: Jobba smart med agenten</h3>
+            <p>Hur du väljer teknik med agentens hjälp, vad som bör stå i en prompt, AGENTS.md, hur du delar upp arbetet i flera sessioner och hur du använder pull requests.</p>
+            <span class="meta">Öppna presentationen →</span>
+          </a>
+          <a class="card big" href="slides/tillfalle-3-del-2.html">
+            <span class="emoji">🖥️</span>
+            <h3>Del 2: Vad är en backend?</h3>
+            <p>Servrar, HTTP och REST, hur frontenden pratar med backenden och hur datan sparas i en databas.</p>
+            <span class="meta">Öppna presentationen →</span>
+          </a>
+          <a class="card big" href="ovningar/ovning-6.html">
+            <span class="emoji">🔀</span>
+            <h3>Övning 6: Din första pull request</h3>
+            <p>Lägg till en funktion i din app med en bra prompt, AGENTS.md, tester i GitHub Actions, ett ruleset för main och en pull request som du granskar.</p>
+            <span class="meta">Till övningen →</span>
+          </a>
+          <a class="card big" href="ovningar/ovning-7.html">
+            <span class="emoji">🔭</span>
+            <h3>Övning 7: Prata HTTP</h3>
+            <p>Skicka GET, POST och DELETE med curl och fetch, läs statuskoderna och gissa adresserna i ett REST-API.</p>
+            <span class="meta">Till övningen →</span>
+          </a>
+          <a class="card big" href="ovningar/ovning-8.html">
+            <span class="emoji">🍰</span>
+            <h3>Övning 8: En app med egen backend</h3>
+            <p>Bygg en fullstack-app, en delad lista med REST-API, Supabase och React på en server, i fyra sessioner med en pull request per steg.</p>
+            <span class="meta">Till övningen →</span>
+          </a>
+          <a class="card big" href="ovningar/ovning-9.html">
+            <span class="emoji">🔗</span>
+            <h3>Övning 9: Länkförkortaren</h3>
+            <p>Extra: skriv din egen prompt utifrån en kravlista och bygg en länkförkortare med redirects och klickräknare.</p>
+            <span class="meta">Till övningen →</span>
+          </a>
+          <a class="card big" href="ovningar/ovning-10.html">
+            <span class="emoji">⚡</span>
+            <h3>Övning 10: Publicera på nätet</h3>
+            <p>Bonus: låt frontenden prata direkt med Supabase, skriv regler för datan och publicera gratis på GitHub Pages.</p>
             <span class="meta">Till övningen →</span>
           </a>
         </div>
@@ -156,6 +207,12 @@
           <span class="emoji">🌀</span>
           <h3>7b. Codex</h3>
           <p>OpenAIs AI-agent, i ChatGPT-appen på datorn.</p>
+          <span class="meta">Windows · macOS · Linux</span>
+        </a>
+        <a class="card" href="guider/supabase.html">
+          <span class="emoji">⚡</span>
+          <h3>8. Supabase</h3>
+          <p>Från tillfälle 3: konto, pris, Supabase CLI och inloggning. En databas på nätet.</p>
           <span class="meta">Windows · macOS · Linux</span>
         </a>
       </div>

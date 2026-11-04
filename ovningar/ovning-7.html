@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Övning 7: Prata HTTP · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=5">
+  <script src="../assets/site.js?v=4" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Tillfälle 3 · Övning 7 · 15 minuter</span>
+      <h1>🔭 Prata HTTP</h1>
+      <p>Skicka egna frågor till en server och läs svaren. Ingen kod, ingen agent, bara du, terminalen och webbläsaren.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="note tip"><p><strong>Syftet med övningen:</strong> att se HTTP med egna ögon. Metod, adress, statuskod, headers och JSON. När agenten senare bygger din backend vet du vad den pratar om.</p></div>
+    <div class="note"><p><strong>Servern vi pratar med:</strong> <a href="https://jsonplaceholder.typicode.com/">JSONPlaceholder</a>, ett gratis REST-API för att öva. Det har påhittade användare, inlägg och att göra-listor. Du kan skicka vad du vill, den låtsas spara men ändrar aldrig något på riktigt.</p></div>
+    <div class="note warn"><p><strong>Windows:</strong> skriv <code>curl.exe</code> i stället för <code>curl</code> i alla kommandon nedan. I PowerShell betyder <code>curl</code> något annat.</p></div>
+
+    <ol class="steps">
+      <li>
+        <h3>📖 En GET i webbläsaren</h3>
+        <p>Öppna den här adressen i webbläsaren:</p>
+        <div class="code wrap"><span class="label">Adress</span>
+<pre>https://jsonplaceholder.typicode.com/users/1</pre></div>
+        <p>Du ser ingen webbsida, bara <strong>JSON</strong>. Webbläsaren gjorde en <code>GET</code>, och servern svarade med data i stället för HTML.</p>
+        <ul>
+          <li>Vad heter användare nummer 1? I vilken stad bor hen?</li>
+          <li>Byt <code>1</code> mot <code>2</code> i adressen. Vad händer?</li>
+        </ul>
+      </li>
+
+      <li>
+        <h3>⌨️ Samma fråga med curl</h3>
+        <p>Öppna terminalen och skriv:</p>
+        <div class="code wrap"><span class="label">Terminal</span>
+<pre>curl https://jsonplaceholder.typicode.com/users/1</pre></div>
+        <p>Samma JSON, men nu i terminalen. Lägg till <code>-i</code> för att också se svarets första rad och headers:</p>
+        <div class="code wrap"><span class="label">Terminal</span>
+<pre>curl -i https://jsonplaceholder.typicode.com/users/1</pre></div>
+        <ul>
+          <li>Vilken <strong>statuskod</strong> står på första raden?</li>
+          <li>Hitta headern <code>Content-Type</code>. Vad säger den om svaret?</li>
+        </ul>
+      </li>
+
+      <li>
+        <h3>🔍 Framkalla en 404</h3>
+        <p>Det finns bara tio användare. Fråga efter nummer 999:</p>
+        <div class="code wrap"><span class="label">Terminal</span>
+<pre>curl -i https://jsonplaceholder.typicode.com/users/999</pre></div>
+        <p>Vilken statuskod får du nu, och vad står i body? Prova också en resurs som inte finns alls, till exempel <code>/semlor</code>.</p>
+      </li>
+
+      <li>
+        <h3>📮 Skapa något med POST</h3>
+        <p>Nu skickar vi data till servern. <code>-X POST</code> väljer metoden och <code>-d</code> är det vi skickar i body:</p>
+        <div class="code wrap"><span class="label">Terminal</span>
+<pre>curl -i -X POST https://jsonplaceholder.typicode.com/posts -d "title=Semlor till alla&amp;userId=1"</pre></div>
+        <ul>
+          <li>Vilken statuskod fick du? Jämför med statuskoderna i del 2.</li>
+          <li>Vilket <code>id</code> fick ditt nya inlägg?</li>
+          <li>Hämta det nya inlägget med kommandot nedan. Finns det? Varför inte? (Läs om servern högst upp på sidan igen.)</li>
+        </ul>
+        <div class="code wrap"><span class="label">Terminal</span>
+<pre>curl -i https://jsonplaceholder.typicode.com/posts/101</pre></div>
+        <details class="alt">
+          <summary>Varför inte JSON i body?</summary>
+          <p>Riktiga API:er tar oftast emot JSON, som i exemplet i del 2. Men citattecknen i JSON krånglar i terminalen, särskilt på Windows. Därför skickar vi formulärdata här. Servern förstår båda. Det är också därför agenten brukar skriva tester i stället för att testa med långa curl-kommandon.</p>
+        </details>
+      </li>
+
+      <li>
+        <h3>🗑️ Ändra och ta bort</h3>
+        <p>Prova de två andra metoderna på inlägg nummer 1:</p>
+        <div class="code wrap"><span class="label">Terminal</span>
+<pre>curl -i -X PUT https://jsonplaceholder.typicode.com/posts/1 -d "title=Nytt namn&amp;userId=1"
+curl -i -X DELETE https://jsonplaceholder.typicode.com/posts/1</pre></div>
+        <p>Vilka statuskoder får du? Vad skickar servern tillbaka i body när något tas bort?</p>
+      </li>
+
+      <li>
+        <h3>📡 Samma sak i Network-fliken</h3>
+        <p>Nu gör vi som en frontend: frågar med <code>fetch</code> från JavaScript. Öppna <a href="https://jsonplaceholder.typicode.com/">jsonplaceholder.typicode.com</a>, tryck <kbd>F12</kbd> (eller <kbd>⌥</kbd> + <kbd>⌘</kbd> + <kbd>I</kbd> på Mac) och välj fliken <strong>Network</strong>. Gå sedan till <strong>Console</strong> och klistra in:</p>
+        <div class="code wrap"><span class="label">Console</span>
+<pre>fetch("https://jsonplaceholder.typicode.com/users/1/todos").then((svar) =&gt; svar.json()).then(console.log)</pre></div>
+        <p>Tryck Enter. Gå tillbaka till <strong>Network</strong>, klicka på raden <code>todos</code> och titta under <em>Headers</em> och <em>Response</em>.</p>
+        <ul>
+          <li>Hittar du metoden, adressen och statuskoden?</li>
+          <li>Hur många saker har användare 1 på sin att göra-lista?</li>
+        </ul>
+        <div class="note"><p>Vill webbläsaren inte låta dig klistra in? Skriv <code>allow pasting</code> i Console och tryck Enter först. Det är ett skydd mot bedragare som lurar folk att klistra in skadlig kod. Klistra bara in kod du litar på.</p></div>
+      </li>
+
+      <li>
+        <h3>🧭 Gissa adresserna</h3>
+        <p>JSONPlaceholder följer REST. Resurserna heter <code>users</code>, <code>posts</code>, <code>comments</code>, <code>albums</code>, <code>photos</code> och <code>todos</code>. Gissa adressen innan du provar:</p>
+        <ul>
+          <li>Alla inlägg som användare 3 har skrivit.</li>
+          <li>Alla kommentarer på inlägg nummer 5.</li>
+          <li>Album nummer 2.</li>
+        </ul>
+        <details class="alt">
+          <summary>Facit</summary>
+          <ul>
+            <li><code>/users/3/posts</code></li>
+            <li><code>/posts/5/comments</code></li>
+            <li><code>/albums/2</code></li>
+          </ul>
+          <p>Gissade du rätt utan att läsa dokumentationen? Det är hela poängen med REST: adresserna blir förutsägbara.</p>
+        </details>
+      </li>
+
+      <li>
+        <h3>🐙 Bonus: ett riktigt API</h3>
+        <p>GitHubs API följer också REST. Byt <code>ditt-namn</code> mot ditt användarnamn på GitHub:</p>
+        <div class="code wrap"><span class="label">Terminal</span>
+<pre>curl https://api.github.com/users/ditt-namn
+curl https://api.github.com/users/ditt-namn/repos</pre></div>
+        <p>Hittar du dina repon från kursen? Får du statuskoden <code>403</code> och ordet <em>rate limit</em>? GitHub tillåter bara 60 frågor i timmen utan inloggning, och alla i klassrummet delar samma internetadress. Ännu en statuskod att lägga på minnet.</p>
+      </li>
+    </ol>
+
+    <section>
+      <h2>Klart?</h2>
+      <ul class="checklist">
+        <li>Jag har hämtat JSON med både webbläsaren och <code>curl</code></li>
+        <li>Jag har sett statuskoderna <code>200</code>, <code>201</code> och <code>404</code></li>
+        <li>Jag har skickat en <code>POST</code>, en <code>PUT</code> och en <code>DELETE</code></li>
+        <li>Jag har hittat en <code>fetch</code>-fråga i Network-fliken och läst dess svar</li>
+        <li>Jag kan gissa en REST-adress utan att läsa dokumentationen</li>
+      </ul>
+      <p>Fastnade du på ett svar? Klistra in det hos agenten och fråga: <code>Förklara det här HTTP-svaret för mig, rad för rad.</code></p>
+    </section>
+
+    <nav class="guide-nav">
+      <a href="ovning-6.html">← Övning 6</a>
+      <a href="ovning-8.html">Övning 8: En app med egen backend →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>

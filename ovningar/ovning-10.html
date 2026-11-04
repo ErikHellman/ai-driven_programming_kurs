@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Övning 10: Publicera på nätet · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=5">
+  <script src="../assets/site.js?v=4" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Tillfälle 3 · Övning 10 · bonus</span>
+      <h1>⚡ Publicera på nätet</h1>
+      <p>Ta appen från övning 8 ut på nätet, så att alla i fikagänget kan använda den i sina mobiler. Datan ligger redan hos Supabase. Nu får frontenden prata direkt med Supabase och publiceras gratis på GitHub Pages.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="note tip"><p><strong>Syftet med övningen:</strong> att se hur en fullstack-app kan köra på nätet utan att du har en egen server, och att låta agenten använda ett nytt verktyg åt dig.</p></div>
+    <div class="note"><p><strong>Innan du börjar:</strong> du behöver appen från <a href="ovning-8.html">övning 8</a>, som fungerar på din dator, ligger på GitHub och sparar sin data hos Supabase. Supabase CLI ska vara inloggat, se <a href="../guider/supabase.html">guiden om Supabase</a>.</p></div>
+
+    <ol class="steps">
+      <li>
+        <h3>🧩 Vad ändras?</h3>
+        <p>GitHub Pages skickar bara färdiga filer. Den kan inte köra din Express-server. Men Supabase gör automatiskt ett <strong>REST-API</strong> av varje tabell, så frontenden kan prata direkt med Supabase:</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th></th><th>Övning 8, på din dator</th><th>Övning 10, på nätet</th></tr>
+            <tr><td><strong>Frontenden</strong></td><td>Skickas av Express</td><td>Ligger på GitHub Pages</td></tr>
+            <tr><td><strong>Frågorna</strong></td><td>Till <code>/api/fikor</code> på din server</td><td>Till <code>/rest/v1/fikor</code> hos Supabase</td></tr>
+            <tr><td><strong>Kontrollerna</strong></td><td>Express kontrollerar datan</td><td>Regler i databasen, <em>Row Level Security</em></td></tr>
+            <tr><td><strong>Nyckeln</strong></td><td>Den hemliga, i <code>.env</code> på servern</td><td>Den publika, i frontenden</td></tr>
+          </table>
+        </div>
+        <p>Den publika nyckeln får synas för alla. Det är reglerna i databasen som bestämmer vad den får göra. Därför är reglerna det viktigaste i den här övningen.</p>
+      </li>
+
+      <li>
+        <h3>🤖 Låt agenten göra om och publicera</h3>
+        <p>Öppna projektet i Claude- eller ChatGPT-appen och starta en <strong>ny session</strong>. Den här prompten fungerar för appen från övning 8:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Jag vill publicera den här appen på nätet, gratis. Frontenden ska ligga på GitHub Pages och prata direkt med Supabase, där datan redan finns. Supabase CLI är inloggat och projektet är länkat. Kör supabase projects list först för att kontrollera det.
+
+Krav:
+- Frontenden pratar med Supabase med paketet @supabase/supabase-js, med projektets adress och den publika nyckeln (publishable key). Den hemliga nyckeln får aldrig finnas i frontenden.
+- Skriv regler med Row Level Security för vad alla får läsa, lägga till och ta bort, som en ny migration. Skicka den med supabase db push.
+- Kontrollerna som Express gör idag, till exempel att namnet inte får vara tomt eller för långt, ska bli regler i databasen.
+- Publicera frontenden på GitHub Pages med GitHub Actions. Projektets adress och den publika nyckeln läggs som variabler i repot.
+- Läs Supabases dokumentation på https://supabase.com/docs om du är osäker på något.
+
+Arbetssätt:
+- Jobba på en ny branch. Visa först en plan med alla kommandon du tänker köra, och vänta på mitt okej.
+- Behöver ett kommando databasens lösenord: be mig köra det själv i terminalen. Jag skriver aldrig lösenordet i chatten.
+- När appen är publicerad: ge mig adressen, öppna en pull request och skriv i README.md hur man ändrar tabellerna och publicerar en ny version.</pre></div>
+        <p>Läs planen noga. Agenten kommer att lägga till en ny <code>.sql</code>-fil under <code>supabase/migrations</code> med reglerna, och ett workflow för GitHub Pages. Läs reglerna: får alla ta bort allt? Är det vad du vill?</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Kommando</th><th>Vad det gör</th></tr>
+            <tr><td><code>supabase init</code></td><td>Skapar mappen <code>supabase</code> i projektet. Körs en gång.</td></tr>
+            <tr><td><code>supabase link</code></td><td>Kopplar mappen till ditt projekt på supabase.com. Frågar efter databasens lösenord, så det kör du själv.</td></tr>
+            <tr><td><code>supabase migration new</code></td><td>Skapar en ny <code>.sql</code>-fil för en ändring i databasen, till exempel en ny tabell.</td></tr>
+            <tr><td><code>supabase db push</code></td><td>Skickar alla nya ändringar till databasen på nätet.</td></tr>
+            <tr><td><code>supabase projects list</code></td><td>Visar dina projekt. Bra för att kolla att du är inloggad.</td></tr>
+          </table>
+        </div>
+        <details class="alt">
+          <summary>Två nycklar: vilken får synas?</summary>
+          <ul>
+            <li><strong>Publishable key</strong> (börjar med <code>sb_publishable_</code>) är gjord för att ligga i frontenden. Alla kan se den. Det är reglerna i databasen som skyddar datan.</li>
+            <li><strong>Secret key</strong> (börjar med <code>sb_secret_</code>) går förbi alla regler. Den får aldrig ligga i frontenden, i Git eller i chatten.</li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <h3>🌍 Prova på riktigt</h3>
+        <p>Öppna adressen agenten ger dig, något i stil med <code>https://ditt-namn.github.io/fikalistan-backend/</code>. Öppna den sedan i mobilen och be någon bredvid dig göra samma sak. Lägg till en fika. Syns den hos alla? 🎉</p>
+        <p>Öppna Network i Dev Tools och lägg till något. Frågan går nu till <code>/rest/v1/fikor</code> hos <code>supabase.co</code>. Hittar du metoden <code>POST</code> och statuskoden <code>201</code>?</p>
+        <p>Öppna ditt projekt på supabase.com och klicka på <strong>Table Editor</strong>. Där ser du tabellen och raderna, precis som i del 2.</p>
+        <details class="alt">
+          <summary>Det fungerar inte?</summary>
+          <ul>
+            <li><strong>Listan är tom fast det finns rader:</strong> reglerna i Row Level Security tillåter inte att man läser. Be agenten kontrollera reglerna.</li>
+            <li><strong>401 eller 403 i Network:</strong> fel nyckel eller en regel som stoppar. Ge felet till agenten.</li>
+            <li><strong>Sidan på GitHub Pages är tom:</strong> öppna Console. Be agenten läsa felet och kontrollera att bygget får projektets adress och nyckel.</li>
+            <li><strong>Inget svarar efter en tid:</strong> projektet har pausats. Starta det igen på supabase.com.</li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <h3>🔒 Tänk efter: vem kan använda appen?</h3>
+        <p>Nu kan vem som helst som hittar adressen lägga till och ta bort saker i din lista, om reglerna tillåter det. Det är okej för en övning, men inte för något du bryr dig om. Tre alternativ:</p>
+        <ul>
+          <li>Pausa eller ta bort projektet på supabase.com när du har provat.</li>
+          <li>Låt det vara kvar och dela bara adressen med de du litar på.</li>
+          <li>Be agenten lägga till inloggning med Supabase Auth, och regler som säger att man bara får ta bort det man själv har lagt till. En bra nästa övning.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <section>
+      <h2>Klart?</h2>
+      <ul class="checklist">
+        <li>Jag har läst reglerna i Row Level Security och vet vad alla får göra</li>
+        <li>Agenten har gjort om frontenden och publicerat den på GitHub Pages via en pull request</li>
+        <li>Jag har sett en fråga till <code>/rest/v1/</code> i Network-fliken</li>
+        <li>Appen fungerar i mobilen, och samma data syns hos alla</li>
+        <li>Jag har bestämt om projektet ska vara kvar eller tas bort</li>
+      </ul>
+    </section>
+
+    <nav class="guide-nav">
+      <a href="ovning-9.html">← Övning 9</a>
+      <a href="../index.html">Allt kursmaterial →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>

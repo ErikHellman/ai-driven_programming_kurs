@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Supabase och Supabase CLI · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=5">
+  <script src="../assets/site.js?v=4" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Guide 8 · från tillfälle 3</span>
+      <h1>⚡ Supabase och Supabase CLI</h1>
+      <p>Supabase ger dig en riktig databas på nätet. Här skapar du konto och ett projekt, installerar kommandoradsverktyget och loggar in, så att agenten kan använda Supabase åt dig.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="os-switch" role="group" aria-label="Välj operativsystem">
+      <button type="button" data-os="windows">Windows</button>
+      <button type="button" data-os="mac">macOS</button>
+      <button type="button" data-os="linux">Linux</button>
+    </div>
+    <p class="os-note">Vi gissade ditt operativsystem. Byt om det blev fel.</p>
+
+    <ol class="steps">
+      <li>
+        <h3>Vad är Supabase?</h3>
+        <p><a href="https://supabase.com/" target="_blank" rel="noopener">Supabase</a> är en <strong>backend som tjänst</strong>. Du får färdigt:</p>
+        <ul>
+          <li><strong>En databas:</strong> Postgres, en av världens vanligaste databaser, med tabeller och SQL som i del 2.</li>
+          <li><strong>Ett REST-API:</strong> Supabase gör automatiskt ett API av varje tabell, till exempel <code>/rest/v1/fikor</code>.</li>
+          <li><strong>Regler för vem som får göra vad:</strong> <em>Row Level Security</em> bestämmer vem som får läsa, lägga till och ta bort.</li>
+          <li><strong>Inloggning:</strong> finns färdigt om du vill bygga vidare.</li>
+        </ul>
+        <p>Supabase har ett kommandoradsverktyg, <strong>Supabase CLI</strong>, ungefär som <code>gh</code> för GitHub. När du är inloggad kan agenten använda det åt dig.</p>
+      </li>
+
+      <li>
+        <h3>Vad det kostar</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Plan</th><th>Pris</th><th>Det här ingår</th></tr>
+            <tr><td><strong>Free</strong></td><td>0 dollar</td><td>2 aktiva projekt, 500 MB databas per projekt, 1 GB filer, 50 000 inloggade användare i månaden och 5 GB trafik.</td></tr>
+            <tr><td><strong>Pro</strong></td><td>från 25 dollar i månaden, drygt 250 kronor</td><td>Större gränser, projekt som aldrig pausas och dagliga säkerhetskopior. Fler projekt kostar från 10 dollar i månaden.</td></tr>
+          </table>
+        </div>
+        <ul>
+          <li><strong>Gratis räcker för hela kursen.</strong> En fikalista använder en bråkdel av gränserna.</li>
+          <li><strong>Projektet pausas:</strong> ett gratisprojekt som inte används på en vecka pausas. Datan finns kvar, och du startar det igen med en knapp på supabase.com.</li>
+          <li><strong>Två projekt åt gången:</strong> behöver du ett tredje kan du pausa eller ta bort ett gammalt. Pausade projekt räknas inte.</li>
+        </ul>
+        <div class="note warn"><p><strong>Priserna ändras.</strong> Siffrorna ovan gällde i november 2026. Kolla alltid <a href="https://supabase.com/pricing" target="_blank" rel="noopener">Supabases prissida</a> innan du väljer en plan som kostar.</p></div>
+      </li>
+
+      <li>
+        <h3>Skapa konto</h3>
+        <ol>
+          <li>Gå till <a href="https://supabase.com/dashboard/sign-up" target="_blank" rel="noopener">supabase.com/dashboard/sign-up</a>.</li>
+          <li>Skapa ett konto. Låt <a href="losenordshanterare.html">lösenordshanteraren</a> skapa och spara lösenordet.</li>
+          <li>Bekräfta e-postadressen med länken du får.</li>
+        </ol>
+        <div class="note"><p>Kontot gör du alltid själv. Agenten ska aldrig få ditt lösenord, och det skrivs aldrig i chatten.</p></div>
+      </li>
+
+      <li>
+        <h3>Skapa ett projekt</h3>
+        <ol>
+          <li>Klicka på <strong>New project</strong>. Ge det ett namn, till exempel <code>fikalistan</code>.</li>
+          <li>Välj en region i Europa, gärna Stockholm om den finns. Då går det snabbare för oss i Sverige.</li>
+          <li>Supabase ber om ett <strong>lösenord till databasen</strong>. Låt den skapa ett starkt lösenord och spara det i lösenordshanteraren. Det behöver du snart.</li>
+          <li>Välj planen <strong>Free</strong> och vänta någon minut medan projektet startar.</li>
+        </ol>
+        <p>Projektets adress ser ut så här: <code>https://abcdefghijkl.supabase.co</code>. Bokstäverna i början är projektets <strong>id</strong> (<em>project ref</em>). Du hittar det också under <em>Project Settings</em>.</p>
+      </li>
+
+      <li>
+        <h3>Installera Supabase CLI</h3>
+        <div data-os-only="windows">
+          <p>På Windows installeras det med <strong>Scoop</strong>, ett program som installerar andra program. Har du inte Scoop, installera det först i PowerShell:</p>
+          <div class="code"><span class="label">PowerShell · Scoop</span>
+<pre>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression</pre></div>
+          <p>Installera sedan Supabase CLI:</p>
+          <div class="code"><span class="label">PowerShell</span>
+<pre>scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+scoop install supabase</pre></div>
+        </div>
+        <div data-os-only="mac">
+          <div class="code"><span class="label">Terminal</span>
+<pre>brew install supabase/tap/supabase</pre></div>
+        </div>
+        <div data-os-only="linux">
+          <div class="code"><span class="label">Terminal</span>
+<pre>brew install supabase/tap/supabase</pre></div>
+          <p>Har du inte Homebrew finns färdiga paket under <em>Releases</em> på <a href="https://github.com/supabase/cli/releases" target="_blank" rel="noopener">github.com/supabase/cli</a>.</p>
+        </div>
+        <p>Stäng terminalen, öppna en ny och kolla att det fungerade:</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>supabase --version</pre></div>
+        <details class="alt">
+          <summary>Vill du inte installera något på hela datorn?</summary>
+          <p>Supabase CLI kan också installeras i ett projekt med <code>npm install -D supabase</code>. Då skriver du <code>npx supabase</code> i stället för <code>supabase</code> i alla kommandon, och säger det till agenten.</p>
+        </details>
+      </li>
+
+      <li>
+        <h3>Logga in, själv</h3>
+        <div class="code"><span class="label">Alla system</span>
+<pre>supabase login</pre></div>
+        <p>Webbläsaren öppnas och du godkänner inloggningen. CLI:t sparar en nyckel på din dator. Kolla att det fungerade. Du ska se ditt projekt i listan:</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>supabase projects list</pre></div>
+        <p>Nu kan agenten använda <code>supabase</code> åt dig, eftersom den kör kommandon på samma dator och med samma inloggning som du. Precis som med <code>gh</code>.</p>
+      </li>
+
+      <li id="nycklar">
+        <h3>Nycklarna: vilken får synas?</h3>
+        <p>Din app behöver projektets adress och en nyckel för att prata med Supabase. Du hittar dem under <em>Project Settings → API Keys</em>.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Nyckel</th><th>Börjar med</th><th>Var den får finnas</th></tr>
+            <tr><td><strong>Publishable key</strong></td><td><code>sb_publishable_</code></td><td>Får ligga i frontenden och synas för alla. Det är reglerna i databasen som skyddar datan.</td></tr>
+            <tr><td><strong>Secret key</strong></td><td><code>sb_secret_</code></td><td>Bara på servern, i filen <code>.env</code>. Den går förbi alla regler. Aldrig i frontenden, i Git eller i chatten.</td></tr>
+          </table>
+        </div>
+        <p>Den hemliga nyckeln klistrar du in i <code>.env</code> själv, i VS Code. Be agenten skapa filen och se till att den finns i <code>.gitignore</code>, men ge den aldrig själva nyckeln. Samma sak som med API-nyckeln i tillfälle 2.</p>
+        <div class="note warn"><p><strong>Råkade nyckeln hamna i chatten eller på GitHub?</strong> Skapa en ny under <em>API Keys</em> och ta bort den gamla. Det tar en minut.</p></div>
+      </li>
+    </ol>
+
+    <nav class="guide-nav">
+      <a href="codex.html">← Codex</a>
+      <a href="../ovningar/ovning-8.html">Övning 8: En app med egen backend →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>
