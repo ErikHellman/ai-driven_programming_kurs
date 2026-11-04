@@ -532,6 +532,59 @@ En receptbok för familjen.
   </section>
 
   <section>
+    <div class="kicker">Pull requests · GitHub Actions</div>
+    <h2>En robot som kör testerna</h2>
+    <div class="cols">
+      <div class="snip">
+        <span class="tag">.github/workflows/test.yml</span>
+        <div class="term"><pre><span class="k">name:</span> Tester
+<span class="k">on:</span> pull_request    <span class="c"># när?</span>
+
+<span class="k">jobs:</span>
+  <span class="k">test:</span>                <span class="c"># kontrollens namn</span>
+    <span class="k">runs-on:</span> ubuntu-latest
+    <span class="k">steps:</span>
+      - <span class="k">uses:</span> actions/checkout@v4
+      - <span class="k">uses:</span> actions/setup-node@v4
+      - <span class="k">run:</span> npm ci
+      - <span class="k">run:</span> npm test   <span class="c"># gör det här</span></pre></div>
+      </div>
+      <ul class="nice">
+        <li class="frag"><strong>GitHub Actions</strong> är en fil i repot som säger <em>när</em> något ska köras och <em>vad</em></li>
+        <li class="frag">Varje gång en PR öppnas eller uppdateras startar GitHub en dator i molnet som kör testerna</li>
+        <li class="frag">Resultatet syns på PR:en: <strong>grön bock</strong> eller <strong>rött kryss</strong></li>
+        <li class="frag">Agenten skriver filen. Du behöver bara veta att den finns</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Samma GitHub Actions som publicerade appen på GitHub Pages i tillfälle 2. Nu kör den tester i stället.</li>
+        <li>Gratis för publika repon. Privata repon har ett antal gratis minuter i månaden, som räcker långt för kursen.</li>
+        <li>Visa fliken Actions i kursens eget repo: varje PR kör jobben Lint och Test.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Pull requests · Rulesets</div>
+    <h2>Regler som skyddar main</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">🔀</span><h3>Bara via PR</h3><p>Ingen kan pusha direkt till main. Inte du, och inte agenten.</p></div>
+      <div class="card frag"><span class="e">🟢</span><h3>Gröna tester krävs</h3><p>Merge-knappen är låst tills kontrollen <code>test</code> har gått igenom.</p></div>
+      <div class="card frag"><span class="e">🛡️</span><h3>Historiken skyddas</h3><p>Main kan inte tas bort eller skrivas över med force push.</p></div>
+    </div>
+    <div class="term prompt frag" style="font-size:20px;line-height:1.5;margin-top:26px"><pre style="padding-top:56px">Skapa ett ruleset för main med gh api: kräv pull request, kräv att kontrollen test har gått igenom, och förbjud force push och borttagning. Visa kommandot innan du kör det.</pre></div>
+    <aside class="notes">
+      <ul>
+        <li>Ett ruleset är en samling regler för en eller flera brancher. Det ställs in under Settings → Rules → Rulesets, men agenten gör det snabbare med gh.</li>
+        <li>Testet måste ha körts minst en gång innan det kan krävas, så ordningen är: först Actions, sedan ruleset.</li>
+        <li>Rulesets är gratis på publika repon. På privata repon krävs GitHub Pro.</li>
+        <li>Rulesets ersätter den äldre funktionen branch protection. Agenterna kan båda.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
     <div class="kicker">Pull requests · be agenten</div>
     <h2>Fyra meningar du kommer använda</h2>
     <div class="cards two">
@@ -556,7 +609,7 @@ En receptbok för familjen.
       <div class="layer l1"><span class="e">✍️</span><b>Prompt</b><span>Mål, sammanhang, krav, klart när och arbetssätt. Plan först.</span></div>
       <div class="layer l2"><span class="e">📌</span><b>AGENTS.md</b><span>Det som alltid gäller. Planen i en fil.</span></div>
       <div class="layer l3"><span class="e">🧩</span><b>Sessioner</b><span>En uppgift per session. Ny session när det börjar spåra.</span></div>
-      <div class="layer l4"><span class="e">🔀</span><b>Pull request</b><span>Branch, PR, gröna tester, granska, merge.</span></div>
+      <div class="layer l4"><span class="e">🔀</span><b>Pull request</b><span>Branch, PR, Actions kör testerna, ruleset skyddar main, merge.</span></div>
     </div>
   </section>
 
@@ -589,11 +642,11 @@ En receptbok för familjen.
     <h2>Din första pull request</h2>
     <div class="cols wide-left">
       <ul class="emoji">
-        <li><span class="e">📁</span><span>Öppna appen från övning 1 eller 3 i Claude- eller ChatGPT-appen</span></li>
-        <li><span class="e">📌</span><span>Be agenten skriva en <code>AGENTS.md</code> för projektet</span></li>
-        <li><span class="e">✍️</span><span>Skriv en prompt för en ny funktion med alla fem delarna</span></li>
-        <li><span class="e">🔀</span><span>Agenten jobbar på en branch och öppnar en PR</span></li>
-        <li><span class="e">👀</span><span>Granska på GitHub, kommentera, merge</span></li>
+        <li><span class="e">📁</span><span>Öppna appen från övning 1 eller 3</span></li>
+        <li><span class="e">📌</span><span>Be agenten skriva en <code>AGENTS.md</code></span></li>
+        <li><span class="e">🧪</span><span>Tester med GitHub Actions och ett ruleset som skyddar main</span></li>
+        <li><span class="e">✍️</span><span>En ny funktion, med en prompt i fem delar</span></li>
+        <li><span class="e">🔀</span><span>PR, granskning och merge</span></li>
       </ul>
       <div class="card sun">
         <span class="e">🔗</span>

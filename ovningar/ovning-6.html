@@ -13,14 +13,14 @@
   <header class="site-header">
     <div class="wrap">
       <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
-      <span class="eyebrow">Tillfälle 3 · Övning 6 · 25 minuter</span>
+      <span class="eyebrow">Tillfälle 3 · Övning 6 · 45 minuter</span>
       <h1>🔀 Din första pull request</h1>
-      <p>Lägg till en ny funktion i en app du redan har byggt. Den här gången med en riktig prompt, en minneslapp för agenten och en pull request som du granskar innan något ändras i main.</p>
+      <p>Lägg till en ny funktion i en app du redan har byggt. Den här gången med en riktig prompt, en minneslapp för agenten, tester som GitHub kör åt dig, regler som skyddar main och en pull request som du granskar innan något ändras.</p>
     </div>
   </header>
 
   <main class="wrap">
-    <div class="note tip"><p><strong>Syftet med övningen:</strong> att öva på arbetsflödet från del 1. Prompt med fem delar, plan först, branch, pull request, granskning och merge. Själva funktionen är inte det viktiga.</p></div>
+    <div class="note tip"><p><strong>Syftet med övningen:</strong> att öva på arbetsflödet från del 1. Tester med GitHub Actions, ett ruleset för main, prompt med fem delar, plan först, branch, pull request, granskning och merge. Själva funktionen är inte det viktiga.</p></div>
     <div class="note"><p><strong>Innan du börjar:</strong> du behöver en app som redan ligger på GitHub, till exempel från <a href="ovning-1.html">övning 1</a> eller <a href="ovning-3.html">övning 3</a>. Har du ingen? Be agenten bygga en liten app och lägga upp den på GitHub med <code>gh</code> först, som i övning 1.</p></div>
 
     <ol class="steps">
@@ -30,6 +30,7 @@
         <div class="code wrap"><span class="label">Prompt</span>
 <pre>Vilken branch är jag på, finns det ändringar som inte är sparade, och är allt pushat till GitHub? Ändra ingenting.</pre></div>
         <p>Står det att du har osparade ändringar? Be agenten spara dem med en commit och pusha, så att du börjar från ett rent läge på <code>main</code>.</p>
+        <p>Rulesets är gratis för <strong>publika</strong> repon. Är ditt repo privat kan agenten göra det publikt med <code>gh repo edit</code>, om det inte finns något hemligt i det.</p>
       </li>
 
       <li>
@@ -41,8 +42,60 @@
         <div class="code wrap"><span class="label">Lägg till i AGENTS.md</span>
 <pre>## Arbetssätt
 - Jobba alltid på en ny branch, aldrig direkt på main.
+- Kör testerna innan du öppnar en pull request. De ska gå igenom.
 - När du är klar: pusha branchen och öppna en pull request med gh.</pre></div>
         <p>Nu behöver du inte skriva det i varje prompt. Filen följer med till alla framtida sessioner.</p>
+      </li>
+
+      <li>
+        <h3>Tester som GitHub kör åt dig</h3>
+        <p>Be agenten skriva några tester och en fil för <strong>GitHub Actions</strong> som kör dem på varje pull request:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Lägg till några enkla tester för appen, så att vi märker om något går sönder. Lägg också till ett GitHub Actions-workflow i .github/workflows/test.yml som kör testerna på varje pull request. Jobbet ska heta test. Lägg till AGENTS.md från förra steget i samma ändring. Jobba på en ny branch, öppna en pull request med gh och ge mig länken.</pre></div>
+        <p>Öppna länken och scrolla ner till kontrollerna. Först en gul prick medan testerna körs, sedan en <strong>grön bock</strong>. Klicka på <em>Details</em> för att se vad GitHub gjorde. Slå sedan ihop pull requesten med <strong>Merge pull request</strong>.</p>
+        <details class="alt">
+          <summary>Rött kryss?</summary>
+          <p>Be agenten: <code>Kolla varför kontrollerna på pull requesten misslyckas och rätta det. Pusha till samma branch.</code> Ladda om sidan när den är klar.</p>
+        </details>
+      </li>
+
+      <li>
+        <h3>Skydda main med ett ruleset</h3>
+        <p>Ett <strong>ruleset</strong> är regler för en branch. Nu bestämmer vi att main bara får ändras via en pull request med gröna tester. Agenten ställer in det med <code>gh</code>:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Skapa ett ruleset för main i det här repot med gh api. Det ska heta Skydda main och kräva en pull request före merge (men inga godkännanden, jag jobbar ensam), kräva att kontrollen test har gått igenom, och förbjuda force push och att main tas bort. Visa kommandot och förklara det innan du kör det.</pre></div>
+        <p>Kolla resultatet på två sätt:</p>
+        <div class="code"><span class="label">Terminal</span>
+<pre>gh ruleset list</pre></div>
+        <p>Öppna också repot på GitHub och gå till <em>Settings → Rules → Rulesets</em>. Klicka på <strong>Skydda main</strong> och läs reglerna. Stämmer de med det du bad om?</p>
+        <details class="alt">
+          <summary>Hur ser kommandot ut?</summary>
+          <p>Agenten skickar reglerna som JSON till GitHubs API. Ungefär så här, men du behöver inte skriva det själv:</p>
+          <div class="code"><span class="label">Exempel</span>
+<pre>gh api repos/{owner}/{repo}/rulesets --method POST --input ruleset.json</pre></div>
+          <div class="code"><span class="label">ruleset.json</span>
+<pre>{
+  "name": "Skydda main",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": { "ref_name": { "include": ["~DEFAULT_BRANCH"], "exclude": [] } },
+  "rules": [
+    { "type": "deletion" },
+    { "type": "non_fast_forward" },
+    { "type": "pull_request", "parameters": {
+        "required_approving_review_count": 0,
+        "dismiss_stale_reviews_on_push": false,
+        "require_code_owner_review": false,
+        "require_last_push_approval": false,
+        "required_review_thread_resolution": false } },
+    { "type": "required_status_checks", "parameters": {
+        "strict_required_status_checks_policy": false,
+        "required_status_checks": [ { "context": "test" } ] } }
+  ]
+}</pre></div>
+          <p><code>non_fast_forward</code> betyder att ingen får skriva över historiken med force push. <code>~DEFAULT_BRANCH</code> betyder repots huvudbranch, alltså main.</p>
+        </details>
+        <p>Vill du se att det fungerar? Be agenten <code>Försök pusha en tom commit direkt till main och berätta vad som händer. Ångra sedan committen lokalt.</code> GitHub säger nej. 🛡️</p>
       </li>
 
       <li>
@@ -96,7 +149,7 @@
         <ul>
           <li><strong>Conversation:</strong> stämmer beskrivningen med det du bad om?</li>
           <li><strong>Files changed:</strong> vilka filer har ändrats? Grönt är nytt, rött är borttaget. Är det några filer som inte borde röras, eller mycket mer kod än du väntade dig?</li>
-          <li><strong>Checks:</strong> har repot tester eller ett bygge, ser du en grön bock eller ett rött kryss längst ner.</li>
+          <li><strong>Checks:</strong> har kontrollen <code>test</code> gått igenom? Är den inte grön är knappen <strong>Merge pull request</strong> låst. Det är ditt ruleset som jobbar.</li>
         </ul>
         <p>Skriv en kommentar på en rad: håll musen över raden under <em>Files changed</em> och klicka på det blå plustecknet. Till exempel <em>Kan sökrutan få samma rundade hörn som knapparna?</em> Klicka <strong>Add single comment</strong>. Be sedan agenten:</p>
         <div class="code wrap"><span class="label">Prompt</span>
@@ -125,6 +178,8 @@
       <summary>Det gick inte som tänkt?</summary>
       <ul>
         <li><strong>Agenten jobbade direkt på main:</strong> den läste inte regeln, eller så saknades den. Be den: <code>Flytta mina ändringar till en ny branch och återställ main till hur den var på GitHub.</code></li>
+        <li><strong>Ruleset kräver GitHub Pro:</strong> repot är privat. Gör det publikt, om inget hemligt finns i det, eller hoppa över det steget.</li>
+        <li><strong>Merge-knappen är grå:</strong> kontrollen <code>test</code> är inte grön än, eller har ett annat namn än i ditt ruleset. Be agenten jämföra namnet i workflow-filen med ditt ruleset.</li>
         <li><strong>gh säger att du inte är inloggad:</strong> kör <code>gh auth login</code> i terminalen, se <a href="../guider/github.html">guiden för GitHub</a>.</li>
         <li><strong>Blev det helt fel?</strong> Stäng pull requesten på GitHub med <strong>Close pull request</strong>. Main har aldrig rörts. Börja om med en ny session och en bättre prompt.</li>
       </ul>
@@ -134,6 +189,8 @@
       <h2>Klart?</h2>
       <ul class="checklist">
         <li>Mitt projekt har en <code>AGENTS.md</code> som jag har läst och lagt till regler i</li>
+        <li>GitHub Actions kör testerna på varje pull request, och jag har sett en grön bock</li>
+        <li>Main skyddas av ett ruleset som agenten skapade med <code>gh</code></li>
         <li>Jag har skrivit en prompt med mål, sammanhang, krav och gränser, klart när och arbetssätt</li>
         <li>Jag har läst planen innan agenten började bygga</li>
         <li>Jag har öppnat, kommenterat och granskat en pull request på GitHub</li>
