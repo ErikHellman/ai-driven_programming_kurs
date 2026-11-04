@@ -15,13 +15,13 @@
       <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
       <span class="eyebrow">Tillfälle 3 · Övning 8 · 60 minuter</span>
       <h1>🍰 En app med egen backend</h1>
-      <p>Bygg en fullstack-app där alla ser samma data: frontend, backend och databas i ett projekt som körs av en enda server. Du delar upp arbetet i flera sessioner, och varje steg blir en egen pull request.</p>
+      <p>Bygg en fullstack-app där alla ser samma data: frontend och backend i ett projekt som körs av en enda server, och en databas hos Supabase. Du delar upp arbetet i flera sessioner, och varje steg blir en egen pull request.</p>
     </div>
   </header>
 
   <main class="wrap">
     <div class="note tip"><p><strong>Syftet med övningen:</strong> att använda allt från idag på en gång. En plan i en fil, en session per steg, pull requests och en backend med REST-API och databas. Hinner du inte allt räcker det att backenden fungerar.</p></div>
-    <div class="note"><p><strong>Innan du börjar:</strong> du behöver Node.js, Git, ett GitHub-konto med <code>gh</code> inloggat och Claude- eller ChatGPT-appen. Kolla med <code>node --version</code> i terminalen att du har version 22.13 eller senare, annars saknas den inbyggda databasen. Se <a href="../guider/node.html">guiden för Node.js</a>.</p></div>
+    <div class="note"><p><strong>Innan du börjar:</strong> du behöver Node.js, Git, ett GitHub-konto med <code>gh</code> inloggat och Claude- eller ChatGPT-appen. Du behöver också ett konto och ett projekt hos Supabase, och Supabase CLI inloggat. Följ <a href="../guider/supabase.html">guiden om Supabase</a> först. Det är gratis.</p></div>
 
     <ol class="steps">
       <li>
@@ -41,11 +41,12 @@ Funktioner:
 Teknik:
 - En fullstack-app: frontend, backend och databas i samma projekt, och en enda server som skickar både sidorna och API:et på samma adress.
 - Backend: Node.js med Express och ett REST-API under /api.
-- Databas: SQLite med Nodes inbyggda modul node:sqlite. Databasfilen ska inte in i Git.
+- Databas: Postgres hos Supabase. Jag har skapat ett projekt och loggat in med supabase login. Tabellerna skapas som migrationer i mappen supabase/migrations och skickas till projektet med supabase db push. Slå på Row Level Security på alla tabeller.
+- Backenden pratar med Supabase med paketet @supabase/supabase-js och den hemliga nyckeln. Nyckeln och projektets adress ligger i .env, som inte får in i Git. Jag klistrar in nyckeln själv, be mig aldrig om den i chatten. Frontenden pratar bara med vår egen backend.
 - Backenden kontrollerar all data som kommer in och svarar med 400 och ett tydligt felmeddelande på svenska om något är fel.
 - Frontend: React med JavaScript. Under utveckling kör Express Vite i middleware-läge, så att allt går på samma server. När appen byggs skickar Express ut de färdiga filerna.
 - npm run dev ska starta hela appen på http://localhost:3000.
-- Tester för API:et med Nodes inbyggda testverktyg (node --test), och ett GitHub Actions-workflow som kör testerna på varje pull request.
+- Tester för API:et med Nodes inbyggda testverktyg (node --test). Testerna byter ut databasen mot en låtsasversion, så att de inte rör Supabase och kan köras utan nyckel. Ett GitHub Actions-workflow kör testerna på varje pull request.
 - Svenska i hela gränssnittet, mobilanpassat och en glad design med varma färger.
 
 Så här jobbar vi:
@@ -106,6 +107,10 @@ Funktioner:
           <li>Läs hur databasens tabeller ser ut. Finns det en kolumn för allt som ska sparas?</li>
         </ul>
         <p>Vill du ändra något, säg det i chatten och be agenten uppdatera filerna och pusha.</p>
+        <p><strong>Koppla projektet till Supabase, själv.</strong> Byt ut id:t mot ditt projekts id och kör i terminalen, i projektets mapp. Den frågar efter databasens lösenord från lösenordshanteraren:</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>supabase link --project-ref abcdefghijkl</pre></div>
+        <p>Öppna sedan <code>.env</code> i VS Code (be agenten skapa filen om den saknas) och klistra in projektets adress och den hemliga nyckeln. Var du hittar dem står i <a href="../guider/supabase.html#nycklar">guiden</a>.</p>
       </li>
 
       <li>
@@ -124,7 +129,7 @@ Funktioner:
         <p>Öppna länken till pull requesten på GitHub.</p>
         <ul>
           <li><strong>Checks:</strong> kör GitHub Actions testerna? Vänta på grön bock. Rött kryss? Be agenten: <code>Kolla varför kontrollerna på pull requesten misslyckas och rätta det.</code></li>
-          <li><strong>Files changed:</strong> ser du backendens filer och testerna? Är databasfilen med? Det ska den inte vara.</li>
+          <li><strong>Files changed:</strong> ser du backendens filer, testerna och en <code>.sql</code>-fil under <code>supabase/migrations</code>? Är <code>.env</code> med? Det får den aldrig vara.</li>
         </ul>
         <p>När allt är grönt: <strong>Merge pull request</strong>. Be sedan agenten <code>Gå tillbaka till main och hämta det senaste från GitHub.</code></p>
       </li>
@@ -152,12 +157,14 @@ Funktioner:
         <li><strong>CORS-fel i Console, eller två adresser:</strong> agenten har byggt två servrar i stället för en. Påminn om att allt ska gå på <code>http://localhost:3000</code>, med Vite i middleware-läge i Express.</li>
         <li><strong>EADDRINUSE:</strong> en gammal server kör redan på porten. Be agenten stoppa den.</li>
         <li><strong>500 i Network:</strong> felet står i terminalen där servern kör. Kopiera det till agenten.</li>
-        <li><strong>node:sqlite finns inte:</strong> din Node.js är för gammal. Uppdatera enligt <a href="../guider/node.html">guiden</a> och starta om terminalen.</li>
+        <li><strong>supabase db push säger att projektet inte är länkat:</strong> kör <code>supabase link</code> själv, som i session 1.</li>
+        <li><strong>401 eller Invalid API key i terminalen:</strong> nyckeln i <code>.env</code> saknas eller är fel. Kolla den själv, klistra inte in den i chatten.</li>
+        <li><strong>Inget svarar efter en tid:</strong> gratisprojektet har pausats. Starta det igen på supabase.com.</li>
         <li><strong>Agenten minns inte vad ni bestämde:</strong> det står inte i <code>PLAN.md</code> eller <code>AGENTS.md</code>. Be den skriva in det där.</li>
       </ul>
     </details>
 
-    <div class="note"><p><strong>Kan den publiceras?</strong> Inte som den är: GitHub Pages skickar bara färdiga filer och kan inte köra din backend. Bonusövningen <a href="ovning-10.html">övning 10</a> visar hur du flyttar datan till Supabase, en backend som tjänst, och publicerar frontenden på GitHub Pages. Gratis. Tänk på att alla som hittar adressen då kan ändra i listan, om du inte lägger till inloggning.</p></div>
+    <div class="note"><p><strong>Kan den publiceras?</strong> Inte som den är: GitHub Pages skickar bara färdiga filer och kan inte köra din backend. Datan ligger redan hos Supabase. Bonusövningen <a href="ovning-10.html">övning 10</a> visar hur frontenden kan prata direkt med Supabase och publiceras på GitHub Pages. Gratis. Tänk på att alla som hittar adressen då kan ändra i listan, om du inte lägger till inloggning.</p></div>
 
     <section>
       <h2>Klart?</h2>
@@ -167,7 +174,7 @@ Funktioner:
         <li>Testerna körs av GitHub Actions på varje pull request</li>
         <li>Jag har sett JSON från min egen backend i webbläsaren</li>
         <li>Jag har sett min egen <code>POST</code> och statuskoden <code>201</code> i Network-fliken</li>
-        <li>Samma data syns i två olika webbläsare</li>
+        <li>Samma data syns i två olika webbläsare, och raderna syns i Table Editor på supabase.com</li>
       </ul>
     </section>
 

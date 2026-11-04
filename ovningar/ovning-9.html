@@ -21,7 +21,7 @@
 
   <main class="wrap">
     <div class="note tip"><p><strong>Syftet med övningen:</strong> att skriva en bra prompt för en backend, och att planera ett projekt i flera sessioner själv. Agenten bygger bara det du berättar om. Allt du glömmer kommer den att gissa på.</p></div>
-    <div class="note"><p><strong>Innan du börjar:</strong> gör gärna <a href="ovning-8.html">övning 8</a> först. Du behöver samma saker: Node.js 22.13 eller senare, Git, ett GitHub-konto med <code>gh</code> inloggat och Claude- eller ChatGPT-appen.</p></div>
+    <div class="note"><p><strong>Innan du börjar:</strong> gör gärna <a href="ovning-8.html">övning 8</a> först. Du behöver samma saker: Node.js, Git, ett GitHub-konto med <code>gh</code> inloggat, Claude- eller ChatGPT-appen och Supabase CLI inloggat enligt <a href="../guider/supabase.html">guiden om Supabase</a>. Skapa ett nytt projekt hos Supabase för länkförkortaren. Gratisplanen räcker för två.</p></div>
 
     <ol class="steps">
       <li>
@@ -39,7 +39,7 @@
         <p><strong>Hur den byggs:</strong></p>
         <ul>
           <li>Node.js med Express och ett REST-API. Be agenten föreslå adresserna i API:et och visa dem som en tabell.</li>
-          <li>SQLite med Nodes inbyggda modul <code>node:sqlite</code>. Databasfilen ska inte in i Git.</li>
+          <li>Postgres hos Supabase. Tabellerna skapas som migrationer och skickas med <code>supabase db push</code>. Den hemliga nyckeln ligger i <code>.env</code>, som du fyller i själv och som inte får in i Git.</li>
           <li>Gränssnittet är en vanlig HTML-sida med CSS och JavaScript som backenden själv skickar ut. Ingen React och ingen Vite den här gången.</li>
           <li>Tester för API:et med Nodes inbyggda testverktyg, och GitHub Actions som kör dem på varje pull request.</li>
           <li>Koden sparas i ett eget publikt repo på GitHub, som agenten skapar med <code>gh</code>. Varje steg i planen görs på en egen branch och blir en egen pull request.</li>
@@ -70,7 +70,7 @@
             <tr><td><strong>1. Mål</strong></td><td>Vad du vill bygga, och att det här är en planeringssession utan kod.</td></tr>
             <tr><td><strong>2. Funktioner</strong></td><td>Vad användaren ska kunna göra, en punkt per sak. Skriv ur användarens perspektiv: <em>Jag kan …</em></td></tr>
             <tr><td><strong>3. API och data</strong></td><td>Be om en tabell över alla adresser med metod, vad de gör och vilka statuskoder de svarar med, och hur tabellerna i databasen ska se ut.</td></tr>
-            <tr><td><strong>4. Teknik</strong></td><td>Node.js, Express, SQLite med <code>node:sqlite</code> och en vanlig HTML-sida som backenden skickar ut.</td></tr>
+            <tr><td><strong>4. Teknik</strong></td><td>Node.js, Express, Supabase som databas och en vanlig HTML-sida som backenden skickar ut.</td></tr>
             <tr><td><strong>5. Kontroller och fel</strong></td><td>Vad backenden ska kontrollera, och vad som ska hända när något är fel. Vilken statuskod och vilket meddelande?</td></tr>
             <tr><td><strong>6. Klart när</strong></td><td>Tester för API:et, och GitHub Actions som kör dem på varje pull request. Vad ska testerna kontrollera?</td></tr>
             <tr><td><strong>7. Git och GitHub</strong></td><td>Ett publikt repo som agenten skapar med <code>gh</code>, vad det ska heta, och att varje steg blir en egen branch och pull request.</td></tr>
@@ -137,7 +137,7 @@
 
     <nav class="guide-nav">
       <a href="ovning-8.html">← Övning 8</a>
-      <a href="ovning-10.html">Övning 10: Publicera med Supabase →</a>
+      <a href="ovning-10.html">Övning 10: Publicera på nätet →</a>
     </nav>
   </main>
 

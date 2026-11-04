@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Övning 10: Publicera med Supabase · AI-driven programmering</title>
+  <title>Övning 10: Publicera på nätet · AI-driven programmering</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
   <link rel="stylesheet" href="../assets/theme.css?v=3">
   <link rel="stylesheet" href="../assets/site.css?v=5">
@@ -14,123 +14,49 @@
     <div class="wrap">
       <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
       <span class="eyebrow">Tillfälle 3 · Övning 10 · bonus</span>
-      <h1>⚡ Publicera med Supabase</h1>
-      <p>Ta appen från övning 8 ut på nätet, så att alla i fikagänget kan använda den i sina mobiler. Datan flyttar till Supabase, och frontenden publiceras på GitHub Pages. Du skapar konto, installerar Supabase CLI och loggar in själv. Sedan låter du agenten sköta resten.</p>
+      <h1>⚡ Publicera på nätet</h1>
+      <p>Ta appen från övning 8 ut på nätet, så att alla i fikagänget kan använda den i sina mobiler. Datan ligger redan hos Supabase. Nu får frontenden prata direkt med Supabase och publiceras gratis på GitHub Pages.</p>
     </div>
   </header>
 
   <main class="wrap">
     <div class="note tip"><p><strong>Syftet med övningen:</strong> att se hur en fullstack-app kan köra på nätet utan att du har en egen server, och att låta agenten använda ett nytt verktyg åt dig.</p></div>
-    <div class="note"><p><strong>Innan du börjar:</strong> du behöver en app med egen backend, till exempel från <a href="ovning-8.html">övning 8</a>, som fungerar på din dator och ligger på GitHub.</p></div>
+    <div class="note"><p><strong>Innan du börjar:</strong> du behöver appen från <a href="ovning-8.html">övning 8</a>, som fungerar på din dator, ligger på GitHub och sparar sin data hos Supabase. Supabase CLI ska vara inloggat, se <a href="../guider/supabase.html">guiden om Supabase</a>.</p></div>
 
     <ol class="steps">
       <li>
-        <h3>🧩 Vad är Supabase?</h3>
-        <p><a href="https://supabase.com/">Supabase</a> är en <strong>backend som tjänst</strong>. Du får färdigt det som din Express-server och SQLite-fil gjorde i övning 8, fast på nätet:</p>
-        <ul>
-          <li><strong>En databas:</strong> Postgres, en av världens vanligaste databaser. Samma tabeller och samma SQL som i del 2.</li>
-          <li><strong>Ett REST-API:</strong> Supabase gör automatiskt ett API av varje tabell. Tabellen <code>fikor</code> får adressen <code>/rest/v1/fikor</code>, och du använder <code>GET</code>, <code>POST</code> och <code>DELETE</code> precis som förut.</li>
-          <li><strong>Regler i stället för kontroller:</strong> det som din backend kontrollerade blir regler i databasen. <em>Row Level Security</em> bestämmer vem som får läsa, lägga till och ta bort.</li>
-          <li><strong>Inloggning:</strong> finns färdigt om du vill bygga vidare.</li>
-        </ul>
-        <p>Frontenden är fortfarande bara filer, så den kan ligga kvar på GitHub Pages och prata direkt med Supabase. Din egen Express-server behövs inte längre när appen är publicerad.</p>
-      </li>
-
-      <li>
-        <h3>💳 Vad det kostar</h3>
+        <h3>🧩 Vad ändras?</h3>
+        <p>GitHub Pages skickar bara färdiga filer. Den kan inte köra din Express-server. Men Supabase gör automatiskt ett <strong>REST-API</strong> av varje tabell, så frontenden kan prata direkt med Supabase:</p>
         <div class="table-wrap">
           <table>
-            <tr><th>Plan</th><th>Pris</th><th>Det här ingår</th></tr>
-            <tr><td><strong>Free</strong></td><td>0 dollar</td><td>2 aktiva projekt, 500 MB databas per projekt, 1 GB filer, 50 000 inloggade användare i månaden och 5 GB trafik.</td></tr>
-            <tr><td><strong>Pro</strong></td><td>från 25 dollar i månaden, drygt 250 kronor</td><td>Större gränser, projekt som aldrig pausas och dagliga säkerhetskopior. Fler projekt kostar från 10 dollar i månaden.</td></tr>
+            <tr><th></th><th>Övning 8, på din dator</th><th>Övning 10, på nätet</th></tr>
+            <tr><td><strong>Frontenden</strong></td><td>Skickas av Express</td><td>Ligger på GitHub Pages</td></tr>
+            <tr><td><strong>Frågorna</strong></td><td>Till <code>/api/fikor</code> på din server</td><td>Till <code>/rest/v1/fikor</code> hos Supabase</td></tr>
+            <tr><td><strong>Kontrollerna</strong></td><td>Express kontrollerar datan</td><td>Regler i databasen, <em>Row Level Security</em></td></tr>
+            <tr><td><strong>Nyckeln</strong></td><td>Den hemliga, i <code>.env</code> på servern</td><td>Den publika, i frontenden</td></tr>
           </table>
         </div>
-        <ul>
-          <li><strong>Gratis räcker långt:</strong> en fikalista använder en bråkdel av gränserna.</li>
-          <li><strong>Projektet pausas:</strong> ett gratisprojekt som inte används på en vecka pausas. Datan finns kvar, och du startar projektet igen med en knapp på supabase.com.</li>
-          <li><strong>Pro har ett kostnadstak</strong> som är påslaget från början, så att du inte betalar för mer än det som ingår. Du behöver inte Pro för den här övningen.</li>
-        </ul>
-        <div class="note warn"><p><strong>Priserna ändras.</strong> Siffrorna ovan gällde i november 2026. Kolla alltid <a href="https://supabase.com/pricing">Supabases prissida</a> innan du väljer en plan som kostar.</p></div>
+        <p>Den publika nyckeln får synas för alla. Det är reglerna i databasen som bestämmer vad den får göra. Därför är reglerna det viktigaste i den här övningen.</p>
       </li>
 
       <li>
-        <h3>🔐 Skapa konto och ett projekt, själv</h3>
-        <p>Det här gör du själv, inte agenten. Kontot är ditt och inloggningen ska aldrig gå via chatten.</p>
-        <ol>
-          <li>Gå till <a href="https://supabase.com/dashboard/sign-up">supabase.com/dashboard/sign-up</a> och skapa ett konto. Spara inloggningen i lösenordshanteraren.</li>
-          <li>Klicka på <strong>New project</strong>. Ge det ett namn, till exempel <code>fikalistan</code>, och välj en region i Europa, gärna Stockholm om den finns.</li>
-          <li>Supabase ber om ett <strong>lösenord till databasen</strong>. Låt den skapa ett starkt lösenord och spara det i lösenordshanteraren. Det skriver du aldrig i chatten.</li>
-          <li>Välj planen <strong>Free</strong> och vänta någon minut medan projektet startar.</li>
-        </ol>
-        <p>Projektets adress ser ut så här: <code>https://abcdefghijkl.supabase.co</code>. Bokstäverna i början är projektets <strong>id</strong>, som agenten behöver senare.</p>
-      </li>
-
-      <li>
-        <h3>📦 Installera Supabase CLI</h3>
-        <p><strong>Supabase CLI</strong> är Supabases kommandoradsverktyg, ungefär som <code>gh</code> är GitHubs. Kommandot heter <code>supabase</code>.</p>
-        <div class="os-switch" role="group" aria-label="Välj operativsystem">
-          <button type="button" data-os="windows">Windows</button>
-          <button type="button" data-os="mac">macOS</button>
-          <button type="button" data-os="linux">Linux</button>
-        </div>
-        <p class="os-note">Vi gissade ditt operativsystem. Byt om det blev fel.</p>
-        <div data-os-only="windows">
-          <p>På Windows installeras det med <strong>Scoop</strong>, ett program som installerar andra program. Har du inte Scoop, installera det först i PowerShell:</p>
-          <div class="code"><span class="label">PowerShell · Scoop</span>
-<pre>Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression</pre></div>
-          <p>Installera sedan Supabase CLI:</p>
-          <div class="code"><span class="label">PowerShell</span>
-<pre>scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
-scoop install supabase</pre></div>
-        </div>
-        <div data-os-only="mac">
-          <div class="code"><span class="label">Terminal</span>
-<pre>brew install supabase/tap/supabase</pre></div>
-        </div>
-        <div data-os-only="linux">
-          <div class="code"><span class="label">Terminal</span>
-<pre>brew install supabase/tap/supabase</pre></div>
-          <p>Har du inte Homebrew finns färdiga paket under <em>Releases</em> på <a href="https://github.com/supabase/cli/releases">github.com/supabase/cli</a>.</p>
-        </div>
-        <p>Stäng terminalen, öppna en ny och kolla att det fungerade:</p>
-        <div class="code"><span class="label">Alla system</span>
-<pre>supabase --version</pre></div>
-        <details class="alt">
-          <summary>Vill du inte installera något globalt?</summary>
-          <p>Supabase CLI kan också installeras i projektet med <code>npm install -D supabase</code>. Då skriver du <code>npx supabase</code> i stället för <code>supabase</code> i alla kommandon, och säger det till agenten.</p>
-        </details>
-      </li>
-
-      <li>
-        <h3>🔑 Logga in, själv</h3>
-        <div class="code"><span class="label">Alla system</span>
-<pre>supabase login</pre></div>
-        <p>Webbläsaren öppnas och du godkänner inloggningen. CLI:t sparar en nyckel på din dator. Nu kan agenten använda <code>supabase</code> åt dig, eftersom den kör kommandon på samma dator och med samma inloggning som du. Precis som med <code>gh</code>.</p>
-        <p>Kolla att det fungerade. Du ska se ditt projekt i listan:</p>
-        <div class="code"><span class="label">Alla system</span>
-<pre>supabase projects list</pre></div>
-      </li>
-
-      <li>
-        <h3>🤖 Låt agenten flytta datan</h3>
-        <p>Öppna projektet i Claude- eller ChatGPT-appen och starta en <strong>ny session</strong>. Byt ut projektets id i prompten. Den här fungerar för appen från övning 8:</p>
+        <h3>🤖 Låt agenten göra om och publicera</h3>
+        <p>Öppna projektet i Claude- eller ChatGPT-appen och starta en <strong>ny session</strong>. Den här prompten fungerar för appen från övning 8:</p>
         <div class="code wrap"><span class="label">Prompt</span>
-<pre>Jag vill publicera den här appen med Supabase som backend och GitHub Pages för frontenden. Jag har skapat ett Supabase-projekt med id abcdefghijkl, installerat Supabase CLI och loggat in med supabase login. Kör supabase projects list först för att kontrollera det.
+<pre>Jag vill publicera den här appen på nätet, gratis. Frontenden ska ligga på GitHub Pages och prata direkt med Supabase, där datan redan finns. Supabase CLI är inloggat och projektet är länkat. Kör supabase projects list först för att kontrollera det.
 
 Krav:
-- Flytta databasen till Supabase. Skapa tabellerna som en migration i mappen supabase/migrations och skicka dem till projektet med supabase db push.
-- Slå på Row Level Security på alla tabeller, med regler för vad alla får läsa, lägga till och ta bort.
-- Kontrollerna som backenden gör idag, till exempel att namnet inte får vara tomt eller för långt, ska bli regler i databasen.
-- Frontenden ska prata direkt med Supabase med paketet @supabase/supabase-js. Använd projektets adress och den publika nyckeln (publishable key). Den hemliga nyckeln får aldrig finnas i frontenden.
-- Publicera frontenden på GitHub Pages med GitHub Actions.
+- Frontenden pratar med Supabase med paketet @supabase/supabase-js, med projektets adress och den publika nyckeln (publishable key). Den hemliga nyckeln får aldrig finnas i frontenden.
+- Skriv regler med Row Level Security för vad alla får läsa, lägga till och ta bort, som en ny migration. Skicka den med supabase db push.
+- Kontrollerna som Express gör idag, till exempel att namnet inte får vara tomt eller för långt, ska bli regler i databasen.
+- Publicera frontenden på GitHub Pages med GitHub Actions. Projektets adress och den publika nyckeln läggs som variabler i repot.
 - Läs Supabases dokumentation på https://supabase.com/docs om du är osäker på något.
 
 Arbetssätt:
 - Jobba på en ny branch. Visa först en plan med alla kommandon du tänker köra, och vänta på mitt okej.
 - Behöver ett kommando databasens lösenord: be mig köra det själv i terminalen. Jag skriver aldrig lösenordet i chatten.
 - När appen är publicerad: ge mig adressen, öppna en pull request och skriv i README.md hur man ändrar tabellerna och publicerar en ny version.</pre></div>
-        <p>Läs planen noga. Agenten kommer att skapa en mapp som heter <code>supabase</code> med filen <code>config.toml</code> och en <code>.sql</code>-fil per ändring av databasen. Fråga agenten vad de gör om du är nyfiken.</p>
+        <p>Läs planen noga. Agenten kommer att lägga till en ny <code>.sql</code>-fil under <code>supabase/migrations</code> med reglerna, och ett workflow för GitHub Pages. Läs reglerna: får alla ta bort allt? Är det vad du vill?</p>
         <div class="table-wrap">
           <table>
             <tr><th>Kommando</th><th>Vad det gör</th></tr>
@@ -180,9 +106,8 @@ Arbetssätt:
     <section>
       <h2>Klart?</h2>
       <ul class="checklist">
-        <li>Jag vet vad Supabase kostar, och vad som händer med ett gratisprojekt som inte används</li>
-        <li>Jag har skapat konto och projekt, installerat Supabase CLI och loggat in själv</li>
-        <li>Agenten har flyttat datan till Supabase och publicerat frontenden via en pull request</li>
+        <li>Jag har läst reglerna i Row Level Security och vet vad alla får göra</li>
+        <li>Agenten har gjort om frontenden och publicerat den på GitHub Pages via en pull request</li>
         <li>Jag har sett en fråga till <code>/rest/v1/</code> i Network-fliken</li>
         <li>Appen fungerar i mobilen, och samma data syns hos alla</li>
         <li>Jag har bestämt om projektet ska vara kvar eller tas bort</li>

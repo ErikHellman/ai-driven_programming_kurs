@@ -393,17 +393,44 @@ Authorization: Bearer hemlig-nyckel</span>
     <div class="cards four">
       <div class="card frag"><span class="e">💭</span><h3>Minnet</h3><p>Enklast, men allt försvinner när servern startas om.</p></div>
       <div class="card frag"><span class="e">📄</span><h3>En fil</h3><p>Till exempel <code>fika.json</code>. Okej för lite data och en användare i taget.</p></div>
-      <div class="card sun frag"><span class="e">🗄️</span><h3>En databas</h3><p><strong>SQLite</strong> är en hel databas i en enda fil. Perfekt för att börja.</p></div>
-      <div class="card frag"><span class="e">☁️</span><h3>En databastjänst</h3><p><strong>PostgreSQL</strong> hos till exempel Supabase. För appar på riktigt.</p></div>
+      <div class="card frag"><span class="e">🗄️</span><h3>En databasfil</h3><p><strong>SQLite</strong> är en hel databas i en enda fil, på samma dator som servern.</p></div>
+      <div class="card sun frag"><span class="e">☁️</span><h3>En databastjänst</h3><p><strong>Postgres</strong> hos till exempel Supabase. Finns på nätet och tål många användare.</p></div>
     </div>
-    <p class="lead frag bottom">Idag: SQLite. Samma tänk gäller för de stora databaserna.</p>
+    <p class="lead frag bottom">Idag: <span class="hl">Supabase</span>. Samma tänk gäller för alla databaser.</p>
     <aside class="notes">
       <ul>
         <li>localStorage från förra gången var också ett sätt att spara, men i webbläsaren. Nu sparar vi på servern, så att alla klienter ser samma data.</li>
-        <li>Node har SQLite inbyggt (node:sqlite), så inga extra installationer behövs.</li>
+        <li>Vi använder Supabase i övningarna: en riktig Postgres-databas på nätet, gratis för oss. Kontot och installationen finns i guiden om Supabase på kurssidan.</li>
       </ul>
     </aside>
   </section>
+
+  <section>
+    <div class="kicker">Datalagring</div>
+    <h2>Supabase: vår databas på nätet</h2>
+    <div class="cols wide-left">
+      <ul class="nice">
+        <li><strong>Supabase</strong> ger dig en riktig databas (Postgres) på nätet, och gör automatiskt ett <strong>REST-API</strong> av dina tabeller</li>
+        <li class="frag"><code>GET /rest/v1/fikor</code> känns igen? Samma HTTP och REST som idag</li>
+        <li class="frag">Reglerna i databasen bestämmer vem som får läsa och ändra: <strong>Row Level Security</strong></li>
+        <li class="frag">Gratis: 2 projekt, 500 MB databas. Pausas efter en veckas tystnad. Pro: 25 dollar i månaden</li>
+      </ul>
+      <div class="card sun frag">
+        <span class="e">🔐</span>
+        <h3>Konto och verktyg</h3>
+        <p>Du skapar konto och loggar in i Supabase CLI själv. Sedan kan agenten använda det åt dig. Guiden finns på kurssidan.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Priserna gällde i november 2026. Be deltagarna kolla prissidan själva.</li>
+        <li>Ett pausat projekt startar du igen med ett klick på supabase.com. Datan finns kvar.</li>
+        <li>Vår Express-server pratar med Supabase med den hemliga nyckeln, som bara finns på servern i .env. Webbläsaren pratar bara med vår server.</li>
+        <li>Supabase har två nycklar: den publika (publishable) får synas, den hemliga (secret) aldrig.</li>
+      </ul>
+    </aside>
+  </section>
+
 
   <section>
     <div class="kicker">Datalagring</div>
@@ -456,7 +483,7 @@ Authorization: Bearer hemlig-nyckel</span>
     <aside class="notes">
       <ul>
         <li>SQL uttalas ”es-ku-ell” eller ”sequel”. Språket är 50 år gammalt och finns överallt.</li>
-        <li>Med ett verktyg som DB Browser for SQLite kan man öppna databasfilen och titta i tabellerna, som i ett kalkylark.</li>
+        <li>I Supabase kan man titta i tabellerna under Table Editor, som i ett kalkylark, och köra egen SQL under SQL Editor.</li>
       </ul>
     </aside>
   </section>
@@ -489,21 +516,22 @@ Authorization: Bearer hemlig-nyckel</span>
     <div class="kicker">Live-demo · 15 minuter</div>
     <h2>En backend på tio minuter</h2>
     <div class="flow" style="justify-content:center;margin-top:90px">
-      <div class="box sun">🤖 Agenten bygger<small>Express, SQLite<br>och en fikalista</small></div>
+      <div class="box sun">🤖 Agenten bygger<small>Express, Supabase<br>och en fikalista</small></div>
       <div class="arrow frag">→</div>
       <div class="box frag">⌨️ curl<small>GET, POST<br>och statuskoder</small></div>
       <div class="arrow frag">→</div>
       <div class="box frag">📡 Network<small>frontenden<br>frågar med fetch</small></div>
       <div class="arrow frag">→</div>
-      <div class="box alt frag">🗄️ Databasen<small>raden finns<br>i tabellen</small></div>
+      <div class="box alt frag">🗄️ Supabase<small>raden finns i<br>Table Editor</small></div>
     </div>
     <p class="lead frag" style="margin-top:70px;text-align:center">Allt vi just pratat om, på riktigt, på en dator.</p>
     <aside class="notes">
       <ul>
-        <li>Be agenten: bygg en liten backend med Express och node:sqlite för en fikalista, med GET och POST på /api/fikor, och en enkel HTML-sida som visar listan med fetch. Plan först.</li>
+        <li>Förbered: ett Supabase-projekt, Supabase CLI inloggad och projektet länkat med supabase link. Lägg den hemliga nyckeln i .env innan demon, så att den aldrig syns på skärmen.</li>
+        <li>Be agenten: bygg en fullstack-fikalista med Express och Supabase som databas. Skapa tabellen fikor som en migration och kör supabase db push. GET och POST på /api/fikor, och en enkel sida som visar listan med fetch, på samma server. Plan först.</li>
         <li>Starta servern och visa att den lyssnar på port 3000. Kör curl -i mot /api/fikor, skicka en POST och visa 201. Skicka en POST utan namn och visa 400.</li>
         <li>Öppna sidan och Network-fliken. Lägg till en fika och klicka på fetch-frågan: metod, adress, status, body.</li>
-        <li>Be agenten visa raderna i tabellen med SQL. Det knyter ihop restaurangen: matsal, kök och skafferi.</li>
+        <li>Öppna Table Editor på supabase.com: raden finns där. Visa SQL Editor med SELECT * FROM fikor. Det knyter ihop restaurangen: matsal, kök och skafferi.</li>
         <li>Starta servern två gånger för att visa EADDRINUSE inför nästa avsnitt.</li>
       </ul>
     </aside>
@@ -574,51 +602,25 @@ Authorization: Bearer hemlig-nyckel</span>
   </section>
 
   <section>
-    <div class="kicker">Bonus · Supabase</div>
-    <h2>Supabase: databas och backend i molnet</h2>
-    <div class="cols wide-left">
-      <ul class="nice">
-        <li><strong>Supabase</strong> ger dig en riktig databas (Postgres) på nätet, och gör automatiskt ett <strong>REST-API</strong> av dina tabeller</li>
-        <li class="frag"><code>GET /rest/v1/fikor</code> känns igen? Samma HTTP och REST som idag</li>
-        <li class="frag">Reglerna i databasen bestämmer vem som får läsa och ändra: <strong>Row Level Security</strong></li>
-        <li class="frag">Gratis: 2 projekt, 500 MB databas. Pausas efter en veckas tystnad. Pro: 25 dollar i månaden</li>
-      </ul>
-      <div class="card sun frag">
-        <span class="e">🌍</span>
-        <h3>Allt på nätet, gratis</h3>
-        <p>Frontenden på GitHub Pages, datan hos Supabase. Fikalistan syns i allas mobiler.</p>
-      </div>
-    </div>
-    <aside class="notes">
-      <ul>
-        <li>Priserna gällde i november 2026. Be deltagarna kolla prissidan själva.</li>
-        <li>Ett pausat projekt startar du igen med ett klick på supabase.com. Datan finns kvar.</li>
-        <li>Med Supabase behövs inte vår egen Express-server när appen publiceras. Kontrollerna som backenden gjorde blir regler i databasen.</li>
-      </ul>
-    </aside>
-  </section>
-
-  <section>
-    <div class="kicker">Bonus · Supabase</div>
-    <h2>Låt agenten flytta datan till Supabase</h2>
+    <div class="kicker">Bonus · Publicera</div>
+    <h2>Från localhost till nätet</h2>
     <div class="flow" style="justify-content:center">
-      <div class="box sun">📦 Installera<small>Supabase CLI</small></div>
+      <div class="box sun">🏠 Idag<small>Express på din dator<br>pratar med Supabase</small></div>
       <div class="arrow frag">→</div>
-      <div class="box sun frag">🔐 Logga in själv<small>konto på supabase.com<br>supabase login</small></div>
+      <div class="box frag">🛂 Regler<small>kontrollerna blir<br>Row Level Security</small></div>
       <div class="arrow frag">→</div>
-      <div class="box frag">🤖 Agenten<small>tabeller, regler<br>och supabase db push</small></div>
+      <div class="box frag">⚡ Direkt<small>frontenden frågar<br>Supabase själv</small></div>
       <div class="arrow frag">→</div>
       <div class="box alt frag">🌍 Ute på nätet<small>GitHub Pages<br>+ Supabase</small></div>
     </div>
     <ul class="nice" style="margin-top:40px">
-      <li class="frag">Precis som med <code>gh</code>: när du är inloggad i terminalen kan agenten använda verktyget åt dig</li>
-      <li class="frag">Databasens lösenord och den hemliga nyckeln skriver du aldrig i chatten</li>
+      <li class="frag">GitHub Pages kan inte köra Express. Men frontenden kan prata direkt med Supabases REST-API</li>
+      <li class="frag">Då får bara den publika nyckeln finnas i frontenden, och reglerna i databasen skyddar datan</li>
     </ul>
     <aside class="notes">
       <ul>
         <li>Hela gången med prompt finns i övning 10 på kurssidan.</li>
-        <li>Kontot och inloggningen gör deltagaren själv. De ska aldrig gå via chatten.</li>
-        <li>Supabase har två nycklar: den publika (publishable) får ligga i frontenden, den hemliga (secret) aldrig.</li>
+        <li>Alternativet är att hyra en server som kör Express dygnet runt. Det kostar oftast pengar. Med Supabase och GitHub Pages blir det gratis.</li>
       </ul>
     </aside>
   </section>
@@ -672,7 +674,7 @@ Authorization: Bearer hemlig-nyckel</span>
     <div class="flow" style="justify-content:center">
       <div class="box sun">📋 Planera<small>frågor, PLAN.md<br>och AGENTS.md</small></div>
       <div class="arrow">→</div>
-      <div class="box">🗄️ Backend<small>REST-API, SQLite<br>och tester</small></div>
+      <div class="box">🗄️ Backend<small>REST-API, Supabase<br>och tester</small></div>
       <div class="arrow">→</div>
       <div class="box">🎨 Frontend<small>React på samma<br>server som API:et</small></div>
       <div class="arrow">→</div>
@@ -699,10 +701,10 @@ Authorization: Bearer hemlig-nyckel</span>
     <ul class="emoji">
       <li><span class="e">🔀</span><span><strong>Övning 6</strong>: lägg till en funktion i din app via en pull request</span></li>
       <li><span class="e">🔭</span><span><strong>Övning 7</strong>: prata HTTP med curl och Network-fliken</span></li>
+      <li><span class="e">⚡</span><span>Följ <strong>guiden om Supabase</strong>: konto, Supabase CLI och inloggning</span></li>
       <li><span class="e">🍰</span><span><strong>Övning 8</strong>: en app med egen backend, minst backenden med tester</span></li>
-      <li><span class="e">📡</span><span>Öppna Network på en sida du använder ofta. Hittar du <code>fetch</code>-frågor med JSON?</span></li>
       <li><span class="e">🔗</span><span>Extra: <strong>övning 9</strong>, bygg Länkförkortaren från en kravlista</span></li>
-      <li><span class="e">⚡</span><span>Bonus: <strong>övning 10</strong>, publicera din app med Supabase</span></li>
+      <li><span class="e">🌍</span><span>Bonus: <strong>övning 10</strong>, publicera din app gratis på nätet</span></li>
     </ul>
     <p class="small bottom">Allt material finns på kurssidan.</p>
   </section>
