@@ -15,7 +15,7 @@
       <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
       <span class="eyebrow">Tillfälle 3 · Övning 8 · 60 minuter</span>
       <h1>🍰 En app med egen backend</h1>
-      <p>Bygg en app där alla ser samma data, med en backend, en databas och en frontend. Du delar upp arbetet i flera sessioner, och varje steg blir en egen pull request.</p>
+      <p>Bygg en fullstack-app där alla ser samma data: frontend, backend och databas i ett projekt som körs av en enda server. Du delar upp arbetet i flera sessioner, och varje steg blir en egen pull request.</p>
     </div>
   </header>
 
@@ -39,11 +39,12 @@ Funktioner:
 - Listan finns kvar när servern startas om.
 
 Teknik:
+- En fullstack-app: frontend, backend och databas i samma projekt, och en enda server som skickar både sidorna och API:et på samma adress.
 - Backend: Node.js med Express och ett REST-API under /api.
 - Databas: SQLite med Nodes inbyggda modul node:sqlite. Databasfilen ska inte in i Git.
 - Backenden kontrollerar all data som kommer in och svarar med 400 och ett tydligt felmeddelande på svenska om något är fel.
-- Frontend: React och Vite med JavaScript. Vite ska skicka vidare /api till backenden, så att det inte blir några CORS-fel.
-- Backend och frontend i samma repo, i mapparna server och client. Ett kommando i projektets rot ska starta båda.
+- Frontend: React med JavaScript. Under utveckling kör Express Vite i middleware-läge, så att allt går på samma server. När appen byggs skickar Express ut de färdiga filerna.
+- npm run dev ska starta hela appen på http://localhost:3000.
 - Tester för API:et med Nodes inbyggda testverktyg (node --test), och ett GitHub Actions-workflow som kör testerna på varje pull request.
 - Svenska i hela gränssnittet, mobilanpassat och en glad design med varma färger.
 
@@ -123,14 +124,14 @@ Funktioner:
         <p>Öppna länken till pull requesten på GitHub.</p>
         <ul>
           <li><strong>Checks:</strong> kör GitHub Actions testerna? Vänta på grön bock. Rött kryss? Be agenten: <code>Kolla varför kontrollerna på pull requesten misslyckas och rätta det.</code></li>
-          <li><strong>Files changed:</strong> ser du mapparna <code>server</code> och testerna? Är databasfilen med? Det ska den inte vara.</li>
+          <li><strong>Files changed:</strong> ser du backendens filer och testerna? Är databasfilen med? Det ska den inte vara.</li>
         </ul>
         <p>När allt är grönt: <strong>Merge pull request</strong>. Be sedan agenten <code>Gå tillbaka till main och hämta det senaste från GitHub.</code></p>
       </li>
 
       <li>
         <h3>🎨 Session 3: frontenden</h3>
-        <p>Ny session, samma prompt som i session 2. Nu bygger agenten gränssnittet i React. När den är klar, öppna adressen den ger dig (oftast <code>http://localhost:5173</code>) och prova appen.</p>
+        <p>Ny session, samma prompt som i session 2. Nu bygger agenten gränssnittet i React, i samma projekt som backenden. När den är klar, öppna <code>http://localhost:3000</code> och prova appen. Samma server skickar sidan och svarar på <code>/api</code>. Det är det som gör appen fullstack.</p>
         <p>Öppna <strong>Network</strong> i Dev Tools och lägg till något i listan. Hittar du din <code>POST</code> och statuskoden <code>201</code>? Öppna sedan samma adress i en annan webbläsare. Syns samma lista? Det är backenden som gör det. 🎉</p>
         <p>Granska och slå ihop pull requesten precis som förut.</p>
       </li>
@@ -147,10 +148,10 @@ Funktioner:
     <details class="alt">
       <summary>Det fungerar inte?</summary>
       <ul>
-        <li><strong>Failed to fetch eller en tom lista:</strong> backenden kör inte. Kolla terminalen, eller be agenten starta den.</li>
-        <li><strong>CORS-fel i Console:</strong> frontenden frågar backenden direkt i stället för via Vite. Ge felet till agenten och påminn om att Vite ska skicka vidare <code>/api</code>.</li>
+        <li><strong>Failed to fetch eller sidan laddar inte:</strong> servern kör inte. Kolla terminalen, eller be agenten starta den med <code>npm run dev</code>.</li>
+        <li><strong>CORS-fel i Console, eller två adresser:</strong> agenten har byggt två servrar i stället för en. Påminn om att allt ska gå på <code>http://localhost:3000</code>, med Vite i middleware-läge i Express.</li>
         <li><strong>EADDRINUSE:</strong> en gammal server kör redan på porten. Be agenten stoppa den.</li>
-        <li><strong>500 i Network:</strong> felet står i terminalen där backenden kör. Kopiera det till agenten.</li>
+        <li><strong>500 i Network:</strong> felet står i terminalen där servern kör. Kopiera det till agenten.</li>
         <li><strong>node:sqlite finns inte:</strong> din Node.js är för gammal. Uppdatera enligt <a href="../guider/node.html">guiden</a> och starta om terminalen.</li>
         <li><strong>Agenten minns inte vad ni bestämde:</strong> det står inte i <code>PLAN.md</code> eller <code>AGENTS.md</code>. Be den skriva in det där.</li>
       </ul>
