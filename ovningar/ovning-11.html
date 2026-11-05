@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Övning 11: Hushållskassan på Fly.io · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=5">
+  <script src="../assets/site.js?v=4" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Tillfälle 3 · Övning 11 · extra</span>
+      <h1>💰 Hushållskassan på Fly.io</h1>
+      <p>Bygg ett enkelt bokföringsprogram för hemekonomin, med inloggning via en kod i mejlen. Appen körs på din egen server hos Fly.io, sparar datan i SQLite och skickar mejl med Resend.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="note tip"><p><strong>Syftet med övningen:</strong> att driftsätta en hel fullstack-app, med databas och allt, på en riktig server på nätet. Du lär dig också hur en app skickar e-post och hur inloggning med engångskod fungerar. Det här är en annan väg än Supabase i övning 8: här äger din egen server både koden och datan.</p></div>
+    <div class="note"><p><strong>Innan du börjar:</strong> du behöver Node.js 22.13 eller senare, Git, ett GitHub-konto med <code>gh</code> inloggat, VS Code och Claude- eller ChatGPT-appen. Du skapar två nya konton i den här övningen, hos Fly.io och Resend. Spara lösenorden i <a href="../guider/losenordshanterare.html">lösenordshanteraren</a>.</p></div>
+
+    <div class="os-switch" role="group" aria-label="Välj operativsystem">
+      <button type="button" data-os="windows">Windows</button>
+      <button type="button" data-os="mac">macOS</button>
+      <button type="button" data-os="linux">Linux</button>
+    </div>
+    <p class="os-note">Vi gissade ditt operativsystem. Byt om det blev fel.</p>
+
+    <ol class="steps">
+      <li>
+        <h3>🧩 Delarna i appen</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Del</th><th>Vad den gör</th></tr>
+            <tr><td><strong>Node.js med Express</strong></td><td>Servern. Skickar sidorna och svarar på API:et under <code>/api</code>, på samma adress.</td></tr>
+            <tr><td><strong>React</strong></td><td>Gränssnittet i webbläsaren. Under utveckling körs Vite i middleware-läge i Express, precis som i övning 8.</td></tr>
+            <tr><td><strong>SQLite</strong></td><td>Databasen. En enda fil på servern, som Node kan läsa med det inbyggda <code>node:sqlite</code>.</td></tr>
+            <tr><td><strong><a href="https://fly.io/" target="_blank" rel="noopener">Fly.io</a></strong></td><td>Kör din server på nätet, i en liten virtuell dator. En <em>volym</em>, en disk som finns kvar mellan omstarter, håller databasfilen.</td></tr>
+            <tr><td><strong><a href="https://resend.com/" target="_blank" rel="noopener">Resend</a></strong></td><td>Skickar e-posten med inloggningskoden.</td></tr>
+          </table>
+        </div>
+        <p><strong>Inloggning med engångskod</strong> (<em>OTP</em>, one-time password) går till så här: du skriver din e-postadress, servern skapar en kod på sex siffror och mejlar den, du skriver in koden, och servern ger webbläsaren en <em>session</em> i en cookie. Inga lösenord att glömma eller läcka.</p>
+      </li>
+
+      <li>
+        <h3>🎈 Skapa konto hos Fly.io</h3>
+        <ol>
+          <li>Gå till <a href="https://fly.io/app/sign-up" target="_blank" rel="noopener">fly.io/app/sign-up</a>.</li>
+          <li>Skapa ett konto, med e-post och ett lösenord från lösenordshanteraren eller med ditt GitHub-konto.</li>
+          <li>Bekräfta e-postadressen med länken du får.</li>
+          <li>Fly.io visar nu en guide som vill hjälpa dig skapa en ny maskin eller en <em>Sprite</em>. <strong>Hoppa över den.</strong> Klicka på <strong>Skip to my dashboard</strong>. Appen skapar vi senare från terminalen.</li>
+        </ol>
+        <div class="note warn"><p><strong>Vad det kostar:</strong> nya konton får en gratis provperiod, utan kort, men den räcker bara några timmar körtid eller några dagar. Ska appen fortsätta köra behöver du lägga in ett kort under <em>Billing</em>. En liten app som den här, som stängs av när ingen använder den, kostar oftast mindre än någon dollar i månaden, och volymen 0,15 dollar per GB och månad. Priserna ändras, så kolla alltid <a href="https://fly.io/pricing/" target="_blank" rel="noopener">fly.io/pricing</a>.</p></div>
+      </li>
+
+      <li>
+        <h3>⌨️ Installera Fly.io:s CLI och logga in</h3>
+        <p>Verktyget heter <strong>flyctl</strong>, men kommandot du skriver är <code>fly</code>. Se också <a href="https://fly.io/docs/flyctl/install/" target="_blank" rel="noopener">Fly.io:s instruktioner</a>.</p>
+        <div data-os-only="windows">
+          <div class="code"><span class="label">PowerShell</span>
+<pre>pwsh -Command "iwr https://fly.io/install.ps1 -useb | iex"</pre></div>
+          <p>Säger den att <code>pwsh</code> inte finns, byt <code>pwsh</code> mot <code>powershell</code>.</p>
+        </div>
+        <div data-os-only="mac">
+          <div class="code"><span class="label">Terminal</span>
+<pre>brew install flyctl</pre></div>
+        </div>
+        <div data-os-only="linux">
+          <div class="code"><span class="label">Terminal</span>
+<pre>curl -L https://fly.io/install.sh | sh</pre></div>
+          <p>Skriptet visar till sist ett par rader som du ska lägga till i <code>~/.bashrc</code> (eller <code>~/.zshrc</code>), så att terminalen hittar <code>fly</code>. Kopiera dem dit.</p>
+        </div>
+        <p>Stäng terminalen, öppna en ny och logga in, själv. Webbläsaren öppnas och du godkänner:</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>fly auth login
+fly version</pre></div>
+        <p>Nu kan agenten använda <code>fly</code> åt dig, precis som <code>gh</code> och <code>supabase</code>.</p>
+      </li>
+
+      <li>
+        <h3>✉️ Skapa konto hos Resend</h3>
+        <ol>
+          <li>Gå till <a href="https://resend.com/signup" target="_blank" rel="noopener">resend.com/signup</a> och skapa ett konto. Gratisplanen räcker gott: 3 000 mejl i månaden och 100 per dag.</li>
+          <li>Bekräfta e-postadressen.</li>
+          <li>Gå till <strong>API Keys</strong> och skapa en nyckel. Kalla den <code>cli</code> och ge den <em>Full access</em>. Kopiera den direkt till lösenordshanteraren, den visas bara en gång. Den börjar med <code>re_</code>.</li>
+        </ol>
+        <div class="note warn"><p><strong>Testadressen skickar bara till dig.</strong> Utan en egen domän skickar du från <code>onboarding@resend.dev</code>, och då kan Resend bara leverera till den adress du skapade kontot med. Det räcker för övningen: du är den enda som loggar in. Vill du att andra ska kunna logga in behöver du en egen domän, som du lägger till under <em>Domains</em>.</p></div>
+      </li>
+
+      <li>
+        <h3>⌨️ Installera Resends CLI och logga in</h3>
+        <p>Se också <a href="https://resend.com/docs/cli" target="_blank" rel="noopener">Resends instruktioner</a>.</p>
+        <div data-os-only="windows">
+          <div class="code"><span class="label">PowerShell</span>
+<pre>irm https://resend.com/install.ps1 | iex</pre></div>
+        </div>
+        <div data-os-only="mac">
+          <div class="code"><span class="label">Terminal</span>
+<pre>brew install resend/cli/resend</pre></div>
+        </div>
+        <div data-os-only="linux">
+          <div class="code"><span class="label">Terminal</span>
+<pre>curl -fsSL https://resend.com/install.sh | bash</pre></div>
+        </div>
+        <p>Det går också att installera med npm på alla system: <code>npm install -g resend-cli</code>.</p>
+        <p>Stäng terminalen, öppna en ny och logga in, själv. Klistra in nyckeln från lösenordshanteraren när den frågar. Den sparas säkert på din dator:</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>resend login
+resend whoami</pre></div>
+        <p>Skicka ett testmejl till dig själv. Byt ut adressen mot den du skapade kontot med:</p>
+        <div class="code wrap"><span class="label">Alla system</span>
+<pre>resend emails send --from "Hushållskassan &lt;onboarding@resend.dev&gt;" --to din.adress@example.com --subject "Hej från terminalen" --text "Det fungerar!"</pre></div>
+        <p>Kom mejlet fram? Kolla skräpposten om du inte ser det. 🎉</p>
+      </li>
+
+      <li>
+        <h3>🔑 En nyckel till appen</h3>
+        <p>Appen ska ha en egen nyckel som bara får skicka mejl. Gå till <strong>API Keys</strong> hos Resend igen och skapa en nyckel som heter <code>hushallskassan</code> med <em>Sending access</em>. Spara den i lösenordshanteraren.</p>
+        <p>Den nyckeln klistrar du in själv: i <code>.env</code> på din dator, och senare som en hemlighet hos Fly.io. Agenten ska aldrig få den i chatten.</p>
+      </li>
+
+      <li>
+        <h3>📋 Session 1: planera</h3>
+        <p>Skapa en tom mapp, till exempel <code>kurs/hushallskassan</code>, och öppna den i Claude-appen (fliken <em>Code</em>) eller ChatGPT-appen (<em>Codex</em>). Klistra in startprompten. Byt ut e-postadressen mot din egen.</p>
+        <div class="code wrap"><span class="label">Startprompt · session 1</span>
+<pre>Jag vill bygga Hushållskassan: ett enkelt bokföringsprogram för min hemekonomi, som en webbapp. Planera bara, skriv ingen kod än.
+
+Funktioner:
+- Jag loggar in med min e-postadress. Appen mejlar en kod på sex siffror, och jag skriver in den. Inga lösenord. Koden gäller i tio minuter och kan bara användas en gång, och man får bara försöka några gånger.
+- Jag kan lägga in inkomster och utgifter med datum, belopp i kronor, kategori och en kort anteckning. Det ska gå snabbt, med så få klick som möjligt.
+- Kategorier som mat, boende, transport, nöje och lön finns från början, och jag kan lägga till egna.
+- Jag ser månadens inkomster, utgifter och vad som blir kvar, och vad som har gått till varje kategori.
+- Jag kan sätta en budget per kategori och se hur mycket som är kvar av den.
+- Jag kan bläddra mellan månader, söka bland transaktionerna och ändra eller ta bort en.
+- Varje användare ser bara sin egen data.
+
+Teknik:
+- En fullstack-app med en enda server: Node.js med Express och ett REST-API under /api. Frontenden är React med JavaScript. Under utveckling kör Express Vite i middleware-läge, och när appen byggs skickar Express ut de färdiga filerna.
+- Databas: SQLite med Nodes inbyggda node:sqlite. Sökvägen till databasfilen kommer från en miljövariabel, så att den kan ligga på en volym när appen körs på Fly.io. Tabellerna skapas av numrerade migrationer när servern startar.
+- Belopp sparas som hela ören, aldrig som decimaltal.
+- E-post skickas med Resend och paketet resend. Nyckeln ligger i RESEND_API_KEY i .env, som inte får in i Git. Jag klistrar in den själv, be mig aldrig om den i chatten. Avsändare är onboarding@resend.dev, och jag loggar in med min.adress@example.com.
+- Om RESEND_API_KEY saknas skriver servern koden i terminalen i stället för att mejla den, så att appen går att prova lokalt utan Resend.
+- Sessionen ligger i en säker cookie (httpOnly, sameSite, secure i produktion).
+- Backenden kontrollerar all data som kommer in och svarar med 400 och ett tydligt felmeddelande på svenska om något är fel.
+- npm run dev startar hela appen på http://localhost:3000. npm run build och npm start kör den som i produktion.
+- Tester med Nodes inbyggda testverktyg (node --test) och en tillfällig databas. Testerna skickar aldrig riktiga mejl. Ett GitHub Actions-workflow kör testerna på varje pull request.
+- Appen driftsätts på Fly.io i regionen arn (Stockholm), med en Dockerfile, en volym monterad på /data för databasen och en enda maskin, eftersom SQLite bara kan ligga på en maskin. Jag har loggat in med fly auth login.
+- Design: modern, ren och effektiv, fokuserad på att snabbt sköta hushållsekonomin. Tydliga siffror, kronor med svenskt format, färger för inkomster och utgifter, och enkla diagram över kategorierna. Svenska i hela gränssnittet och mobilanpassat.
+
+Så här jobbar vi:
+- Ställ frågor till mig tills du förstår vad jag vill ha.
+- Skriv sedan planen i PLAN.md. Dela upp den i steg som var och en går att göra i en egen session och blir en egen pull request. Varje steg ska ha en rad om hur vi vet att det är klart. Sista steget är driftsättningen på Fly.io.
+- Ta med en tabell över API:ets adresser (metod, adress, vad den gör och vilka statuskoder den svarar med) och hur tabellerna i databasen ska se ut.
+- Skapa en AGENTS.md för projektet med det som alltid gäller. Bland annat hur man startar och testar appen, att varje steg görs på en egen branch och avslutas med en pull request som öppnas med gh, att testerna ska gå igenom innan pull requesten öppnas, att steget bockas av i PLAN.md, och att nycklar aldrig skrivs i koden eller i chatten.
+- Spara med Git, skapa ett publikt repo på GitHub med gh som heter hushallskassan och pusha.</pre></div>
+        <p>Agenten ställer frågor. Svara på dem. Den skriver sedan <code>PLAN.md</code> och <code>AGENTS.md</code>. Läs båda i VS Code:</p>
+        <ul>
+          <li>Finns det tabeller för användare, inloggningskoder, sessioner, kategorier och transaktioner?</li>
+          <li>Står det i API-tabellen vilka adresser som kräver inloggning, och att de svarar <code>401</code> utan?</li>
+          <li>Står det i <code>AGENTS.md</code> hur appen startas och testas? Det är det första en ny session behöver veta.</li>
+        </ul>
+        <div class="note tip"><p><strong>Glöm inte AGENTS.md!</strong> Har agenten inte skapat den, be om det: <code>Skapa en AGENTS.md för projektet med det som alltid gäller.</code> Varje ny session läser den först, så det är där du skriver det du inte vill upprepa.</p></div>
+      </li>
+
+      <li>
+        <h3>🛠️ Session 2 och framåt: bygg</h3>
+        <p>Starta en <strong>ny session</strong> för varje steg och använd samma prompt som i övning 8:</p>
+        <div class="code wrap"><span class="label">Prompt · varje nytt steg</span>
+<pre>Läs PLAN.md och gör nästa steg som inte är avbockat. Visa en kort plan för steget först och vänta på mitt okej. När du är klar: kör testerna, starta appen så att jag kan prova den, bocka av steget i PLAN.md, öppna en pull request med gh och ge mig länken.</pre></div>
+        <p>Granska varje pull request på GitHub: grön bock under <em>Checks</em>, och ingen <code>.env</code> eller databasfil (<code>.db</code>) under <em>Files changed</em>. Slå ihop, och be agenten gå tillbaka till main innan nästa session.</p>
+      </li>
+
+      <li>
+        <h3>🧪 Testa hela appen lokalt</h3>
+        <p>Innan appen går ut på nätet ska den fungera på din dator. Gör det i tre varv:</p>
+        <ol>
+          <li><strong>Utan mejl.</strong> Starta med <code>npm run dev</code> och öppna <code>http://localhost:3000</code>. Logga in med din adress. Koden står i terminalen där servern kör. Lägg in några inkomster och utgifter, sätt en budget och byt månad.</li>
+          <li><strong>Med riktiga mejl.</strong> Öppna <code>.env</code> i VS Code (be agenten skapa filen om den saknas) och klistra in nyckeln <code>hushallskassan</code> efter <code>RESEND_API_KEY=</code>. Starta om servern och logga in igen. Nu ska koden komma i mejlen. Under <em>Emails</em> hos Resend ser du mejlet som skickades.</li>
+          <li><strong>Som i produktion.</strong> Kör <code>npm run build</code> och sedan <code>npm start</code>, och prova appen igen. Det är så den körs på Fly.io. Stoppa servern och starta den igen: finns datan kvar? Då sparas den i SQLite-filen.</li>
+        </ol>
+        <p>Prova också det som ska gå fel: en fel kod, en gammal kod, ett tomt belopp. Öppna <strong>Network</strong> i Dev Tools. Ser du <code>401</code> när du inte är inloggad och <code>400</code> när du skickar konstig data?</p>
+        <p>Vill du ha hjälp att testa mer:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Hjälp mig testa hela appen lokalt innan vi driftsätter den. Gör en checklista över allt jag ska prova i webbläsaren, och ge mig curl-kommandon för API:et. Jag använder Windows/Mac (välj ett). Bygg också Docker-imagen och starta den lokalt om Docker finns på datorn.</pre></div>
+      </li>
+
+      <li>
+        <h3>🚀 Driftsätt på Fly.io</h3>
+        <p>När allt fungerar lokalt är det dags för sista steget i planen. Starta en ny session med samma prompt som förut. Agenten kör ungefär de här kommandona åt dig:</p>
+        <div class="code"><span class="label">Det agenten gör</span>
+<pre>fly launch --no-deploy        # skapar appen och fly.toml
+fly volumes create data --region arn --size 1
+fly deploy                    # bygger och startar appen
+fly status
+fly apps open</pre></div>
+        <p>Nyckeln till Resend lägger du in själv, i terminalen, som en <strong>hemlighet</strong> hos Fly.io. Den hamnar aldrig i koden, i Git eller i chatten. Klistra in nyckeln <code>hushallskassan</code> i stället för <code>re_...</code>:</p>
+        <div class="code"><span class="label">Alla system</span>
+<pre>fly secrets set RESEND_API_KEY=re_...</pre></div>
+        <p>Appen startar om av sig själv. Öppna adressen, som slutar på <code>.fly.dev</code>, i mobilen och logga in. 🎉</p>
+        <ul>
+          <li><strong>Dashboarden:</strong> på <a href="https://fly.io/dashboard" target="_blank" rel="noopener">fly.io/dashboard</a> ser du appen, maskinen och volymen.</li>
+          <li><strong>Loggarna:</strong> <code>fly logs</code> visar det servern skriver, precis som terminalen när du kör lokalt.</li>
+          <li><strong>Nya ändringar:</strong> slå ihop pull requesten och be agenten köra <code>fly deploy</code>. Datan på volymen finns kvar.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <details class="alt">
+      <summary>Det fungerar inte?</summary>
+      <ul>
+        <li><strong>fly eller resend hittas inte:</strong> stäng terminalen och öppna en ny. På Linux, kolla att raderna från installationen finns i <code>~/.bashrc</code>.</li>
+        <li><strong>Inget mejl kommer:</strong> kolla skräpposten och <em>Emails</em> hos Resend. Med <code>onboarding@resend.dev</code> kommer mejl bara fram till adressen du skapade Resend-kontot med.</li>
+        <li><strong>401 eller API key is invalid i terminalen:</strong> nyckeln i <code>.env</code> eller i <code>fly secrets</code> saknas eller är fel. Kolla den själv.</li>
+        <li><strong>node:sqlite finns inte:</strong> din Node är för gammal. Uppdatera till 22.13 eller senare, och be agenten använda samma version i Dockerfile.</li>
+        <li><strong>Datan försvinner efter fly deploy:</strong> databasen ligger inte på volymen. Be agenten kolla att miljövariabeln pekar på <code>/data</code> och att volymen finns under <code>[mounts]</code> i <code>fly.toml</code>.</li>
+        <li><strong>Appen startar inte på Fly.io:</strong> kör <code>fly logs</code> och kopiera felet till agenten. Ofta lyssnar servern på fel port eller bara på <code>localhost</code>.</li>
+        <li><strong>Provperioden tog slut och appen stannade:</strong> lägg in ett kort under <em>Billing</em>, eller ta bort appen.</li>
+      </ul>
+    </details>
+
+    <div class="note warn"><p><strong>Städa när du är klar.</strong> Vill du inte betala för appen kan du ta bort den med <code>fly apps destroy hushallskassan</code> (byt mot appens namn). Då försvinner volymen och all data för alltid, så kör det själv och bara när du är säker.</p></div>
+
+    <section>
+      <h2>Klart?</h2>
+      <ul class="checklist">
+        <li>Jag har konton hos Fly.io och Resend, och både <code>fly</code> och <code>resend</code> är inloggade</li>
+        <li>Mitt projekt har en <code>PLAN.md</code> och en <code>AGENTS.md</code></li>
+        <li>Jag har loggat in med en kod, först från terminalen och sedan från mejlen</li>
+        <li>Jag har provat hela appen lokalt, även med <code>npm run build</code> och <code>npm start</code></li>
+        <li>Appen kör på en adress som slutar på <code>.fly.dev</code>, och datan finns kvar efter en ny <code>fly deploy</code></li>
+        <li>Nyckeln till Resend finns bara i <code>.env</code> och i <code>fly secrets</code>, aldrig i Git eller i chatten</li>
+      </ul>
+    </section>
+
+    <nav class="guide-nav">
+      <a href="ovning-10.html">← Övning 10</a>
+      <a href="../index.html">Allt kursmaterial →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>
