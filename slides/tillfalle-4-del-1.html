@@ -358,11 +358,12 @@
     <table class="dbt frag" style="margin-top:40px">
       <caption>Tabellen anvandare</caption>
       <tr><th>epost</th><th>losenord_hash</th></tr>
-      <tr><td>anna@exempel.se</td><td><code>$argon2id$v=19$m=65536…Xq9f</code></td></tr>
+      <tr><td>anna@exempel.se</td><td><code style="font-size:15px">06b187f77fcb14322d542fdf7e1fddd45260b6fdd8f2aebf34a1b391516818a7</code></td></tr>
     </table>
     <aside class="notes">
       <ul>
         <li>Servern vet aldrig ditt lösenord, bara dess fingeravtryck. Läcker databasen får tjuven inte lösenorden direkt.</li>
+        <li>Hashen i tabellen är en äkta SHA-256 av hemligt123, samma funktion som på hashsliden. Nästa slide förklarar varför riktiga appar lägger till salt och använder en långsammare hash.</li>
         <li>Därför kan ingen seriös tjänst skicka ditt gamla lösenord om du glömt det. Gör de det, sparar de det i klartext.</li>
       </ul>
     </aside>
