@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Övning 12: Logga in i din app · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎫</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=5">
+  <script src="../assets/site.js?v=4" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Tillfälle 4 · Övning 12 · 60–90 minuter</span>
+      <h1>🎫 Logga in i din app</h1>
+      <p>Lägg till inloggning med GitHub i appen från övning 8 eller 10. Bara inloggade ska se listan, och man får bara ta bort det man själv har lagt till. Sedan låter du en ny session granska säkerheten.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="note tip"><p><strong>Syftet med övningen:</strong> att se orden från del 1 i en riktig app. OAuth när du loggar in, en JWT i varje fråga, och regler i databasen som bestämmer vem som får göra vad. Du lär dig också läsa en säkerhetsgranskning.</p></div>
+    <div class="note"><p><strong>Innan du börjar:</strong> du behöver appen från <a href="ovning-8.html">övning 8</a>, som fungerar på din dator och ligger på GitHub. Har du gjort <a href="ovning-10.html">övning 10</a> fungerar den lika bra. Supabase CLI ska vara inloggat och projektet länkat, se <a href="../guider/supabase.html">guiden om Supabase</a>. Ha <a href="../guider/losenordshanterare.html">lösenordshanteraren</a> öppen.</p></div>
+
+    <ol class="steps">
+      <li>
+        <h3>🎯 Vad ska appen kunna?</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Vem</th><th>Läsa listan</th><th>Lägga till</th><th>Ta bort</th></tr>
+            <tr><td><strong>Inte inloggad</strong></td><td>Nej, ser bara en knapp för att logga in</td><td>Nej</td><td>Nej</td></tr>
+            <tr><td><strong>Inloggad</strong></td><td>Ja, allas fikor</td><td>Ja, i sitt eget namn</td><td>Bara det man själv lagt till</td></tr>
+          </table>
+        </div>
+        <p>Inloggningen sköts av <strong>Supabase Auth</strong>. Reglerna skrivs med <strong>Row Level Security</strong> i databasen, så att de gäller hur frågan än skickas.</p>
+      </li>
+
+      <li>
+        <h3>🐙 Registrera appen hos GitHub</h3>
+        <p>Det här gör du själv, inte agenten. Det är ditt konto och din hemlighet.</p>
+        <ol>
+          <li>Öppna ditt projekt på <a href="https://supabase.com/dashboard" target="_blank" rel="noopener">supabase.com</a>. Gå till <strong>Authentication → Sign In / Providers</strong> och klicka på <strong>GitHub</strong>. Kopiera <strong>Callback URL</strong>. Den ser ut som <code>https://abcdefgh.supabase.co/auth/v1/callback</code>.</li>
+          <li>Öppna <a href="https://github.com/settings/developers" target="_blank" rel="noopener">github.com/settings/developers</a>, välj <strong>OAuth Apps</strong> och klicka <strong>New OAuth App</strong>.</li>
+          <li>Fyll i ett namn, till exempel <em>Fikalistan</em>. Som <strong>Homepage URL</strong> skriver du <code>http://localhost:3000</code> eller din adress på GitHub Pages. Klistra in Callback URL från Supabase i <strong>Authorization callback URL</strong>. Klicka <strong>Register application</strong>.</li>
+          <li>Kopiera <strong>Client ID</strong>. Klicka sedan <strong>Generate a new client secret</strong> och spara hemligheten i lösenordshanteraren direkt. GitHub visar den bara en gång.</li>
+          <li>Tillbaka i Supabase: slå på GitHub och klistra in Client ID och Client Secret. Spara.</li>
+          <li>Gå till <strong>Authentication → URL Configuration</strong>. Lägg till appens adresser under <strong>Redirect URLs</strong>: <code>http://localhost:3000/**</code> och, om du har gjort övning 10, din adress på GitHub Pages.</li>
+        </ol>
+        <div class="note warn"><p><strong>Client secret är en hemlighet.</strong> Den ska bara finnas i lösenordshanteraren och i Supabase. Aldrig i koden, i Git eller i chatten med agenten. Client ID får synas.</p></div>
+      </li>
+
+      <li>
+        <h3>🤖 Låt agenten lägga till inloggningen</h3>
+        <p>Öppna projektet i Claude- eller ChatGPT-appen och starta en <strong>ny session</strong>:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Jag vill lägga till inloggning i den här appen med Supabase Auth och GitHub. GitHub är redan påslaget i Supabase, och adresserna finns under URL Configuration. Supabase CLI är inloggat och projektet är länkat. Kör supabase projects list först för att kontrollera det.
+
+Krav:
+- Den som inte är inloggad ser bara en knapp: Logga in med GitHub. Den som är inloggad ser listan, sitt namn och en knapp för att logga ut.
+- Inloggningen görs i frontenden med @supabase/supabase-js och den publika nyckeln (publishable key).
+- Lägg till en kolumn user_id i tabellen, som databasen fyller i själv med den inloggades id. Gör det som en ny migration och skicka den med supabase db push. Befintliga rader utan ägare får tas bort.
+- Skriv regler med Row Level Security: inloggade får läsa allt, lägga till i sitt eget namn och bara ta bort sina egna rader. Den som inte är inloggad får ingenting.
+- Ta bort-knappen visas bara på mina egna rader. Men det är reglerna i databasen som skyddar.
+- Om appen har en Express-server: frontenden skickar med inloggningens JWT i Authorization-headern, och servern pratar med Supabase som den inloggade användaren, så att reglerna gäller även där. Den hemliga nyckeln ska inte användas för vanliga frågor.
+- Läs Supabases dokumentation på https://supabase.com/docs om du är osäker på något.
+
+Arbetssätt:
+- Jobba på en ny branch. Visa först en plan och vänta på mitt okej.
+- Förklara varje regel i Row Level Security i en mening på svenska.
+- Be mig om hjälp om något kräver ett lösenord eller en hemlighet. Jag skriver aldrig hemligheter i chatten.
+- När allt fungerar: öppna en pull request.</pre></div>
+        <p>Läs planen och sedan migrationen i pull requesten. Den viktigaste koden i hela appen är reglerna, oftast bara tio rader SQL. Stämmer agentens förklaringar med tabellen i steg 1?</p>
+        <details class="alt">
+          <summary>Vad betyder raderna i reglerna?</summary>
+          <ul>
+            <li><code>create policy … for select</code> är en regel för att läsa. <code>insert</code> är lägga till, <code>update</code> är ändra och <code>delete</code> är ta bort.</li>
+            <li><code>to authenticated</code> betyder att regeln bara gäller inloggade.</li>
+            <li><code>auth.uid()</code> är id:t på den som är inloggad, hämtat ur JWT:n. <code>auth.uid() = user_id</code> betyder ”raden är min”.</li>
+            <li><code>using (true)</code> betyder att regeln gäller alla rader.</li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <h3>🎫 Logga in och hitta din JWT</h3>
+        <p>Starta appen, eller öppna den på GitHub Pages när den är publicerad. Klicka <strong>Logga in med GitHub</strong> och godkänn. Första gången frågar GitHub om appen får se din profil. Det är OAuth.</p>
+        <p>Öppna Dev Tools och fliken <strong>Network</strong>. Lägg till en fika och klicka på frågan. Under <em>Request Headers</em> finns <code>Authorization: Bearer eyJ…</code>. Det är din JWT. Ser du de tre delarna med punkter emellan?</p>
+        <p>Öppna fliken <strong>Application → Local Storage</strong>. Där sparar Supabase din inloggning. Det är därför det är så viktigt att appen aldrig visar text från användare som HTML: kod som smugglas in via XSS skulle kunna läsa den.</p>
+        <p>Öppna ditt projekt på supabase.com och gå till <strong>Authentication → Users</strong>. Där finns du nu som användare.</p>
+        <div class="note warn"><p><strong>Klistra inte in din JWT på webbsidor</strong> som avkodar tokens. Den är en inloggning så länge den gäller. Vill du se vad den innehåller, be agenten förklara hur du läser mittendelen på din egen dator.</p></div>
+      </li>
+
+      <li>
+        <h3>🕵️ Försök ta dig förbi reglerna</h3>
+        <p>Nu provar du som en inbrottstjuv. Be agenten ge dig ett <code>curl</code>-kommando som hämtar listan direkt från Supabase med bara den publika nyckeln, utan inloggning. Kör det i terminalen.</p>
+        <p>Svaret ska bli en tom lista, <code>[]</code>, fast det finns rader i tabellen. Row Level Security svarar inte med ett fel när du inte får läsa. Du får bara inga rader.</p>
+        <p>Be någon annan logga in i din app, eller logga in med ett annat GitHub-konto i ett privat fönster. Syns det andras fikor utan ta bort-knapp? Bra. Fråga agenten hur du kan försöka ta bort någon annans rad med <code>curl</code> och kontrollera att det inte går.</p>
+        <details class="alt">
+          <summary>Det fungerar inte?</summary>
+          <ul>
+            <li><strong>Efter inloggningen hamnar du på fel sida, eller på localhost:</strong> appens adress saknas under <em>URL Configuration</em> i Supabase.</li>
+            <li><strong>GitHub säger ”redirect_uri is not associated”:</strong> callback-adressen hos GitHub stämmer inte exakt med den Supabase visar.</li>
+            <li><strong>Listan är tom även när du är inloggad:</strong> regeln för att läsa saknas eller är fel. Be agenten kontrollera reglerna.</li>
+            <li><strong>Du kan ta bort andras fikor:</strong> regeln för att ta bort jämför inte <code>auth.uid()</code> med <code>user_id</code>, eller så använder servern den hemliga nyckeln. Ge det till agenten.</li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <h3>🔍 Säkerhetsgranskning i en ny session</h3>
+        <p>Starta en <strong>ny session</strong> på samma branch. I Claude Code skriver du <code>/security-review</code>. I Codex eller appen använder du den här prompten:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Granska ändringarna på den här branchen ur ett säkerhetsperspektiv, jämfört med main. Gå igenom inloggning, reglerna i Row Level Security, kontroll av indata, XSS, CORS, hemligheter i koden och begränsning av antal försök. Skriv en lista med problem, hur allvarliga de är och hur vi åtgärdar dem, med de allvarligaste först. Beskriv för varje problem hur någon skulle kunna utnyttja det. Ändra inget än.</pre></div>
+        <p>Läs listan. Rätta det som är allvarligt i samma pull request, i samma session eller en ny. Spara det som är lågt prioriterat som en idé i README.md. Är du osäker på ett problem: fråga agenten hur någon skulle kunna utnyttja det steg för steg.</p>
+        <p>Granska pull requesten själv på GitHub, och slå ihop den när du är nöjd.</p>
+      </li>
+    </ol>
+
+    <section>
+      <h2>Klart?</h2>
+      <ul class="checklist">
+        <li>Jag har registrerat appen hos GitHub och sparat client secret i lösenordshanteraren</li>
+        <li>Jag kan logga in med GitHub, och den som inte är inloggad ser inga fikor</li>
+        <li>Jag har läst reglerna i Row Level Security och förstår vad varje regel gör</li>
+        <li>Jag har hittat min JWT i Network-fliken</li>
+        <li>Jag har sett att <code>curl</code> utan inloggning ger en tom lista</li>
+        <li>En ny session har gjort en säkerhetsgranskning, och de allvarliga problemen är rättade</li>
+      </ul>
+    </section>
+
+    <nav class="guide-nav">
+      <a href="ovning-11.html">← Övning 11</a>
+      <a href="../index.html">Allt kursmaterial →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>
