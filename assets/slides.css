@@ -765,3 +765,14 @@ body.show-overview .overview { display: block; }
 .deck .layers.tight { gap: 10px; }
 .deck .layers.tight .layer { padding: 12px 26px; }
 .deck .layers.wide .layer b { min-width: 250px; white-space: nowrap; }
+
+/* Säkerhet: JWT i tre färger och chiffer-rader */
+.deck .jwt { font: 700 21px/1.45 var(--font-mono); word-break: break-all; background: var(--paper); border: 3px solid var(--line); border-radius: var(--radius); padding: 18px 22px; box-shadow: var(--shadow); }
+.deck .jwt .j1 { color: var(--berry); }
+.deck .jwt .j2 { color: var(--leaf); }
+.deck .jwt .j3 { color: var(--orange); }
+.deck .jwt .dot { color: var(--ink); }
+.deck .cipher { display: grid; grid-template-columns: auto 1fr; gap: 10px 24px; align-items: center; font-size: 26px; }
+.deck .cipher b { font-weight: 800; color: var(--ink-soft); font-size: 20px; text-transform: uppercase; letter-spacing: 0.04em; }
+.deck .cipher code { font: 700 34px var(--font-mono); letter-spacing: 0.12em; }
+.deck .flow.even .box { flex: 1 1 0; min-width: 0; }
