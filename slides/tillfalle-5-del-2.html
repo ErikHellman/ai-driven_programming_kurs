@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tillfälle 5 · Del 2: Verktyg, MCP och din egen app</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔌</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/slides.css?v=13">
+  <script src="../assets/slides.js?v=7" defer></script>
+</head>
+<body>
+<a class="home" href="../index.html">⌂ Kursmaterial</a>
+<div class="deck">
+
+  <!-- 1 -->
+  <section class="title">
+    <div class="kicker">Folkuniversitetet · Tillfälle 5 · Del 2</div>
+    <h1>Verktyg, MCP och din egen app</h1>
+    <p class="lead">Vad hände egentligen när agenten läste skolmaten? Och hur ger du din egen app samma förmåga?</p>
+    <div class="badge-row">
+      <span class="badge">🛠️ Tool calling</span>
+      <span class="badge">🔌 MCP</span>
+      <span class="badge">🧩 LLM i din app</span>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Ungefär 60 minuter. Del 1 visade vad som går att göra. Nu förklarar vi hur, så att deltagarna kan bygga det själva.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <div class="kicker">Där vi är</div>
+    <h2>En LLM kan bara skriva text</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">🚫</span><h3>Den surfar inte</h3><p>Modellen kan inte öppna skolmat.se. Den har ingen webbläsare, inget nätverk, ingen hårddisk.</p></div>
+      <div class="card frag"><span class="e">✍️</span><h3>Den ber om hjälp</h3><p>Den skriver en <strong>begäran</strong>: ”hämta den här sidan åt mig”.</p></div>
+      <div class="card hot frag"><span class="e">🤝</span><h3>Programmet gör jobbet</h3><p>Claude Code, Claude-appen eller <strong>din app</strong> utför begäran och skickar tillbaka svaret.</p></div>
+    </div>
+    <p class="lead frag bottom">Det kallas <span class="hl">tool calling</span>, att anropa verktyg.</p>
+    <aside class="notes">
+      <ul>
+        <li>Det här sa vi redan i tillfälle 1: modellen kör aldrig något själv, harnesset gör det. Idag tittar vi på hur begäran ser ut.</li>
+        <li>Liknelse: modellen är en kock som sitter i telefon. Den kan säga ”hämta mjölken i kylen”, men någon annan måste gå dit.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Tool calling -->
+  <section class="divider">
+    <div class="num">1</div>
+    <h2>Tool calling</h2>
+    <p class="lead">Så ber modellen om hjälp</p>
+  </section>
+
+  <!-- 4 -->
+  <section>
+    <div class="kicker">Tool calling</div>
+    <h2>Ett varv, steg för steg</h2>
+    <div class="flow even">
+      <div class="box sun">📨 Din app<small>frågan + en lista<br>med verktyg</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🧠 LLM:en<small>”anropa<br>hamta_skolmat”</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">⚙️ Din app<small>kör koden,<br>hämtar menyn</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🧠 LLM:en<small>läser menyn,<br>kanske ett verktyg till</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">💬 Svaret<small>middagsplanen</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:44px">Varje pil är ett anrop över nätet. Loopen från tillfälle 1, sedd utifrån.</p>
+    <aside class="notes">
+      <ul>
+        <li>Det är din app som är harnesset här. Den skickar frågan, tar emot begäran, kör verktyget och skickar tillbaka svaret, om och om igen tills modellen svarar med vanlig text.</li>
+        <li>Varje varv skickas hela samtalet igen, inklusive verktygens svar. Det är därför kontexten växer och varje varv kostar pengar.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <div class="kicker">Tool calling · Steg 1</div>
+    <h2>Du beskriver verktyget</h2>
+    <div class="cols">
+      <div class="snip js">
+        <span class="tag">I anropet till Claude</span>
+        <div class="term"><pre><span class="k">tools</span>: [{
+  <span class="k">name</span>: <span class="s">"hamta_skolmat"</span>,
+  <span class="k">description</span>: <span class="s">"Hämtar skolans lunchmeny
+    för en vecka. Svarar med en rätt per dag."</span>,
+  <span class="k">input_schema</span>: {
+    <span class="k">type</span>: <span class="s">"object"</span>,
+    <span class="k">properties</span>: {
+      <span class="k">skola</span>: { <span class="k">type</span>: <span class="s">"string"</span> },
+      <span class="k">vecka</span>: { <span class="k">type</span>: <span class="s">"integer"</span> }
+    },
+    <span class="k">required</span>: [<span class="s">"skola"</span>, <span class="s">"vecka"</span>]
+  }
+}]</pre></div>
+      </div>
+      <ul class="nice">
+        <li class="frag"><strong>name</strong>: vad verktyget heter</li>
+        <li class="frag"><strong>description</strong>: när och varför modellen ska använda det</li>
+        <li class="frag"><strong>input_schema</strong>: vilka uppgifter den måste skicka med, som JSON</li>
+        <li class="frag">Ingen kod här. Bara en <strong>beskrivning</strong></li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Formatet heter JSON Schema och är samma hos Anthropic och OpenAI, nästan ord för ord. Där heter det parameters i stället för input_schema.</li>
+        <li>Beskrivningen hamnar i kontexten, precis som verktygsdefinitionerna i Claude Code från tillfälle 1.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 6 -->
+  <section>
+    <div class="kicker">Tool calling · Steg 2 och 3</div>
+    <h2>Modellen ber, din kod svarar</h2>
+    <div class="cols">
+      <div class="http-msg">
+        <div class="head">Claude svarar</div>
+        <pre>stop_reason: <span class="s">"tool_use"</span>
+content: [{
+  type: <span class="s">"tool_use"</span>,
+  id: <span class="s">"toolu_01A"</span>,
+  name: <span class="s">"hamta_skolmat"</span>,
+  input: { skola: <span class="s">"Ekskolan"</span>, vecka: 48 }
+}]</pre>
+      </div>
+      <div class="http-msg frag">
+        <div class="head">Din app skickar tillbaka</div>
+        <pre>content: [{
+  type: <span class="s">"tool_result"</span>,
+  tool_use_id: <span class="s">"toolu_01A"</span>,
+  content: <span class="s">"Mån: Fiskgratäng
+    Tis: Kycklinggryta …"</span>
+}]</pre>
+      </div>
+    </div>
+    <p class="lead frag bottom">Mellan de två rutorna kör <strong>din</strong> kod: en <code>fetch</code>, en fråga till Supabase, vad som helst.</p>
+    <aside class="notes">
+      <ul>
+        <li>stop_reason "tool_use" betyder: jag är inte klar, jag väntar på ett verktyg. När modellen är klar står det "end_turn".</li>
+        <li>id:t kopplar ihop svaret med begäran. Modellen kan be om flera verktyg på en gång.</li>
+        <li>Det är vanlig JavaScript i servern från tillfälle 3. Inget magiskt.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 7 -->
+  <section>
+    <div class="kicker">Tool calling</div>
+    <h2>Beskrivningen är allt</h2>
+    <div class="cards two">
+      <div class="card bad frag"><span class="e">😶</span><h3>Vag</h3><p><code>"Hämtar data."</code><br>Modellen vet inte när verktyget behövs, eller vad den får tillbaka.</p></div>
+      <div class="card good frag"><span class="e">🎯</span><h3>Tydlig</h3><p><code>"Hämtar skolans lunchmeny för en vecka. Använd innan du föreslår middagar."</code></p></div>
+    </div>
+    <ul class="nice frag" style="margin-top:34px">
+      <li>Modellen väljer verktyg enbart utifrån namn och beskrivning</li>
+      <li>Skriv som till en ny kollega: vad gör det, när ska det användas, vad kommer tillbaka</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Samma lärdom som om prompter: modellen gissar det du inte skrev.</li>
+        <li>Be agenten skriva beskrivningarna åt dig, och läs dem. Det är den viktigaste texten i en app med verktyg.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 8 -->
+  <section>
+    <div class="kicker">Tool calling</div>
+    <h2>Du bestämmer vad verktyget får göra</h2>
+    <div class="cards">
+      <div class="card good frag"><span class="e">📖</span><h3>Läsa</h3><p>Hämta en meny, söka recept. Ofarligt, kan få köras direkt.</p></div>
+      <div class="card frag"><span class="e">✏️</span><h3>Ändra</h3><p>Spara en plan, lägga till i listan. Kontrollera vem användaren är.</p></div>
+      <div class="card bad frag"><span class="e">💳</span><h3>Kostar eller syns</h3><p>Beställa, betala, skicka mejl. Låt en människa godkänna.</p></div>
+    </div>
+    <p class="lead frag bottom">Modellen kan bli lurad. <span class="hl">Verktyget</span> är där du sätter gränsen.</p>
+    <aside class="notes">
+      <ul>
+        <li>Samma tre nivåer som för agentens behörigheter i tillfälle 4.</li>
+        <li>Kontrollera alltid input i din kod: är skolan en riktig skola, är veckan ett rimligt tal. Modellen är en klient, och vi litar aldrig på klienten.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- MCP -->
+  <section class="divider">
+    <div class="num">2</div>
+    <h2>MCP</h2>
+    <p class="lead">Ett gemensamt uttag för verktyg</p>
+  </section>
+
+  <!-- 10 -->
+  <section>
+    <div class="kicker">MCP</div>
+    <h2>Problemet: alla måste bygga allt</h2>
+    <div class="cards two">
+      <div class="card frag"><span class="e">🔌</span><h3>Utan en standard</h3><p>Claude-appen, Claude Code, Codex och Cursor bygger var sin koppling till GitHub, Supabase, Figma …</p></div>
+      <div class="card good frag"><span class="e">🔋</span><h3>Med MCP</h3><p>GitHub bygger <strong>en</strong> MCP-server. Alla appar som kan MCP kan använda den.</p></div>
+    </div>
+    <p class="lead frag bottom">MCP, Model Context Protocol, är som <span class="hl">USB-C för AI</span>. Ett uttag, många prylar.</p>
+    <aside class="notes">
+      <ul>
+        <li>Anthropic släppte MCP som öppen standard i slutet av 2024. Nu stöds det av i stort sett alla AI-verktyg, även OpenAIs.</li>
+        <li>Före USB fanns en sorts kabel per skrivare, mus och kamera. Samma problem, samma lösning.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 11 -->
+  <section>
+    <div class="kicker">MCP</div>
+    <h2>Klient och server</h2>
+    <div class="flow even">
+      <div class="box sun">✳️ Klienten<small>Claude-appen,<br>Claude Code, Codex</small></div>
+      <div class="arrow frag">⇄</div>
+      <div class="box frag">🔌 MCP<small>”vilka verktyg har du?”<br>”kör det här”</small></div>
+      <div class="arrow frag">⇄</div>
+      <div class="box alt frag">🧰 Servern<small>Playwright, GitHub,<br>Supabase …</small></div>
+    </div>
+    <ul class="nice frag" style="margin-top:50px">
+      <li>Klienten frågar servern vilka verktyg den har, och lägger in beskrivningarna i kontexten</li>
+      <li>När modellen ber om ett verktyg skickar klienten vidare begäran till servern</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Det är exakt tool calling från förra avsnittet. MCP standardiserar bara hur klienten hittar och anropar verktygen.</li>
+        <li>En MCP-server kan också erbjuda resurser (filer, data) och färdiga prompter, men verktygen är det man använder mest.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 12 -->
+  <section>
+    <div class="kicker">MCP</div>
+    <h2>Lokal eller på nätet</h2>
+    <div class="cards two">
+      <div class="card frag"><span class="e">💻</span><h3>Lokal server</h3><p>Ett program som klienten startar på din dator, ofta med <code>npx</code>. Når dina filer och din webbläsare. Exempel: Playwright.</p></div>
+      <div class="card frag"><span class="e">☁️</span><h3>Fjärrserver</h3><p>En adress på nätet. Du loggar in hos tjänsten, ofta med OAuth som i tillfälle 4. Exempel: GitHub, Supabase, Figma.</p></div>
+    </div>
+    <p class="lead frag bottom">I Claude-appen heter de <strong>connectors</strong>. Samma sak, finare namn.</p>
+    <aside class="notes">
+      <ul>
+        <li>Lokala servrar pratar med klienten via stdio, alltså in- och utdata som i terminalen. Fjärrservrar pratar HTTP.</li>
+        <li>Claude in Chrome från del 1 är också ett verktyg som kopplas in på samma sätt.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 13 -->
+  <section>
+    <div class="kicker">MCP · Lägg till en server</div>
+    <h2>En webbläsare via MCP</h2>
+    <div class="cols">
+      <div>
+        <div class="snip">
+          <span class="tag">Claude Code</span>
+          <div class="term prompt"><pre>claude mcp add playwright -- npx @playwright/mcp@latest</pre></div>
+        </div>
+        <div class="snip frag" style="margin-top:20px">
+          <span class="tag">Codex</span>
+          <div class="term prompt"><pre>codex mcp add playwright -- npx @playwright/mcp@latest</pre></div>
+        </div>
+      </div>
+      <ul class="nice">
+        <li class="frag">Startar en egen Chromium i bakgrunden, utan dina inloggningar</li>
+        <li class="frag">Kör JavaScript, så skolmat.se fungerar</li>
+        <li class="frag">Claude-appen: Settings → Connectors → lägg till en egen connector med adressen till en fjärrserver</li>
+        <li class="frag">Kolla vad som är inkopplat: <code>/mcp</code></li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Visa live: lägg till Playwright, starta om sessionen, skriv /mcp och visa verktygen (browser_navigate, browser_snapshot och så vidare).</li>
+        <li>Kör middagsprompten igen med ”Använd Playwright för att läsa skolmat.se”. Samma resultat som med Chrome, men med en webbläsare som inte är din egen.</li>
+        <li>Fjärrservrar läggs till med claude mcp add --transport http namn adress.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 14 -->
+  <section>
+    <div class="kicker">MCP · Säkerhet</div>
+    <h2>En MCP-server är kod du litar på</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">🏷️</span><span><strong>Välj kända servrar</strong>, från tjänsten själv eller från listan i appen. Precis som med npm-paket</span></li>
+      <li class="frag"><span class="e">🪤</span><span><strong>Verktygens svar kan innehålla promptinjektion.</strong> En webbsida eller ett issue kan ge order</span></li>
+      <li class="frag"><span class="e">🧠</span><span><strong>Varje server tar plats i kontexten.</strong> Slå bara på de du behöver just nu</span></li>
+      <li class="frag"><span class="e">✋</span><span><strong>Läs vad den vill göra</strong> innan du godkänner. Samma regel som för agenten</span></li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>En lokal MCP-server körs med dina rättigheter på din dator. En elak server kan göra vad som helst.</li>
+        <li>Farligast är kombinationen: ett verktyg som läser text utifrån, ett som når hemligheter och ett som kan skicka saker ut. Då kan en injektion läcka data.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 15 -->
+  <section>
+    <div class="kicker">Tool calling och MCP</div>
+    <h2>Vad är vad?</h2>
+    <table class="rest">
+      <tr><th></th><th>Tool calling</th><th>MCP</th></tr>
+      <tr class="frag"><td>Vad</td><td>Hur modellen ber om ett verktyg</td><td>Hur en app hittar och kopplar in verktyg</td></tr>
+      <tr class="frag"><td>Vem bygger</td><td>Du, i din egen app</td><td>Tjänsten, en gång för alla appar</td></tr>
+      <tr class="frag"><td>Används när</td><td>Din app ska kunna något eget</td><td>Din agent ska nå en tjänst som finns</td></tr>
+      <tr class="frag"><td>Idag</td><td>Middagsappen nedan</td><td>Playwright och Chrome i del 1</td></tr>
+    </table>
+    <aside class="notes">
+      <ul>
+        <li>Tool calling är grunden. MCP bygger ovanpå: det är ett standardiserat sätt att leverera verktyg till någon som kan tool calling.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Egen app -->
+  <section class="divider">
+    <div class="num">3</div>
+    <h2>En LLM i din egen app</h2>
+    <p class="lead">Middagsplaneraren som webbapp</p>
+  </section>
+
+  <!-- 17 -->
+  <section>
+    <div class="kicker">Din egen app</div>
+    <h2>Samma uppgift, din kod</h2>
+    <div class="flow even">
+      <div class="box sun">🖥️ Webbsidan<small>”Gör veckans<br>middagar”</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🍳 Din server<small>Express, med<br>API-nyckeln</small></div>
+      <div class="arrow frag">⇄</div>
+      <div class="box frag">🧠 Claude API<small>tools: hamta_skolmat,<br>sok_recept</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">📅 Planen<small>sparas i<br>Supabase</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:44px">Allt från kursen på en gång: frontend, backend, databas, inloggning och nu en LLM.</p>
+    <aside class="notes">
+      <ul>
+        <li>Servern är harnesset. Den håller loopen, kör verktygen och sparar resultatet.</li>
+        <li>Verktygen kan vara enkla: hamta_skolmat kan till och med använda en hämtad JSON-fil i början. Det viktiga är mönstret.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 18 -->
+  <section>
+    <div class="kicker">Din egen app</div>
+    <h2>Fyra regler från kursen</h2>
+    <div class="layers tight">
+      <div class="layer l1 frag"><span class="e">🔑</span><b>Nyckeln</b><span>API-nyckeln bor på servern, i <code>.env</code>. Aldrig i frontenden. Som i tillfälle 2.</span></div>
+      <div class="layer l2 frag"><span class="e">🪪</span><b>Inloggning</b><span>Bara inloggade får använda LLM:en. Varje anrop kostar pengar. Som i tillfälle 4.</span></div>
+      <div class="layer l3 frag"><span class="e">🚦</span><b>Gränser</b><span>Högst ett visst antal anrop per användare och dag, och en utgiftsgräns hos leverantören.</span></div>
+      <div class="layer l4 frag"><span class="e">🪤</span><b>Injektion</b><span>Användarens text och webbsidors text är data, inte order. Verktygen sätter gränsen.</span></div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Utgiftsgränsen sätts i konsolen hos leverantören, till exempel platform.claude.com. Gör det innan appen publiceras.</li>
+        <li>Promptinjektion i egen app: en användare kan skriva ”ignorera dina instruktioner”. Om modellen bara har ofarliga verktyg spelar det mindre roll.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 19 -->
+  <section>
+    <div class="kicker">Sammanfattning</div>
+    <h2>Det här tar vi med oss</h2>
+    <div class="layers">
+      <div class="layer l1"><span class="e">🛠️</span><b>Tool calling</b><span>Modellen ber om ett verktyg med JSON. Din kod kör det och skickar tillbaka svaret.</span></div>
+      <div class="layer l2"><span class="e">📝</span><b>Beskrivningen</b><span>Modellen väljer verktyg utifrån namn och beskrivning. Skriv dem tydligt.</span></div>
+      <div class="layer l3"><span class="e">🔌</span><b>MCP</b><span>Ett gemensamt uttag. Tjänsten bygger servern en gång, alla appar kan använda den.</span></div>
+      <div class="layer l4"><span class="e">🧩</span><b>Din app</b><span>Nyckeln på servern, inloggning, gränser och verktyg som inte kan göra skada.</span></div>
+    </div>
+  </section>
+
+  <section class="title center">
+    <div style="font-size:120px;line-height:1">🎓</div>
+    <h1>Frågor?</h1>
+    <p class="lead">Tack för den här kursen!</p>
+  </section>
+
+</div>
+</body>
+</html>

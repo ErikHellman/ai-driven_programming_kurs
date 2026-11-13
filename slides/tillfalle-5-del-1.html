@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tillfälle 5 · Del 1: Agenten planerar middagarna</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍽️</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/slides.css?v=13">
+  <script src="../assets/slides.js?v=7" defer></script>
+</head>
+<body>
+<a class="home" href="../index.html">⌂ Kursmaterial</a>
+<div class="deck">
+
+  <!-- 1 -->
+  <section class="title">
+    <div class="kicker">Folkuniversitetet · Tillfälle 5 · Del 1</div>
+    <h1>Agenten planerar middagarna</h1>
+    <p class="lead">Ett live-demo där vi inte skriver någon kod alls: skolmaten, recept från ICA och en veckomeny för hela familjen.</p>
+    <div class="badge-row">
+      <span class="badge">🏫 Skolmaten</span>
+      <span class="badge">🧑‍🍳 Recept</span>
+      <span class="badge">🌐 Webbläsaren</span>
+      <span class="badge">📝 Önskemål</span>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Sista tillfället. Idag kopplar vi ihop LLM:en med omvärlden: webbsidor, verktyg och till slut din egen app.</li>
+        <li>Del 1 är nästan bara demo. Del 2 förklarar vad som hände under huven: tool calling och MCP.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <div class="kicker">Idag</div>
+    <h2>Så här ser kvällen ut</h2>
+    <div class="layers">
+      <div class="layer l1"><span class="e">🍽️</span><b>Del 1 · 60 min</b><span>Live-demo: middagsplanering med Claude Code. Webbsidor som byggs i webbläsaren, Claude-appen och dina önskemål</span></div>
+      <div class="layer l2"><span class="e">☕</span><b>Paus · 15 min</b><span>Sträck på benen</span></div>
+      <div class="layer l3"><span class="e">🔌</span><b>Del 2 · 60 min</b><span>Hur verktyg fungerar, MCP och en LLM i din egen app</span></div>
+      <div class="layer l4"><span class="e">🎓</span><b>Avslutning · 15 min</b><span>Frågor, och vart du går härifrån</span></div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <div class="kicker">Minns du?</div>
+    <h2>Agent = LLM + verktyg + loop</h2>
+    <div class="cols wide-left">
+      <div class="loop">
+        <div class="ring"><div class="mid">🎯<br>Ditt mål</div></div>
+        <div class="node n1">🧠 Tänk<small>Vad behöver jag göra?</small></div>
+        <div class="node n2">🛠️ Agera<small>Anropa ett verktyg</small></div>
+        <div class="node n3">👀 Observera<small>Läs resultatet</small></div>
+        <div class="node n4">🔁 Upprepa<small>eller säg att det är klart</small></div>
+      </div>
+      <ul class="nice">
+        <li class="frag">Hittills har verktygen mest varit <strong>filer och terminalen</strong></li>
+        <li class="frag">Idag: verktyg som når <strong>webben</strong></li>
+        <li class="frag">Samma loop, samma agent. Bara andra verktyg</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Bilden från tillfälle 1, del 2. Allt vi gjort i kursen har varit den här loopen med verktyg för att läsa, skriva och köra kod.</li>
+        <li>Poängen idag: agenten är inte bara en programmerare. Ge den andra verktyg så kan den göra andra jobb.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Demo -->
+  <section class="divider">
+    <div class="num">1</div>
+    <h2>Live-demo: veckans middagar</h2>
+    <p class="lead">Bara Claude Code, ingen kod</p>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <div class="kicker">Live-demo</div>
+    <h2>Uppgiften</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">🏫</span><h3>Läs skolmaten</h3><p>Välj barnens skola på <strong>skolmat.se</strong> och läs ut nästa veckas lunchmeny.</p></div>
+      <div class="card frag"><span class="e">🧑‍🍳</span><h3>Hitta recept</h3><p>Leta middagar på <strong>ica.se/recept</strong> som inte krockar med lunchen.</p></div>
+      <div class="card hot frag"><span class="e">📅</span><h3>Gör en veckomeny</h3><p>Variation varje dag och mat som passar barn som är 10 och 13 år.</p></div>
+    </div>
+    <p class="lead frag bottom">Fiskgratäng till lunch? Då blir det inte fisk till middag samma dag.</p>
+    <aside class="notes">
+      <ul>
+        <li>En verklig uppgift som många föräldrar gör varje söndag. Ingen kod, inget projekt, bara en agent med verktyg.</li>
+        <li>Fråga klassen: hur skulle du göra det själv? Öppna två flikar, läsa, jämföra, skriva en lista. Det är exakt vad agenten ska göra.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 6 -->
+  <section>
+    <div class="kicker">Live-demo · Prompten</div>
+    <h2>Fem delar, som vanligt</h2>
+    <div class="term prompt"><pre>Mål: Gör en middagsplanering för nästa vecka, måndag till söndag.
+
+Sammanhang: Mina barn är 10 och 13 år och äter lunch i skolan.
+Skolan är [SKOLANS NAMN] på https://www.skolmat.se/
+
+Krav och gränser:
+- Läs nästa veckas lunchmeny på skolmat.se först.
+- Hämta recept från https://www.ica.se/recept/
+- Inte samma typ av mat till lunch och middag samma dag.
+- Variation: inte samma protein två dagar i rad.
+- Barnvänligt, och högst 45 minuter på vardagar.
+
+Klart när: Du har skrivit middagsplan.md med en tabell:
+dag, skollunch, middag, länk till receptet och tid.
+Lägg till en samlad inköpslista längst ned.
+
+Arbetssätt: Berätta vad du läste på skolmat.se innan du
+letar recept, så att jag kan kontrollera menyn.</pre></div>
+    <aside class="notes">
+      <ul>
+        <li>Samma fem delar som i tillfälle 3: mål, sammanhang, krav och gränser, klart när, arbetssätt.</li>
+        <li>Starta i en tom mapp i Code-fliken. Agenten behöver en plats att spara filen på.</li>
+        <li>”Berätta vad du läste” är en kontrollpunkt. Vi vill se att den verkligen fick tag i menyn innan den bygger vidare på den.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 7 -->
+  <section>
+    <div class="kicker">Live-demo · Vad händer?</div>
+    <h2>Titta på verktygen</h2>
+    <div class="flow even">
+      <div class="box sun">🔎 Söka<small>vilken adress har<br>skolans meny?</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🌐 Hämta<small>läsa sidan<br>på skolmat.se</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🧑‍🍳 Hämta<small>tio, tjugo<br>recept från ICA</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">✏️ Skriva<small>middagsplan.md</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:60px;text-align:center">Klicka på varje steg i appen. Du ser exakt vad agenten bad om och vad den fick tillbaka.</p>
+    <aside class="notes">
+      <ul>
+        <li>I Claude Code heter verktygen WebSearch och WebFetch. Codex har motsvarande.</li>
+        <li>Öppna ett WebFetch-steg och visa vad som kom tillbaka. Det är inte sidan som vi ser den, utan en textversion som en mindre modell har sammanfattat.</li>
+        <li>Varje hämtad sida hamnar i kontexten. Tjugo recept fyller den snabbt. Bra tillfälle att peka på kontextmätaren.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 8 -->
+  <section>
+    <div class="kicker">Live-demo · Ett problem</div>
+    <h2>”Jag kan inte se någon meny”</h2>
+    <div class="cols">
+      <div class="browser">
+        <div class="browser-bar"><i></i><i></i><i></i><span class="url">vad agenten fick</span></div>
+        <div class="browser-body plain-page">
+          <h4>Skolmaten</h4>
+          <p>Laddar …</p>
+          <p class="small">Du måste aktivera JavaScript för att använda den här sidan.</p>
+        </div>
+      </div>
+      <ul class="nice">
+        <li class="frag">Många sidor är <strong>byggda med React</strong> eller liknande. Servern skickar ett tomt skal</li>
+        <li class="frag">Menyn hämtas och ritas upp först <strong>i webbläsaren</strong>, med JavaScript</li>
+        <li class="frag">Ett hämtverktyg läser bara skalet. Det kör ingen JavaScript</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Testa i förväg med just din skola. Ibland lyckas agenten ändå, till exempel genom att hitta ett API eller en äldre version av sidan. Visa då skillnaden genom att be den bara använda WebFetch och rapportera vad den ser.</li>
+        <li>Koppla till tillfälle 2: vår egen React-app i Vite ser likadan ut. Visa källkoden (Ctrl+U) på en React-sida: nästan bara en tom &lt;div id="root"&gt; och en script-tagg.</li>
+        <li>Agenten kan också hitta på en meny om den inte fick tag i någon. Därför bad vi den berätta vad den läste.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 9 -->
+  <section>
+    <div class="kicker">Webbsidor</div>
+    <h2>Två sorters webbsidor</h2>
+    <div class="cards two">
+      <div class="card frag"><span class="e">📄</span><h3>Byggd på servern</h3><p>All text finns redan i HTML:en som skickas. Ett enkelt hämtverktyg räcker. ICA:s recept fungerar oftast så.</p></div>
+      <div class="card hot frag"><span class="e">⚛️</span><h3>Byggd i webbläsaren</h3><p>HTML:en är nästan tom. JavaScript hämtar datan och ritar sidan. Då behövs en <strong>riktig webbläsare</strong>.</p></div>
+    </div>
+    <p class="lead frag bottom">Lösningen: ge agenten en webbläsare som verktyg.</p>
+    <aside class="notes">
+      <ul>
+        <li>Fackord: server-side rendering (SSR) och client-side rendering (CSR). Behövs inte, men bra att ha hört.</li>
+        <li>Det är samma skillnad som mellan att få ett färdigt brev och att få en byggsats med instruktioner.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 10 -->
+  <section>
+    <div class="kicker">En webbläsare åt agenten</div>
+    <h2>Tre sätt att låta agenten surfa</h2>
+    <div class="cards">
+      <div class="card sun frag"><span class="e">🧭</span><h3>Claude in Chrome</h3><p>Ett tillägg i din egen Chrome. Agenten öppnar flikar, läser, klickar och skrollar.</p></div>
+      <div class="card frag"><span class="e">🪟</span><h3>Appens egen webbläsare</h3><p>Claude-appen har en inbyggd webbläsare i Cowork och i Code. Inget att installera.</p></div>
+      <div class="card frag"><span class="e">🎭</span><h3>Playwright via MCP</h3><p>En webbläsare som agenten startar själv i bakgrunden. Fungerar med Codex också.</p></div>
+    </div>
+    <p class="lead frag bottom">Alla tre kör JavaScript, så agenten ser sidan <span class="hl">som du ser den</span>.</p>
+    <aside class="notes">
+      <ul>
+        <li>Claude in Chrome kräver ett betalabonnemang (Pro räcker) och fungerar i Chrome på datorn.</li>
+        <li>Den inbyggda webbläsaren rullas ut successivt, så den kan saknas hos vissa deltagare.</li>
+        <li>Playwright MCP är det leverantörsoberoende alternativet. MCP förklarar vi i del 2.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 11 -->
+  <section>
+    <div class="kicker">Live-demo · Försök två</div>
+    <h2>Claude Code med Chrome</h2>
+    <div class="cols wide-left">
+      <ul class="emoji">
+        <li class="frag"><span class="e">1️⃣</span><span>Installera <strong>Claude in Chrome</strong> från Chrome Web Store och logga in med ditt Claude-konto</span></li>
+        <li class="frag"><span class="e">2️⃣</span><span>I terminalen: starta med <code>claude --chrome</code>, eller skriv <code>/chrome</code> i en session</span></li>
+        <li class="frag"><span class="e">3️⃣</span><span>Kör samma prompt igen. Lägg till: <em>”Använd Chrome för att läsa skolmat.se.”</em></span></li>
+        <li class="frag"><span class="e">👀</span><span>Titta på Chrome: flikarna öppnas och sidan skrollas medan du tittar</span></li>
+      </ul>
+      <div class="card sun frag">
+        <span class="e">🔐</span>
+        <h3>Du är inloggad</h3>
+        <p>Agenten använder din webbläsare, med dina inloggningar. Det är praktiskt, och därför ska du vara försiktig.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Förbered: tillägget installerat och inloggat, och skolmat.se och ica.se tillåtna så att demon inte stannar på varje fråga.</li>
+        <li>I Code-fliken i appen kan du i stället använda appens egen webbläsare, panelen Browser (Ctrl+Shift+B, Cmd+Shift+B på Mac).</li>
+        <li>Visa skillnaden: nu kommer menyn med dagar och rätter. Låt agenten fortsätta och skriva middagsplan.md.</li>
+        <li>Om något krånglar: ha en färdig middagsplan.md från en provkörning att visa.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 12 -->
+  <section>
+    <div class="kicker">Live-demo · Resultatet</div>
+    <h2>Granska som en beställare</h2>
+    <table class="rest">
+      <tr><th>Fråga</th><th>Hur du kollar</th></tr>
+      <tr class="frag"><td>🏫 Stämmer lunchen?</td><td>Öppna skolmat.se själv och jämför två dagar</td></tr>
+      <tr class="frag"><td>🔗 Finns recepten?</td><td>Klicka på två länkar. Påhittade länkar ger 404</td></tr>
+      <tr class="frag"><td>🔁 Variation?</td><td>Fisk, kyckling, vegetariskt, pasta … inte samma två dagar i rad</td></tr>
+      <tr class="frag"><td>⏱️ Tiden?</td><td>Står det 30 minuter på ICA, eller hittade agenten på?</td></tr>
+    </table>
+    <p class="lead frag bottom">Agenten är snabb. Men du är fortfarande den som <span class="hl">lagar maten</span>.</p>
+    <aside class="notes">
+      <ul>
+        <li>Samma tanke som pull requests: du skriver inte, men du granskar.</li>
+        <li>En LLM kan fylla i det den inte hittade. Därför är kontrollen av länkarna viktig.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Claude-appen -->
+  <section class="divider">
+    <div class="num">2</div>
+    <h2>Utan terminal: Claude-appen</h2>
+    <p class="lead">Samma sak för hela familjen</p>
+  </section>
+
+  <!-- 14 -->
+  <section>
+    <div class="kicker">Claude-appen</div>
+    <h2>Behöver du ens Claude Code?</h2>
+    <div class="cards two">
+      <div class="card frag"><span class="e">✳️</span><h3>Code-fliken</h3><p>Bra när resultatet är filer i en mapp. Det vi har gjort hela kursen.</p></div>
+      <div class="card good frag"><span class="e">💬</span><h3>Chat och Cowork</h3><p>Bra när resultatet är ett svar, en lista eller ett dokument. Fungerar för den som aldrig sett en terminal.</p></div>
+    </div>
+    <p class="lead frag bottom">Middagsplaneringen är en <strong>vardagsuppgift</strong>. Den passar lika bra i chatten.</p>
+    <aside class="notes">
+      <ul>
+        <li>Visa samma uppgift i Chat-fliken efter Code-demon. Skillnaden är inte modellen, utan vilka verktyg och vilket arbetssätt fliken har.</li>
+        <li>Cowork är till för längre uppgifter som Claude gör i bakgrunden och kan använda webbläsaren på egen hand.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 15 -->
+  <section>
+    <div class="kicker">Claude-appen · Inställningar</div>
+    <h2>Koppla in Chrome i appen</h2>
+    <div class="layers tight">
+      <div class="layer l1 frag"><span class="e">🧩</span><b>Tillägget</b><span>Chrome Web Store → Claude in Chrome → Add to Chrome. Logga in och fäst ikonen i verktygsfältet.</span></div>
+      <div class="layer l2 frag"><span class="e">⚙️</span><b>Appen</b><span>Settings → Connectors → Claude in Chrome → slå på.</span></div>
+      <div class="layer l3 frag"><span class="e">💬</span><b>I chatten</b><span>Den är avstängd i varje ny chatt. Slå på den i menyn för verktyg och anslutningar under textrutan.</span></div>
+      <div class="layer l4 frag"><span class="e">🧭</span><b>Cowork</b><span>Settings → Cowork → Preferred browser: appens egen webbläsare eller Chrome.</span></div>
+    </div>
+    <p class="small frag bottom">Menynamnen ändras ibland mellan versioner. Leta efter Connectors och Claude in Chrome.</p>
+    <aside class="notes">
+      <ul>
+        <li>Gå igenom stegen live på din dator. Det tar två minuter.</li>
+        <li>Claude in Chrome kräver Pro, Max, Team eller Enterprise. Den fungerar i Chrome, inte i Safari eller i mobilen.</li>
+        <li>Cowork använder appens inbyggda webbläsare som standard, om man inte redan använder Claude in Chrome.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 16 -->
+  <section>
+    <div class="kicker">Claude-appen · Säkerhet</div>
+    <h2>Vilka sajter får agenten använda?</h2>
+    <div class="cards">
+      <div class="card good frag"><span class="e">✅</span><h3>Tillåt alltid</h3><p>skolmat.se och ica.se. Läsa menyer och recept är ofarligt.</p></div>
+      <div class="card frag"><span class="e">🤔</span><h3>Fråga varje gång</h3><p>Sajter där du är inloggad och där något kan hända: beställa, boka, skicka.</p></div>
+      <div class="card bad frag"><span class="e">🛑</span><h3>Aldrig</h3><p>Banken, mejlen, sajter med kortuppgifter.</p></div>
+    </div>
+    <p class="lead frag bottom">Kommer du ihåg <span class="hl">promptinjektion</span>? En receptsida kan innehålla text som är riktad till agenten.</p>
+    <aside class="notes">
+      <ul>
+        <li>Första gången agenten vill använda en sajt får du välja: tillåt en gång, tillåt alltid eller neka. Valen sparas per sajt och kan ändras i inställningarna.</li>
+        <li>Koppla till tillfälle 4: agenten skiljer inte alltid på din order och text den läser. Med en webbläsare där du är inloggad blir det extra viktigt.</li>
+        <li>Steget till att handla ingredienserna på ica.se är kort tekniskt, men låt agenten göra varukorgen och betala själv.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Önskemål -->
+  <section class="divider">
+    <div class="num">3</div>
+    <h2>Dina önskemål</h2>
+    <p class="lead">Skriv dem en gång, använd dem varje vecka</p>
+  </section>
+
+  <!-- 18 -->
+  <section>
+    <div class="kicker">Önskemål</div>
+    <h2>Familjen har åsikter</h2>
+    <div class="cols">
+      <div class="term prompt"><pre># Middagsönskemål
+
+## Familjen
+- Två barn, 10 och 13 år. Lunch i skolan.
+- 13-åringen äter inte svamp.
+
+## Varje vecka
+- Fisk minst en gång, vegetariskt minst två gånger.
+- Högst 45 minuter måndag till torsdag.
+- Fredag: något enkelt och roligt, gärna tacos.
+- Söndag: får ta längre tid, gärna ugnsrätt.
+
+## Planen
+- Inte samma sorts mat som skollunchen samma dag.
+- Länk till receptet på ica.se och en inköpslista.</pre></div>
+      <ul class="nice">
+        <li class="frag">Skriv önskemålen som en <strong>lista med regler</strong>, inte som en roman</li>
+        <li class="frag">Konkret slår vagt: ”högst 45 minuter” i stället för ”snabbt”</li>
+        <li class="frag">Låt barnen vara med och skriva. Det är deras mat</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Det här är samma sak som AGENTS.md i ett kodprojekt: instruktioner som gäller varje gång, så att du inte behöver skriva dem i prompten.</li>
+        <li>Fråga klassen om en regel att lägga till och skriv in den live.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 19 -->
+  <section>
+    <div class="kicker">Önskemål</div>
+    <h2>Var sparar du dem?</h2>
+    <div class="cards">
+      <div class="card sun frag"><span class="e">📁</span><h3>Ett projekt i appen</h3><p>Projects → nytt projekt ”Middagar”. Klistra in önskemålen under projektets instruktioner. Varje chatt i projektet följer dem.</p></div>
+      <div class="card frag"><span class="e">📄</span><h3>En fil i mappen</h3><p>I Code-fliken: lägg önskemålen i <code>AGENTS.md</code> i mappen. Agenten läser den själv.</p></div>
+      <div class="card frag"><span class="e">📚</span><h3>En skill</h3><p>Be Claude göra en skill av hela arbetssättet: läs menyn, hitta recept, skriv planen.</p></div>
+    </div>
+    <p class="lead frag bottom">Sedan räcker prompten: <em>”Gör nästa veckas middagsplan.”</em></p>
+    <aside class="notes">
+      <ul>
+        <li>Visa projektet i appen: skapa det, klistra in önskemålen, starta en chatt och skriv bara den korta prompten.</li>
+        <li>Skills från tillfälle 1: en beskrivning som laddas när den behövs, med instruktioner och eventuellt skript. Bra när en uppgift återkommer.</li>
+        <li>I Cowork kan uppgiften schemaläggas, till exempel varje söndag kväll. Nämn det, men demonstrera inte om tiden är knapp.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 20 -->
+  <section>
+    <div class="kicker">Önskemål</div>
+    <h2>Justera med en mening</h2>
+    <ul class="emoji">
+      <li class="frag"><span class="e">🌮</span><span><em>”Byt torsdag till något vegetariskt, vi åt kött i helgen.”</em></span></li>
+      <li class="frag"><span class="e">🎂</span><span><em>”Lördag fyller 10-åringen år. Föreslå en festmiddag för åtta personer.”</em></span></li>
+      <li class="frag"><span class="e">💸</span><span><em>”Gör veckan billigare. Använd samma grönsaker i flera rätter.”</em></span></li>
+      <li class="frag"><span class="e">🧊</span><span><em>”Vi har lax och halloumi i frysen. Använd dem.”</em></span></li>
+    </ul>
+    <p class="lead frag bottom">Önskemålen är grunden. Prompten är <span class="hl">just den här veckan</span>.</p>
+    <aside class="notes">
+      <ul>
+        <li>Visa en av dem live, gärna den som klassen tycker är roligast.</li>
+        <li>Om en ändring ska gälla varje vecka: be agenten lägga in den i önskemålen.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- 21 -->
+  <section>
+    <div class="kicker">Sammanfattning</div>
+    <h2>Det här tar vi med oss</h2>
+    <div class="layers">
+      <div class="layer l1"><span class="e">🛠️</span><b>Verktyg</b><span>En agent kan mer än kod. Den gör det som verktygen låter den göra.</span></div>
+      <div class="layer l2"><span class="e">⚛️</span><b>Webbsidor</b><span>Sidor som byggs i webbläsaren kräver en riktig webbläsare: Chrome eller appens egen.</span></div>
+      <div class="layer l3"><span class="e">📝</span><b>Önskemål</b><span>Skriv reglerna en gång, i ett projekt, en fil eller en skill.</span></div>
+      <div class="layer l4"><span class="e">👀</span><b>Granska</b><span>Kolla menyn och länkarna. Tillåt bara de sajter som behövs.</span></div>
+    </div>
+  </section>
+
+  <section class="title center">
+    <div style="font-size:120px;line-height:1">☕</div>
+    <h1>Paus</h1>
+    <p class="lead">15 minuter. Sedan: hur fungerar verktygen egentligen, och hur ger du din app samma kraft?</p>
+  </section>
+
+</div>
+</body>
+</html>
