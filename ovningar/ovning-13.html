@@ -54,9 +54,9 @@
           <li><strong>Lägg en vara i varukorgen.</strong> Vilken fråga skickas nu? Vilken metod, vilken adress och vad står i body?</li>
           <li><strong>Öppna varukorgen.</strong> Vilken fråga hämtar innehållet?</li>
           <li>Logga ut och logga in igen med lösenord. Vilken fråga loggar in, och vad får webbläsaren tillbaka? Oftast är det en cookie som sedan skickas med i alla frågor.</li>
-          <li>Högerklicka på varje fråga och välj <strong>Copy → Copy as cURL</strong>. Klistra in dem i en fil, <code>willys-fragor.txt</code>. Lägg den i mappen för paketet i steg 4, och lägg till den i <code>.gitignore</code> innan du gör något annat.</li>
+          <li>Skriv upp vad du hittade. I steg 4 gör agenten samma sak åt dig med Chrome, och då kan du kontrollera att den hittar samma frågor.</li>
         </ol>
-        <div class="note warn"><p><strong>Frågorna innehåller din inloggning.</strong> En kopierad fråga har med cookies, och frågan som loggar in har med ditt lösenord. Innan du ger filen till agenten: byt ut varje cookievärde mot <code>&lt;COOKIE&gt;</code> och lösenordet mot <code>&lt;LÖSENORD&gt;</code>. Allt i filen skickas till leverantören av AI:n. Radera filen när du är klar.</p></div>
+        <div class="note warn"><p><strong>Frågorna innehåller din inloggning.</strong> De har med cookies, och frågan som loggar in har med ditt lösenord. Allt agenten läser skickas till leverantören av AI:n. Därför loggar du in själv, och agenten får aldrig se eller spara lösenordet eller cookies. Använder du <strong>Copy as cURL</strong> för att ge agenten en fråga: byt först ut cookievärden mot <code>&lt;COOKIE&gt;</code> och lösenordet mot <code>&lt;LÖSENORD&gt;</code>.</p></div>
         <details class="alt">
           <summary>Vad ska jag leta efter?</summary>
           <ul>
@@ -70,14 +70,21 @@
 
       <li>
         <h3>📦 Bygg paketet willys</h3>
-        <p>Samma mönster som <code>skolmat</code>: en klient med all logik, och ett tunt CLI ovanpå. Använd mappen från steg 3, gör den till ett nytt repo på GitHub och starta en session där:</p>
+        <p>Samma mönster som <code>skolmat</code>: en klient med all logik, och ett tunt CLI ovanpå. Nu låter du agenten undersöka API:et själv med <strong>Claude in Chrome</strong>, tillägget från del 1. Den kan klicka på willys.se och läsa vilka frågor sidan skickar.</p>
+        <ol>
+          <li>Logga in på willys.se i Chrome själv, med lösenordshanteraren.</li>
+          <li>Skapa en ny tom mapp och ett nytt repo på GitHub för paketet.</li>
+          <li>Starta Claude Code med Chrome i mappen: <code>claude --chrome</code> i terminalen, eller skriv <code>/chrome</code> i en session. I Code-fliken i appen: slå på Claude in Chrome under anslutningar.</li>
+        </ol>
         <div class="code wrap"><span class="label">Prompt</span>
 <pre>Mål: Bygg paketet willys i Node.js: en klient som andra projekt kan använda för att söka varor och hantera varukorgen på willys.se, och ett CLI ovanpå klienten.
 
-Sammanhang: I willys-fragor.txt finns frågorna som willys.se skickar när jag loggar in, söker, lägger i varukorgen och öppnar varukorgen. Cookies och lösenord är utbytta mot &lt;COOKIE&gt; och &lt;LÖSENORD&gt;. API:et saknar dokumentation.
+Sammanhang: Jag är redan inloggad på willys.se i Chrome. API:et saknar dokumentation, så använd Chrome för att ta reda på hur det fungerar.
 
 Krav och gränser:
-- Undersök först: förklara varje fråga, vilka fält som behövs och hur inloggningen hålls kvar. Vänta på mitt ok innan du bygger.
+- Undersök först med Chrome: sök efter en vara, lägg en vara i varukorgen och öppna varukorgen, och läs vilka frågor sidan skickar. Förklara varje fråga, vilka fält som behövs och hur inloggningen hålls kvar. Vänta på mitt ok innan du bygger.
+- Du ska aldrig logga in eller skriva in ett lösenord, det gör jag. Spara aldrig cookies eller tokens i filer, tester eller chatten: skriv &lt;COOKIE&gt; i stället.
+- Gå inte till kassan och ändra inte adress eller leveranstid i Chrome.
 - Klienten, src/klient.js: loggaIn(anvandarnamn, losenord) som returnerar en session, sokVara(session, fras), laggIVarukorg(session, kod, antal) och hamtaVarukorg(session). Svarar med vanliga objekt och skriver aldrig ut något.
 - Lösenordet används bara i loggaIn och sparas aldrig, varken i sessionen, i filer eller i loggar.
 - Inga funktioner för kassan, betalning, adress eller leveranstid.
@@ -170,7 +177,7 @@ Arbetssätt: Visa en plan och vänta på mitt ok. Förklara hur verktygsbeskrivn
       <ul class="checklist">
         <li>Jag vet varför BankID inte kan användas av ett program</li>
         <li>Jag har hittat frågorna för att logga in, söka, lägga i varukorgen och visa varukorgen i Network-fliken</li>
-        <li>Jag bytte ut cookies och lösenord innan jag gav frågorna till agenten</li>
+        <li>Agenten undersökte API:et med Claude in Chrome, och inga cookies eller lösenord finns i filerna</li>
         <li>Paketet willys har tester, ett CLI och en README</li>
         <li>Lösenordet sparas ingenstans, och skickas aldrig till Claude</li>
         <li>Agenten har bara verktygen sok_vara, lagg_i_varukorg och visa_varukorg</li>
