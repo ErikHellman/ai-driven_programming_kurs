@@ -21,6 +21,7 @@
     <div class="badge-row">
       <span class="badge">🛠️ Tool calling</span>
       <span class="badge">🔌 MCP</span>
+      <span class="badge">⌨️ Eget CLI</span>
       <span class="badge">🧩 LLM i din app</span>
     </div>
     <aside class="notes">
@@ -319,9 +320,223 @@ content: [{
     </aside>
   </section>
 
-  <!-- Egen app -->
+  <!-- Eget CLI -->
   <section class="divider">
     <div class="num">3</div>
+    <h2>Ett eget verktyg: skolmat-CLI</h2>
+    <p class="lead">Reverse engineering, ett kommando och en skill</p>
+  </section>
+
+  <section>
+    <div class="kicker">Eget CLI</div>
+    <h2>Webbläsaren är en omväg</h2>
+    <div class="cards two">
+      <div class="card frag"><span class="e">🐢</span><h3>Med Chrome varje vecka</h3><p>Öppna sidan, vänta, läsa, skrolla, klicka. Många varv i loopen och mycket text i kontexten. Långsamt och dyrt.</p></div>
+      <div class="card good frag"><span class="e">⚡</span><h3>Med ett eget kommando</h3><p><code>skolmat meny --vecka 48</code> ger menyn direkt. Ett varv, lite text, samma svar varje gång.</p></div>
+    </div>
+    <p class="lead frag bottom">Sidan hämtar menyn från någonstans. <span class="hl">Den adressen</span> kan vi använda själva.</p>
+    <aside class="notes">
+      <ul>
+        <li>Minns del 1: skolmat.se byggs i webbläsaren. Det betyder att JavaScript hämtar menyn från ett API, precis som vår egen app hämtar fikorna från Supabase.</li>
+        <li>CLI betyder command line interface: ett program man kör i terminalen. git, gh och npm är CLI:er.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Reverse engineering</div>
+    <h2>Ta isär för att förstå</h2>
+    <div class="cols wide-left">
+      <ul class="emoji">
+        <li class="frag"><span class="e">🔍</span><span><strong>Reverse engineering</strong>: lista ut hur något fungerar genom att titta utifrån, utan ritningen</span></li>
+        <li class="frag"><span class="e">🌐</span><span>Sidan är <strong>publik</strong>, men API:et bakom är <strong>odokumenterat</strong></span></li>
+        <li class="frag"><span class="e">🛠️</span><span>Webbläsaren visar varje fråga sidan skickar: vår ritning</span></li>
+      </ul>
+      <div class="card sun frag">
+        <span class="e">🧰</span>
+        <h3>Verktyget har du redan</h3>
+        <p>Dev Tools och Network-fliken, från tillfälle 2 och 4.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Liknelse: som att smaka på en kaka och lista ut receptet.</li>
+        <li>Ordet låter avancerat, men på webben är det mest att titta noga. Allt sidan hämtar till din webbläsare kan du också se.</li>
+        <li>Skilj på publikt och hemligt: vi tittar bara på det sidan ändå visar för alla, utan inloggning.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Reverse engineering · Steg för steg</div>
+    <h2>Hitta API:et i Network-fliken</h2>
+    <div class="layers tight">
+      <div class="layer l1 frag"><span class="e">🛠️</span><b>Öppna</b><span>skolmat.se i Chrome, F12, fliken Network och filtret Fetch/XHR.</span></div>
+      <div class="layer l2 frag"><span class="e">🏫</span><b>Klicka</b><span>Välj län, kommun och skola. Titta vilka frågor som dyker upp.</span></div>
+      <div class="layer l3 frag"><span class="e">📦</span><b>Leta</b><span>Klicka på frågorna. Under Response: vilken av dem innehåller menyn som JSON?</span></div>
+      <div class="layer l4 frag"><span class="e">📋</span><b>Kopiera</b><span>Högerklick → Copy → Copy as cURL. Klistra in i en fil åt agenten.</span></div>
+    </div>
+    <p class="small frag bottom">Eller låt agenten göra det: med Chrome eller Playwright kan den själv läsa vilka frågor sidan skickar.</p>
+    <aside class="notes">
+      <ul>
+        <li>Gör det här live. Det brukar vara några frågor: en för listan med kommuner, en för skolorna, en för menyn. Läs adresserna högt och se vad som ändras när man byter vecka eller skola.</li>
+        <li>Kör den kopierade curl-frågan i terminalen. Kommer samma JSON tillbaka? Då behövs ingen webbläsare.</li>
+        <li>Klistra inte in cookies från en inloggad sida i en fil åt agenten. Här behövs ingen inloggning.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Reverse engineering</div>
+    <h2>Så kan det se ut</h2>
+    <div class="cols">
+      <div class="http-msg">
+        <div class="head">Frågan (påhittat exempel)</div>
+        <pre><span class="k">GET</span> /api/…/menu?school=<span class="s">ekskolan</span>&amp;week=<span class="s">48</span>
+Accept: application/json</pre>
+      </div>
+      <div class="http-msg frag">
+        <div class="head">Svaret</div>
+        <pre>{ "week": 48,
+  "days": [
+    { "date": "2026-11-23",
+      "meals": ["Fiskgratäng"] },
+    { "date": "2026-11-24",
+      "meals": ["Kycklinggryta"] } ] }</pre>
+      </div>
+    </div>
+    <ul class="nice frag" style="margin-top:34px">
+      <li>Vad betyder varje del i adressen? Ändra en sak i taget och se vad som händer</li>
+      <li>Agenten är bra på det här: ge den curl-frågan och be den förklara</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Adressen och svaret på sliden är påhittade för att visa formen. Visa de riktiga från Network-fliken under demon.</li>
+        <li>HTTP-meddelandet från tillfälle 3: metod, adress, headers. Samma sak här.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Reverse engineering · Var schysst</div>
+    <h2>Ett odokumenterat API är inte ditt</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">🔄</span><h3>Det kan ändras</h3><p>Ingen har lovat att adressen finns kvar. Räkna med att CLI:t går sönder någon gång.</p></div>
+      <div class="card frag"><span class="e">🐌</span><h3>Fråga lagom</h3><p>En fråga per skola och vecka räcker. Spara svaret i stället för att fråga hundra gånger.</p></div>
+      <div class="card bad frag"><span class="e">🚧</span><h3>Bara det publika</h3><p>Ta dig inte förbi inloggningar eller spärrar. Läs sajtens villkor.</p></div>
+    </div>
+    <p class="lead frag bottom">För eget bruk är det oftast okej. Att bygga en tjänst på det är en annan sak.</p>
+    <aside class="notes">
+      <ul>
+        <li>Många sajter har ett officiellt API. Leta efter det först, ofta under ”API”, ”Utvecklare” eller ”Öppna data”.</li>
+        <li>Säg det tydligt: det här är för familjens veckomeny, inte för att publicera alla skolors menyer.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Eget CLI · Prompten</div>
+    <h2>Låt agenten bygga CLI:t</h2>
+    <div class="term prompt"><pre>Mål: Bygg ett CLI i Node.js som heter skolmat och hämtar
+veckans lunchmeny från skolmat.se.
+
+Sammanhang: I curl.txt finns frågan som sidan skickar när
+jag väljer min skola. API:et saknar dokumentation.
+
+Krav och gränser:
+- Undersök först: kör frågan, förklara varje del och vad
+  som ändras med skola och vecka. Vänta på mitt ok.
+- Kommandon: skolmat sok "namn", skolmat meny --skola ID
+  --vecka 48. Utan --vecka: nästa vecka.
+- Skriv ut text som standard och JSON med --json.
+- Inga paket utöver Node. Högst en fråga per körning.
+
+Klart när: skolmat meny ger nästa veckas meny, det finns
+tester och en README, och npm link gör kommandot globalt.</pre></div>
+    <aside class="notes">
+      <ul>
+        <li>Fem delar igen. ”Undersök först” är reverse engineering-steget: agenten förklarar API:et innan den bygger något.</li>
+        <li>--json gör CLI:t bra för agenten. Text är bra för människor.</li>
+        <li>npm link gör att kommandot skolmat fungerar i alla mappar, som git och gh.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Eget CLI · Skill</div>
+    <h2>En skill lär agenten använda CLI:t</h2>
+    <div class="cols">
+      <div class="snip">
+        <span class="tag">.claude/skills/skolmat/SKILL.md</span>
+        <div class="term"><pre><span class="c">---</span>
+<span class="k">name</span>: skolmat
+<span class="k">description</span>: Hämtar skolans lunchmeny
+  för en vecka. Använd när någon frågar
+  om skolmaten eller planerar middagar.
+<span class="c">---</span>
+
+Kör `skolmat meny --skola ekskolan --json`,
+med `--vecka N` för en annan vecka.
+Okänd skola? Kör `skolmat sok "namn"`.
+Vid fel: säg det, hitta aldrig på.</pre></div>
+      </div>
+      <ul class="nice">
+        <li class="frag">En skill är <strong>instruktioner i en fil</strong>, från tillfälle 1</li>
+        <li class="frag">Bara <strong>description</strong> ligger i kontexten. Resten läses när den behövs</li>
+        <li class="frag">Lägg den i <code>~/.claude/skills/</code> så fungerar den i alla projekt</li>
+        <li class="frag">Be agenten skriva skillen, och läs den</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Description fungerar som verktygsbeskrivningen i tool calling: det är den som avgör om agenten väljer skillen. Samma regel: tydligt vad, när och varför.</li>
+        <li>.claude/skills i projektmappen gäller bara det projektet. ~/.claude/skills gäller alla projekt på datorn.</li>
+        <li>Middagsprompten från del 1 kan nu använda skillen i stället för Chrome för skolmaten.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Eget CLI</div>
+    <h2>CLI + skill eller MCP?</h2>
+    <table class="rest">
+      <tr><th></th><th>CLI + skill</th><th>MCP-server</th></tr>
+      <tr class="frag"><td>Bygga</td><td>Ett litet program och en textfil</td><td>Ett program som följer protokollet</td></tr>
+      <tr class="frag"><td>Används av</td><td>Agenter med terminal: Claude Code, Codex</td><td>Alla klienter, även chatten i appen</td></tr>
+      <tr class="frag"><td>Börja här när</td><td>Det är ditt eget verktyg</td><td>Andra appar ska använda det</td></tr>
+    </table>
+    <p class="lead frag bottom">Agenten kan redan terminalen. Ett CLI är det <span class="hl">enklaste verktyget</span> du kan ge den.</p>
+    <aside class="notes">
+      <ul>
+        <li>Ett CLI kan senare göras om till en MCP-server, eller till ett verktyg i din egen app. Koden som hämtar menyn är densamma.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Live-demo · 15 minuter</div>
+    <h2>Från Network-fliken till skill</h2>
+    <div class="flow even" style="margin-top:80px">
+      <div class="box sun">🛠️ Network<small>hitta frågan,<br>Copy as cURL</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🔍 Undersök<small>agenten förklarar<br>API:et</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">⌨️ CLI<small>skolmat meny,<br>tester, npm link</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">📚 Skill<small>”Vad blir det för<br>skollunch på tisdag?”</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:70px;text-align:center">Ett eget verktyg på en kvart, utan att skriva koden själv.</p>
+    <aside class="notes">
+      <ul>
+        <li>Förbered: en tom mapp och skolmat.se öppen. Ha en färdig version av CLI:t och skillen från en provkörning ifall API:et krånglar.</li>
+        <li>Avsluta med en ny session och frågan ”Vad blir det för skollunch på tisdag?”. Visa att agenten hittar skillen och kör skolmat, i stället för att öppna Chrome.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <!-- Egen app -->
+  <section class="divider">
+    <div class="num">4</div>
     <h2>En LLM i din egen app</h2>
     <p class="lead">Middagsplaneraren som webbapp</p>
   </section>
@@ -371,8 +586,8 @@ content: [{
     <div class="kicker">Sammanfattning</div>
     <h2>Det här tar vi med oss</h2>
     <div class="layers">
-      <div class="layer l1"><span class="e">🛠️</span><b>Tool calling</b><span>Modellen ber om ett verktyg med JSON. Din kod kör det och skickar tillbaka svaret.</span></div>
-      <div class="layer l2"><span class="e">📝</span><b>Beskrivningen</b><span>Modellen väljer verktyg utifrån namn och beskrivning. Skriv dem tydligt.</span></div>
+      <div class="layer l1"><span class="e">🛠️</span><b>Tool calling</b><span>Modellen ber om ett verktyg med JSON. Din kod kör det. Beskrivningen avgör valet.</span></div>
+      <div class="layer l2"><span class="e">⌨️</span><b>CLI + skill</b><span>Hitta API:et i Network-fliken, låt agenten bygga ett kommando och skriv en skill.</span></div>
       <div class="layer l3"><span class="e">🔌</span><b>MCP</b><span>Ett gemensamt uttag. Tjänsten bygger servern en gång, alla appar kan använda den.</span></div>
       <div class="layer l4"><span class="e">🧩</span><b>Din app</b><span>Nyckeln på servern, inloggning, gränser och verktyg som inte kan göra skada.</span></div>
     </div>
