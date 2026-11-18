@@ -671,6 +671,7 @@ Vid fel: säg det, hitta aldrig på.</pre></div>
 <span class="k">for await</span> (<span class="k">const</span> m <span class="k">of</span> query({
   prompt: byggPrompt(meny, onskemal),
   options: {
+    model: <span class="s">"claude-sonnet-5-5"</span>,
     allowedTools: [<span class="s">"WebSearch"</span>, <span class="s">"WebFetch"</span>],
     disallowedTools: [<span class="s">"Bash"</span>, <span class="s">"Read"</span>,
       <span class="s">"Write"</span>, <span class="s">"Edit"</span>, <span class="s">"Glob"</span>, <span class="s">"Grep"</span>],
@@ -678,17 +679,18 @@ Vid fel: säg det, hitta aldrig på.</pre></div>
 })) <span class="k">if</span> (m.type === <span class="s">"result"</span>) plan = m.result;</pre></div>
       </div>
       <ul class="nice">
-        <li class="frag"><strong>Menyn</strong> kommer från vårt paket, inte från LLM:en</li>
-        <li class="frag"><strong>allowedTools</strong>: verktyg den får använda utan att fråga</li>
-        <li class="frag"><strong>disallowedTools</strong>: ingen terminal och inga filer. Den ska aldrig kunna läsa <code>.env</code></li>
-        <li class="frag"><strong>maxTurns</strong>: ett tak för hur många varv, och därmed kostnaden</li>
+        <li class="frag"><strong>Menyn</strong> från vårt paket, inte från LLM:en</li>
+        <li class="frag"><strong>model</strong>: Sonnet 5.5 räcker</li>
+        <li class="frag"><strong>allowedTools</strong>: får användas utan att fråga</li>
+        <li class="frag"><strong>disallowedTools</strong>: ingen terminal, inga filer, aldrig <code>.env</code></li>
+        <li class="frag"><strong>maxTurns</strong>: tak för varv och kostnad</li>
       </ul>
     </div>
     <aside class="notes">
       <ul>
         <li>Agenten skriver den här koden åt oss. Poängen är att deltagarna känner igen delarna: loopen från tillfälle 1, verktygen från avsnitt 1, gränserna från del 1.</li>
         <li>disallowedTools är det viktiga. Agent SDK har alla Claude Codes verktyg, även Bash och Read. En agent i en webbapp som tar emot text från användare ska inte kunna köra kommandon på servern.</li>
-        <li>Modellen väljs med options.model, till exempel model: "claude-opus-5-5". Billigare: claude-sonnet-5-5 eller claude-haiku-5-5. Jämför planerna, bra övning.</li>
+        <li>Sonnet 5.5 räcker för middagsplanering och kostar hälften så mycket som Opus 5.5. Välj alltid modellen själv i koden, så att kostnaden inte ändras när standardvalet ändras. Vill man testa: byt till claude-haiku-5-5 och jämför planerna.</li>
         <li>settingSources: [] gör att appen inte läser in dina egna skills och inställningar från ~/.claude. Bra när appen ska bete sig likadant på en server.</li>
       </ul>
     </aside>
@@ -753,6 +755,7 @@ Svara med en tabell och en inköpslista.</pre>
     <aside class="notes">
       <ul>
         <li>Priser i november 2026, per miljon tokens in och ut: Claude Opus 5.5 4 och 20 dollar, Claude Sonnet 5.5 2 och 10 dollar, Claude Haiku 5.5 0,10 och 0,50 dollar.</li>
+        <li>Appen använder Claude Sonnet 5.5.</li>
         <li>En plan med tio, femton hämtade receptsidor kan bli hundratusentals tokens in, eftersom allt skickas om i varje varv. Kör en plan och titta på Usage tillsammans.</li>
         <li>Byt nyckel direkt om den hamnat i en commit, i chatten eller på en skärmdump. Att ta bort committen hjälper inte.</li>
       </ul>
@@ -768,7 +771,8 @@ med recept från ICA.
 
 Sammanhang: Paketet skolmat (github:ditt-namn/skolmat) hämtar
 skolmaten, läs dess README. Middagsplanen gör Claude Agent SDK
-(@anthropic-ai/claude-agent-sdk). Nyckeln: ANTHROPIC_API_KEY i .env.
+(@anthropic-ai/claude-agent-sdk) med modellen claude-sonnet-5-5.
+Nyckeln: ANTHROPIC_API_KEY i .env.
 
 Krav och gränser:
 - En server: Express + Vite middleware och React, som i övning 8.
