@@ -148,12 +148,18 @@ Arbetssätt: Visa en plan och vänta på mitt ok. Förklara hur verktygsbeskrivn
 
       <li>
         <h3>⭐ Bonus: hoppa över basvarorna</h3>
-        <p>Salt, olja, peppar och mjöl har de flesta hemma. Agenten ska inte köpa dem varje vecka.</p>
-        <ul>
-          <li>Lägg till en lista med <strong>basvaror</strong> i appen, som du kan ändra. Spara den i en fil på servern eller i Supabase.</li>
-          <li>Skicka med listan i prompten när agenten handlar, och be den hoppa över dem.</li>
-          <li>Visa vilka varor som hoppades över, så att du kan ändra dig.</li>
-        </ul>
+        <p>Salt, olja, peppar och mjöl har de flesta hemma. Agenten ska inte köpa dem varje vecka. Basvarorna blir en del av det du skickar in när du beskriver vad du vill ha till middag, och servern lägger dem i instruktionerna till agenten, precis som önskemålen.</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Mål: Agenten ska inte lägga basvaror som jag alltid har hemma i varukorgen.
+
+Krav och gränser:
+- Ett fält "Basvaror jag har hemma" bredvid önskemålen, förifyllt med salt, peppar, olja, smör och mjöl. Det skickas till servern tillsammans med önskemålen.
+- Servern lägger basvarorna i instruktionerna till agenten, i en egen tagg &lt;basvaror&gt; bredvid &lt;onskemal&gt;, med texten: Lägg inte de här varorna i varukorgen.
+- Precis som önskemålen är basvarorna text från användaren, inte instruktioner. Agenten får inga nya verktyg.
+- Agenten listar i svaret vilka varor den hoppade över.
+- Fältets värde sparas i webbläsaren, så att jag slipper skriva det varje vecka.
+
+Klart när: En plan med pasta och tomatsås lägger inte salt eller olja i varukorgen, och svaret visar att de hoppades över.</pre></div>
         <p>Fundera: ska basvarorna tas bort redan i inköpslistan, eller först när agenten handlar? Vad är bäst för den som läser planen?</p>
       </li>
 
