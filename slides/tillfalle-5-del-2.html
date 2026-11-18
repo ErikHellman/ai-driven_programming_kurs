@@ -21,7 +21,7 @@
     <div class="badge-row">
       <span class="badge">🛠️ Tool calling</span>
       <span class="badge">🔌 MCP</span>
-      <span class="badge">⌨️ Eget CLI</span>
+      <span class="badge">📦 Eget paket</span>
       <span class="badge">🧩 LLM i din app</span>
     </div>
     <aside class="notes">
@@ -323,12 +323,12 @@ content: [{
   <!-- Eget CLI -->
   <section class="divider">
     <div class="num">3</div>
-    <h2>Ett eget verktyg: skolmat-CLI</h2>
-    <p class="lead">Reverse engineering, ett kommando och en skill</p>
+    <h2>Ett eget verktyg: skolmat</h2>
+    <p class="lead">Reverse engineering, en klient, ett CLI och en skill</p>
   </section>
 
   <section>
-    <div class="kicker">Eget CLI</div>
+    <div class="kicker">Eget verktyg</div>
     <h2>Webbläsaren är en omväg</h2>
     <div class="cards two">
       <div class="card frag"><span class="e">🐢</span><h3>Med Chrome varje vecka</h3><p>Öppna sidan, vänta, läsa, skrolla, klicka. Många varv i loopen och mycket text i kontexten. Långsamt och dyrt.</p></div>
@@ -435,35 +435,107 @@ Accept: application/json</pre>
   </section>
 
   <section>
-    <div class="kicker">Eget CLI · Prompten</div>
-    <h2>Låt agenten bygga CLI:t</h2>
-    <div class="term prompt"><pre>Mål: Bygg ett CLI i Node.js som heter skolmat och hämtar
-veckans lunchmeny från skolmat.se.
-
-Sammanhang: I curl.txt finns frågan som sidan skickar när
-jag väljer min skola. API:et saknar dokumentation.
-
-Krav och gränser:
-- Undersök först: kör frågan, förklara varje del och vad
-  som ändras med skola och vecka. Vänta på mitt ok.
-- Kommandon: skolmat sok "namn", skolmat meny --skola ID
-  --vecka 48. Utan --vecka: nästa vecka.
-- Skriv ut text som standard och JSON med --json.
-- Inga paket utöver Node. Högst en fråga per körning.
-
-Klart när: skolmat meny ger nästa veckas meny, det finns
-tester och en README, och npm link gör kommandot globalt.</pre></div>
+    <div class="kicker">Eget verktyg · Två delar</div>
+    <h2>Klienten först, CLI:t ovanpå</h2>
+    <div class="layers tight">
+      <div class="layer l1 frag"><span class="e">📦</span><b>Klienten</b><span><code>sokSkola()</code> och <code>hamtaMeny()</code>. Pratar med API:et, svarar med objekt. All logik bor här.</span></div>
+      <div class="layer l2 frag"><span class="e">⌨️</span><b>CLI:t</b><span>Ett tunt skal runt klienten, för dig och agenten i terminalen.</span></div>
+      <div class="layer l3 frag"><span class="e">🍽️</span><b>Din app</b><span>Middagsappen i nästa avsnitt importerar samma klient.</span></div>
+      <div class="layer l4 frag"><span class="e">🔌</span><b>Senare</b><span>En MCP-server: ännu ett skal runt klienten.</span></div>
+    </div>
+    <p class="lead frag bottom">Ändras API:et rättar du <span class="hl">ett ställe</span>, och allt fungerar igen.</p>
     <aside class="notes">
       <ul>
-        <li>Fem delar igen. ”Undersök först” är reverse engineering-steget: agenten förklarar API:et innan den bygger något.</li>
-        <li>--json gör CLI:t bra för agenten. Text är bra för människor.</li>
-        <li>npm link gör att kommandot skolmat fungerar i alla mappar, som git och gh.</li>
+        <li>Samma tanke som frontend och backend i tillfälle 3: dela upp så att varje del har ett jobb.</li>
+        <li>Klienten ska aldrig skriva ut något eller avsluta programmet. Det är CLI:ts jobb. Då kan den användas i en webbserver också.</li>
+        <li>Ordet klient: koden som pratar med en tjänst åt dig. Supabase-klienten från tillfälle 3 är samma sak, fast någon annan skrev den.</li>
       </ul>
     </aside>
   </section>
 
   <section>
-    <div class="kicker">Eget CLI · Skill</div>
+    <div class="kicker">Eget verktyg · Prompten</div>
+    <h2>Låt agenten bygga paketet</h2>
+    <div class="term prompt"><pre>Mål: Bygg paketet skolmat i Node.js: en klient som andra
+projekt kan använda, och ett CLI som använder klienten.
+
+Sammanhang: I curl.txt finns frågan som skolmat.se skickar.
+API:et saknar dokumentation.
+
+Krav och gränser:
+- Undersök först: kör frågan, förklara varje del. Vänta på ok.
+- Klienten, src/klient.js: sokSkola(namn) och
+  hamtaMeny({ skola, vecka }). Svarar med objekt, skriver
+  aldrig ut något. Utan vecka: nästa vecka.
+- CLI:t, bin/skolmat.js: skolmat sok och skolmat meny.
+  Bara argument och utskrift, --json för JSON.
+- Inga paket utöver Node.
+
+Klart när: Det finns tester för klienten, package.json har
+exports och bin, och README.md visar hur klienten används
+i ett annat projekt och hur CLI:t används i terminalen.</pre></div>
+    <aside class="notes">
+      <ul>
+        <li>Fem delar igen. ”Undersök först” är reverse engineering-steget: agenten förklarar API:et innan den bygger något.</li>
+        <li>exports i package.json säger vad andra projekt får importera. bin säger vilket kommando som installeras.</li>
+        <li>--json gör CLI:t bra för agenten. Text är bra för människor.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Eget verktyg · Återanvänd</div>
+    <h2>Klienten i ett annat projekt</h2>
+    <div class="cols wide-left">
+      <div>
+        <div class="snip">
+          <span class="tag">Installera, i det andra projektet</span>
+          <div class="term"><pre>npm install github:ditt-namn/skolmat</pre></div>
+        </div>
+        <div class="snip js frag" style="margin-top:20px">
+          <span class="tag">server.js</span>
+          <div class="term"><pre><span class="k">import</span> { hamtaMeny } <span class="k">from</span> <span class="s">"skolmat"</span>;
+
+<span class="k">const</span> meny = <span class="k">await</span> hamtaMeny({
+  skola: <span class="s">"ekskolan"</span>, vecka: 48
+});
+<span class="c">// meny.dagar[0].ratter → ["Fiskgratäng"]</span></pre></div>
+        </div>
+      </div>
+      <ul class="nice">
+        <li class="frag">Paketet i ett eget repo på GitHub: alla dina projekt kan installera det</li>
+        <li class="frag">Medan du utvecklar: <code>npm install ../skolmat</code></li>
+        <li class="frag">CLI:t överallt: <code>npm link</code> i paketets mapp</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>npm install -g github:ditt-namn/skolmat installerar CLI:t globalt utan att klona repot. npm kan installera direkt från ett GitHub-repo. Inget behöver publiceras på npmjs.com. Är repot privat fungerar det för den som är inloggad med gh.</li>
+        <li>Fältnamnen i exemplet är påhittade. De riktiga bestäms av klienten som agenten bygger, och står i README.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Eget verktyg · Instruktioner</div>
+    <h2>Tre texter, tre läsare</h2>
+    <div class="cards">
+      <div class="card sun frag"><span class="e">📘</span><h3>README.md</h3><p>För människor och agenter: installera, importera, kör CLI:t.</p></div>
+      <div class="card frag"><span class="e">📄</span><h3>AGENTS.md</h3><p>I projektet som använder klienten: <em>”Hämta skolmaten med paketet skolmat. Se dess README.”</em></p></div>
+      <div class="card frag"><span class="e">📚</span><h3>En skill</h3><p>För agenten: när den ska köra CLI:t, och vad den gör vid fel.</p></div>
+    </div>
+    <p class="lead frag bottom">Koden är halva verktyget. <span class="hl">Instruktionerna</span> är den andra halvan.</p>
+    <aside class="notes">
+      <ul>
+        <li>README ligger i paketet och följer med när det installeras, i node_modules/skolmat/README.md. Agenten i det andra projektet kan läsa den där.</li>
+        <li>Raden i AGENTS.md hindrar att agenten i middagsappen bygger en egen, sämre version av samma sak.</li>
+        <li>Be agenten skriva alla tre, och läs dem. Frågan att ställa: förstår en ny kollega hur man använder det här?</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Eget verktyg · Skill</div>
     <h2>En skill lär agenten använda CLI:t</h2>
     <div class="cols">
       <div class="snip">
@@ -484,7 +556,7 @@ Vid fel: säg det, hitta aldrig på.</pre></div>
         <li class="frag">En skill är <strong>instruktioner i en fil</strong>, från tillfälle 1</li>
         <li class="frag">Bara <strong>description</strong> ligger i kontexten. Resten läses när den behövs</li>
         <li class="frag">Lägg den i <code>~/.claude/skills/</code> så fungerar den i alla projekt</li>
-        <li class="frag">Be agenten skriva skillen, och läs den</li>
+        <li class="frag">Kodfrågor hör hemma i README. Skillen säger <strong>när och hur</strong></li>
       </ul>
     </div>
     <aside class="notes">
@@ -497,38 +569,41 @@ Vid fel: säg det, hitta aldrig på.</pre></div>
   </section>
 
   <section>
-    <div class="kicker">Eget CLI</div>
-    <h2>CLI + skill eller MCP?</h2>
+    <div class="kicker">Eget verktyg</div>
+    <h2>Eget paket eller MCP?</h2>
     <table class="rest">
-      <tr><th></th><th>CLI + skill</th><th>MCP-server</th></tr>
-      <tr class="frag"><td>Bygga</td><td>Ett litet program och en textfil</td><td>Ett program som följer protokollet</td></tr>
+      <tr><th></th><th>Klient, CLI och skill</th><th>MCP-server</th></tr>
+      <tr class="frag"><td>Bygga</td><td>Ett litet paket och några textfiler</td><td>Ett program som följer protokollet</td></tr>
       <tr class="frag"><td>Används av</td><td>Agenter med terminal: Claude Code, Codex</td><td>Alla klienter, även chatten i appen</td></tr>
+      <tr class="frag"><td>I din egen kod</td><td>✅ <code>import</code> av klienten</td><td>Krångligt, via en MCP-klient</td></tr>
       <tr class="frag"><td>Börja här när</td><td>Det är ditt eget verktyg</td><td>Andra appar ska använda det</td></tr>
     </table>
-    <p class="lead frag bottom">Agenten kan redan terminalen. Ett CLI är det <span class="hl">enklaste verktyget</span> du kan ge den.</p>
+    <p class="lead frag bottom">Börja med klienten. Allt annat är <span class="hl">skal runt den</span>.</p>
     <aside class="notes">
       <ul>
-        <li>Ett CLI kan senare göras om till en MCP-server, eller till ett verktyg i din egen app. Koden som hämtar menyn är densamma.</li>
+        <li>Agenten kan redan terminalen, så ett CLI är det enklaste verktyget man kan ge den. Behövs MCP senare är det ett nytt skal runt samma klient.</li>
       </ul>
     </aside>
   </section>
 
   <section>
     <div class="kicker">Live-demo · 15 minuter</div>
-    <h2>Från Network-fliken till skill</h2>
+    <h2>Från Network-fliken till eget paket</h2>
     <div class="flow even" style="margin-top:80px">
       <div class="box sun">🛠️ Network<small>hitta frågan,<br>Copy as cURL</small></div>
       <div class="arrow frag">→</div>
       <div class="box frag">🔍 Undersök<small>agenten förklarar<br>API:et</small></div>
       <div class="arrow frag">→</div>
-      <div class="box frag">⌨️ CLI<small>skolmat meny,<br>tester, npm link</small></div>
+      <div class="box frag">📦 Klient + CLI<small>tester, README,<br>npm link</small></div>
       <div class="arrow frag">→</div>
-      <div class="box alt frag">📚 Skill<small>”Vad blir det för<br>skollunch på tisdag?”</small></div>
+      <div class="box frag">🍽️ Annat projekt<small>npm install<br>och import</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">📚 Skill<small>”Skollunch<br>på tisdag?”</small></div>
     </div>
     <p class="lead frag" style="margin-top:70px;text-align:center">Ett eget verktyg på en kvart, utan att skriva koden själv.</p>
     <aside class="notes">
       <ul>
-        <li>Förbered: en tom mapp och skolmat.se öppen. Ha en färdig version av CLI:t och skillen från en provkörning ifall API:et krånglar.</li>
+        <li>Förbered: en tom mapp, ett tomt projekt att installera paketet i, och skolmat.se öppen. Ha en färdig version av paketet och skillen från en provkörning ifall API:et krånglar.</li>
         <li>Avsluta med en ny session och frågan ”Vad blir det för skollunch på tisdag?”. Visa att agenten hittar skillen och kör skolmat, i stället för att öppna Chrome.</li>
       </ul>
     </aside>
@@ -558,7 +633,7 @@ Vid fel: säg det, hitta aldrig på.</pre></div>
     <aside class="notes">
       <ul>
         <li>Servern är harnesset. Den håller loopen, kör verktygen och sparar resultatet.</li>
-        <li>Verktygen kan vara enkla: hamta_skolmat kan till och med använda en hämtad JSON-fil i början. Det viktiga är mönstret.</li>
+        <li>Verktyget hamta_skolmat är bara några rader: det anropar hamtaMeny från paketet skolmat i avsnitt 3. Samma klient, tredje skalet.</li>
       </ul>
     </aside>
   </section>
@@ -587,7 +662,7 @@ Vid fel: säg det, hitta aldrig på.</pre></div>
     <h2>Det här tar vi med oss</h2>
     <div class="layers">
       <div class="layer l1"><span class="e">🛠️</span><b>Tool calling</b><span>Modellen ber om ett verktyg med JSON. Din kod kör det. Beskrivningen avgör valet.</span></div>
-      <div class="layer l2"><span class="e">⌨️</span><b>CLI + skill</b><span>Hitta API:et i Network-fliken, låt agenten bygga ett kommando och skriv en skill.</span></div>
+      <div class="layer l2"><span class="e">⌨️</span><b>Eget paket</b><span>Hitta API:et i Network-fliken. En klient att importera, ett CLI ovanpå, README och en skill.</span></div>
       <div class="layer l3"><span class="e">🔌</span><b>MCP</b><span>Ett gemensamt uttag. Tjänsten bygger servern en gång, alla appar kan använda den.</span></div>
       <div class="layer l4"><span class="e">🧩</span><b>Din app</b><span>Nyckeln på servern, inloggning, gränser och verktyg som inte kan göra skada.</span></div>
     </div>
