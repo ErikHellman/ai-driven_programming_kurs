@@ -834,6 +834,40 @@ göra en plan för nästa vecka och README förklarar nyckeln.</pre></div>
     </aside>
   </section>
 
+  <!-- Övning -->
+  <section class="divider">
+    <div class="num">🛒</div>
+    <h2>Övning 13: Handla på Willys</h2>
+    <p class="lead">Allt i kursen i en app · efter lektionen</p>
+  </section>
+
+  <section>
+    <div class="kicker">Övning 13</div>
+    <h2>Från middagsplan till varukorg</h2>
+    <div class="cols wide-left">
+      <ul class="emoji">
+        <li><span class="e">🔍</span><span>Reverse engineering av willys.se</span></li>
+        <li><span class="e">📦</span><span>Ett eget paket, som <code>skolmat</code></span></li>
+        <li><span class="e">🔐</span><span>Inloggning i appen. Lösenordet sparas aldrig</span></li>
+        <li><span class="e">🤖</span><span>Agenten får tre verktyg för varukorgen</span></li>
+        <li><span class="e">⭐</span><span>Bonus: hoppa över salt och olja</span></li>
+      </ul>
+      <div class="card sun">
+        <span class="e">🪪</span>
+        <h3>Varför inte BankID?</h3>
+        <p>Varje inloggning ska godkännas av en människa i BankID-appen. Ett program kan inte, och ska inte kunna, göra det.</p>
+      </div>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Steg för steg finns på kurssidan under Övning 13.</li>
+        <li>Lösenordet går från formuläret till den egna servern på localhost och vidare till Willys, aldrig till Claude. Agenten får bara verktyg som använder sessionen. Samma tanke som i del 1: agenten lånar inloggningen.</li>
+        <li>Det finns inget verktyg för att betala. Det är den bästa gränsen.</li>
+        <li>Påminn om att kopierade frågor från Network-fliken innehåller cookies och lösenord. De ska bytas ut innan agenten får se dem.</li>
+      </ul>
+    </aside>
+  </section>
+
   <!-- 19 -->
   <section>
     <div class="kicker">Sammanfattning</div>

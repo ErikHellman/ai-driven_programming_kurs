@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Övning 13: Handla på Willys · AI-driven programmering</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+  <link rel="stylesheet" href="../assets/theme.css?v=3">
+  <link rel="stylesheet" href="../assets/site.css?v=5">
+  <script src="../assets/site.js?v=4" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="crumbs"><a href="../index.html">← Allt kursmaterial</a></div>
+      <span class="eyebrow">Tillfälle 5 · Övning 13 · 2–3 timmar</span>
+      <h1>🛒 Handla på Willys</h1>
+      <p>Knyt ihop hela kursen. Du tar reda på hur Willys webbplats pratar med sin server, bygger ett eget paket för att söka varor och fylla varukorgen, och kopplar in det i Middagsplaneraren. När veckans middagar är klara lägger agenten varorna i din varukorg på willys.se.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="note tip"><p><strong>Syftet med övningen:</strong> att använda allt på en gång. Reverse engineering och ett eget paket som i avsnitt 3, egna verktyg till en agent som i avsnitt 1 och 2, Claude Agent SDK som i avsnitt 4, och säkerhetstänket från tillfälle 4.</p></div>
+    <div class="note"><p><strong>Innan du börjar:</strong> du behöver Middagsplaneraren från avsnitt 4 i del 2, som fungerar på din dator, och paketet <code>skolmat</code> från avsnitt 3. Du behöver ett konto på <a href="https://www.willys.se" target="_blank" rel="noopener">willys.se</a> som du kan logga in på med e-post eller personnummer och lösenord. Ha <a href="../guider/losenordshanterare.html">lösenordshanteraren</a> öppen.</p></div>
+
+    <ol class="steps">
+      <li>
+        <h3>🎯 Vad ska appen kunna?</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Steg</th><th>Vem gör det?</th></tr>
+            <tr><td><strong>Logga in på Willys</strong></td><td>Du skriver användarnamn och lösenord i appen. Servern loggar in med ditt nya paket.</td></tr>
+            <tr><td><strong>Planera veckan</strong></td><td>Som i avsnitt 4: skolmaten, dina önskemål och recept från ICA.</td></tr>
+            <tr><td><strong>Fylla varukorgen</strong></td><td>Agenten går igenom inköpslistan, söker varor och lägger dem i varukorgen.</td></tr>
+            <tr><td><strong>Betala</strong></td><td>Du, på willys.se. Agenten får inget verktyg för det.</td></tr>
+          </table>
+        </div>
+        <p>Appen körs bara lokalt, på din egen dator, med ditt eget konto. Den ska inte publiceras.</p>
+      </li>
+
+      <li>
+        <h3>🪪 Varför inte BankID?</h3>
+        <p>BankID är byggt för att bara en människa ska kunna legitimera sig. Varje inloggning måste godkännas i BankID-appen på din mobil eller dator, med din säkerhetskod. Det finns inget sätt för ett program att göra det åt dig, och det ska inte heller finnas. Då vore BankID inte säkert.</p>
+        <p>Därför använder vi inloggning med användarnamn och lösenord. Har du bara loggat in med BankID hittills: titta under ditt konto på willys.se om du kan skapa ett lösenord.</p>
+        <div class="note warn"><p><strong>Det här är ett lösenord till ett konto där du kan handla.</strong> Använd ett unikt lösenord från lösenordshanteraren, och följ reglerna i steg 5 för hur appen hanterar det.</p></div>
+      </li>
+
+      <li>
+        <h3>🔍 Reverse engineering av Willys</h3>
+        <p>Willys webbplats byggs i webbläsaren och hämtar allt från ett API, precis som skolmat.se. API:et saknar dokumentation för oss, så vi tittar på vad sidan gör.</p>
+        <ol>
+          <li>Öppna <a href="https://www.willys.se" target="_blank" rel="noopener">willys.se</a> i Chrome och logga in. Öppna Dev Tools (F12), fliken <strong>Network</strong> och filtret <strong>Fetch/XHR</strong>.</li>
+          <li><strong>Sök</strong> efter en vara, till exempel <em>mjölk</em>. Vilken fråga innehåller sökresultatet som JSON? Vad heter fälten för namn, pris, jämförpris och varans kod?</li>
+          <li><strong>Lägg en vara i varukorgen.</strong> Vilken fråga skickas nu? Vilken metod, vilken adress och vad står i body?</li>
+          <li><strong>Öppna varukorgen.</strong> Vilken fråga hämtar innehållet?</li>
+          <li>Logga ut och logga in igen med lösenord. Vilken fråga loggar in, och vad får webbläsaren tillbaka? Oftast är det en cookie som sedan skickas med i alla frågor.</li>
+          <li>Högerklicka på varje fråga och välj <strong>Copy → Copy as cURL</strong>. Klistra in dem i en fil, <code>willys-fragor.txt</code>. Lägg den i mappen för paketet i steg 4, och lägg till den i <code>.gitignore</code> innan du gör något annat.</li>
+        </ol>
+        <div class="note warn"><p><strong>Frågorna innehåller din inloggning.</strong> En kopierad fråga har med cookies, och frågan som loggar in har med ditt lösenord. Innan du ger filen till agenten: byt ut varje cookievärde mot <code>&lt;COOKIE&gt;</code> och lösenordet mot <code>&lt;LÖSENORD&gt;</code>. Allt i filen skickas till leverantören av AI:n. Radera filen när du är klar.</p></div>
+        <details class="alt">
+          <summary>Vad ska jag leta efter?</summary>
+          <ul>
+            <li><strong>Adressen:</strong> vad är fast och vad ändras? Ofta finns sökordet eller varans kod i adressen.</li>
+            <li><strong>Metoden:</strong> GET för att läsa, POST för att lägga till eller logga in.</li>
+            <li><strong>Headers:</strong> skickas en cookie eller en token med? Den visar att du är inloggad.</li>
+            <li><strong>Svaret:</strong> öppna fliken Response. Det är där fälten finns som paketet ska läsa.</li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <h3>📦 Bygg paketet willys</h3>
+        <p>Samma mönster som <code>skolmat</code>: en klient med all logik, och ett tunt CLI ovanpå. Använd mappen från steg 3, gör den till ett nytt repo på GitHub och starta en session där:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Mål: Bygg paketet willys i Node.js: en klient som andra projekt kan använda för att söka varor och hantera varukorgen på willys.se, och ett CLI ovanpå klienten.
+
+Sammanhang: I willys-fragor.txt finns frågorna som willys.se skickar när jag loggar in, söker, lägger i varukorgen och öppnar varukorgen. Cookies och lösenord är utbytta mot &lt;COOKIE&gt; och &lt;LÖSENORD&gt;. API:et saknar dokumentation.
+
+Krav och gränser:
+- Undersök först: förklara varje fråga, vilka fält som behövs och hur inloggningen hålls kvar. Vänta på mitt ok innan du bygger.
+- Klienten, src/klient.js: loggaIn(anvandarnamn, losenord) som returnerar en session, sokVara(session, fras), laggIVarukorg(session, kod, antal) och hamtaVarukorg(session). Svarar med vanliga objekt och skriver aldrig ut något.
+- Lösenordet används bara i loggaIn och sparas aldrig, varken i sessionen, i filer eller i loggar.
+- Inga funktioner för kassan, betalning, adress eller leveranstid.
+- CLI:t, bin/willys.js: willys sok "fras" och willys varukorg. Det frågar efter lösenordet i terminalen utan att visa det, och läser användarnamnet från WILLYS_ANVANDARE.
+- Tester som inte loggar in på riktigt: låtsassvar i stället för fetch.
+- Högst en fråga i taget och en kort paus mellan frågor.
+- Inga paket utöver Node.
+
+Klart när: Testerna går igenom, willys sok "mjölk" fungerar mot riktiga willys.se, och README.md visar hur klienten används i ett annat projekt.</pre></div>
+        <p>Testa CLI:t själv: sök på några varor och lägg en i varukorgen med klienten. Öppna willys.se i webbläsaren. Ligger varan i varukorgen? Pusha paketet till GitHub.</p>
+      </li>
+
+      <li>
+        <h3>🔐 Inloggningen i Middagsplaneraren</h3>
+        <p>Öppna Middagsplaneraren och starta en <strong>ny session</strong>:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Lägg till inloggning på Willys i den här appen. Använd paketet willys (npm install github:ditt-namn/willys), läs dess README.
+
+Krav:
+- Ett formulär med användarnamn och lösenord för willys.se. Lösenordsfältet har type="password".
+- Formuläret skickar till POST /api/willys/logga-in. Servern loggar in med loggaIn och sparar bara sessionen, i minnet. Lösenordet sparas aldrig: inte i en fil, inte i en databas, inte i loggar, inte i webbläsaren.
+- Frontenden får bara veta om inloggningen lyckades och vilket namn som är inloggat.
+- En knapp för att logga ut, som glömmer sessionen.
+- Servern lyssnar bara på localhost.
+
+Arbetssätt: Jobba på en ny branch. Visa en plan först och vänta på mitt ok. Öppna en pull request när det fungerar.</pre></div>
+        <p>Kontrollera i pull requesten att lösenordet bara finns på ett ställe: i anropet till <code>loggaIn</code>. Öppna Network-fliken när du loggar in i appen. Frågan går till <em>din</em> server på localhost, inte direkt till Willys.</p>
+        <details class="alt">
+          <summary>Varför är det här okej, när vi i del 1 sa att lösenordet aldrig ska till agenten?</summary>
+          <p>Det är fortfarande sant. Lösenordet går från ditt formulär till din egen server på din egen dator, och därifrån till Willys. Det skickas aldrig till Claude. Agenten får verktyg som använder sessionen, men den ser aldrig lösenordet. Det är samma tanke som i del 1: agenten lånar inloggningen.</p>
+        </details>
+      </li>
+
+      <li>
+        <h3>🤖 Ge agenten verktyg för Willys</h3>
+        <p>Nu ska agenten fylla varukorgen. Den får tre egna verktyg, byggda med <code>tool()</code> och <code>createSdkMcpServer()</code> från Claude Agent SDK. Varje verktyg är bara några rader som anropar ditt paket. Fortsätt i samma session, eller starta en ny:</p>
+        <div class="code wrap"><span class="label">Prompt</span>
+<pre>Mål: När middagsplanen är klar ska agenten lägga varorna i inköpslistan i min varukorg på Willys.
+
+Krav och gränser:
+- En knapp "Lägg i varukorgen" under planen. Den syns bara när jag är inloggad på Willys.
+- POST /api/willys/handla startar Claude Agent SDK med modellen claude-sonnet-5-5 och inköpslistan i prompten.
+- Agenten får tre egna verktyg via createSdkMcpServer: sok_vara(fras), lagg_i_varukorg(kod, antal) och visa_varukorg(). De anropar paketet willys med sessionen från inloggningen.
+- Agenten får inga andra verktyg: inte Bash, inte filer, inte webben. Sätt maxTurns.
+- För varje vara: välj den med bäst jämförpris i en lagom mängd för fyra personer. Hittar den ingen bra vara: hoppa över den och säg det.
+- Visa resultatet: vad som lades i varukorgen, med pris, och vad som saknas.
+
+Arbetssätt: Visa en plan och vänta på mitt ok. Förklara hur verktygsbeskrivningarna är skrivna.</pre></div>
+        <p>Läs verktygsbeskrivningarna. De avgör hur agenten väljer, precis som i avsnitt 1. Gör en plan för nästa vecka, klicka <strong>Lägg i varukorgen</strong> och öppna sedan willys.se i webbläsaren. Stämmer varukorgen med inköpslistan?</p>
+        <div class="note"><p><strong>Den bästa gränsen är ett verktyg som inte finns.</strong> Agenten kan inte betala, för det finns inget verktyg för det. Det skyddar dig även om någon skulle lyckas med promptinjektion via ett önskemål eller ett recept.</p></div>
+        <details class="alt">
+          <summary>Det fungerar inte?</summary>
+          <ul>
+            <li><strong>Agenten använder inte verktygen:</strong> egna verktyg heter <code>mcp__servernamn__verktygsnamn</code> i <code>allowedTools</code>. Be agenten kontrollera namnen.</li>
+            <li><strong>Inloggningen försvinner:</strong> sessionen finns i serverns minne och glöms när servern startas om. Logga in igen.</li>
+            <li><strong>Willys svarar med fel efter ett tag:</strong> du har kanske skickat för många frågor. Vänta en stund och be agenten öka pausen i paketet.</li>
+            <li><strong>Fel varor eller fel mängd:</strong> förbättra beskrivningen av <code>sok_vara</code> och prompten, och prova igen. Kolla i Usage vad varje försök kostar.</li>
+          </ul>
+        </details>
+      </li>
+
+      <li>
+        <h3>⭐ Bonus: hoppa över basvarorna</h3>
+        <p>Salt, olja, peppar och mjöl har de flesta hemma. Agenten ska inte köpa dem varje vecka.</p>
+        <ul>
+          <li>Lägg till en lista med <strong>basvaror</strong> i appen, som du kan ändra. Spara den i en fil på servern eller i Supabase.</li>
+          <li>Skicka med listan i prompten när agenten handlar, och be den hoppa över dem.</li>
+          <li>Visa vilka varor som hoppades över, så att du kan ändra dig.</li>
+        </ul>
+        <p>Fundera: ska basvarorna tas bort redan i inköpslistan, eller först när agenten handlar? Vad är bäst för den som läser planen?</p>
+      </li>
+
+      <li>
+        <h3>🔍 Säkerhetsgranskning</h3>
+        <p>Starta en <strong>ny session</strong> på branchen och kör <code>/security-review</code>, eller prompten från <a href="ovning-12.html">övning 12</a>. Be den särskilt titta på:</p>
+        <ul>
+          <li>Finns lösenordet någon annanstans än i anropet till <code>loggaIn</code>? I loggar, felmeddelanden eller i webbläsaren?</li>
+          <li>Kan agenten göra något annat än att söka och lägga i varukorgen?</li>
+          <li>Lyssnar servern bara på localhost?</li>
+          <li>Finns det några cookies, lösenord eller kopierade frågor i Git?</li>
+        </ul>
+        <p>Rätta det allvarliga, och slå ihop pull requesten när du är nöjd.</p>
+      </li>
+    </ol>
+
+    <div class="note warn"><p><strong>Ett odokumenterat API är inte ditt.</strong> Det kan ändras när som helst, och då slutar paketet fungera. Använd det bara för ditt eget konto och din egen handling, skicka inte många frågor, och läs Willys villkor. Publicera inte appen, och låt ingen annan skriva in sina inloggningsuppgifter i den.</p></div>
+
+    <section>
+      <h2>Klart?</h2>
+      <ul class="checklist">
+        <li>Jag vet varför BankID inte kan användas av ett program</li>
+        <li>Jag har hittat frågorna för att logga in, söka, lägga i varukorgen och visa varukorgen i Network-fliken</li>
+        <li>Jag bytte ut cookies och lösenord innan jag gav frågorna till agenten</li>
+        <li>Paketet willys har tester, ett CLI och en README</li>
+        <li>Lösenordet sparas ingenstans, och skickas aldrig till Claude</li>
+        <li>Agenten har bara verktygen sok_vara, lagg_i_varukorg och visa_varukorg</li>
+        <li>Veckans varor ligger i min varukorg på willys.se, och jag betalar själv</li>
+        <li>Bonus: basvarorna hoppas över</li>
+      </ul>
+    </section>
+
+    <nav class="guide-nav">
+      <a href="ovning-12.html">← Övning 12</a>
+      <a href="../index.html">Allt kursmaterial →</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">AI-driven programmering · Folkuniversitetet Stockholm</footer>
+</body>
+</html>
