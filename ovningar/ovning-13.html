@@ -77,23 +77,18 @@
           <li>Starta Claude Code med Chrome i mappen: <code>claude --chrome</code> i terminalen, eller skriv <code>/chrome</code> i en session. I Code-fliken i appen: slå på Claude in Chrome under anslutningar.</li>
         </ol>
         <div class="code wrap"><span class="label">Prompt</span>
-<pre>Mål: Bygg paketet willys i Node.js: en klient som andra projekt kan använda för att söka varor och hantera varukorgen på willys.se, och ett CLI ovanpå klienten.
+<pre>Mål: Lär dig hur willys.se:s API fungerar och bygg sedan paketet willys i Node.js: en klient som vi kan använda i andra appar, och ett CLI ovanpå.
 
-Sammanhang: Jag är redan inloggad på willys.se i Chrome. API:et saknar dokumentation, så använd Chrome för att ta reda på hur det fungerar.
+Sammanhang: Jag är redan inloggad på willys.se i Chrome. API:et saknar dokumentation, så använd Chrome för att se hur sidan söker varor, lägger i varukorgen och visar varukorgen.
 
 Krav och gränser:
-- Undersök först med Chrome: sök efter en vara, lägg en vara i varukorgen och öppna varukorgen, och läs vilka frågor sidan skickar. Förklara varje fråga, vilka fält som behövs och hur inloggningen hålls kvar. Vänta på mitt ok innan du bygger.
-- Du ska aldrig logga in eller skriva in ett lösenord, det gör jag. Spara aldrig cookies eller tokens i filer, tester eller chatten: skriv &lt;COOKIE&gt; i stället.
-- Gå inte till kassan och ändra inte adress eller leveranstid i Chrome.
-- Klienten, src/klient.js: loggaIn(anvandarnamn, losenord) som returnerar en session, sokVara(session, fras), laggIVarukorg(session, kod, antal) och hamtaVarukorg(session). Svarar med vanliga objekt och skriver aldrig ut något.
-- Lösenordet används bara i loggaIn och sparas aldrig, varken i sessionen, i filer eller i loggar.
-- Inga funktioner för kassan, betalning, adress eller leveranstid.
-- CLI:t, bin/willys.js: willys sok "fras" och willys varukorg. Det frågar efter lösenordet i terminalen utan att visa det, och läser användarnamnet från WILLYS_ANVANDARE.
-- Tester som inte loggar in på riktigt: låtsassvar i stället för fetch.
-- Högst en fråga i taget och en kort paus mellan frågor.
-- Inga paket utöver Node.
+- Logga aldrig in och skriv aldrig ett lösenord, det gör jag. Spara aldrig cookies eller tokens: skriv &lt;COOKIE&gt; i stället.
+- Gå inte till kassan och ändra ingenting annat än varukorgen.
+- Klienten, src/klient.js: loggaIn(anvandarnamn, losenord), sokVara(session, fras), laggIVarukorg(session, kod, antal) och hamtaVarukorg(session). Lösenordet sparas aldrig.
+- CLI:t, bin/willys.js: willys sok "fras" och willys varukorg. Lösenordet frågas efter dolt i terminalen.
+- Tester med låtsassvar i stället för riktiga frågor. Inga paket utöver Node.
 
-Klart när: Testerna går igenom, willys sok "mjölk" fungerar mot riktiga willys.se, och README.md visar hur klienten används i ett annat projekt.</pre></div>
+Klart när: Testerna går igenom, willys sok "mjölk" fungerar mot riktiga willys.se, och README.md visar hur klienten används i en annan app.</pre></div>
         <p>Testa CLI:t själv: sök på några varor och lägg en i varukorgen med klienten. Öppna willys.se i webbläsaren. Ligger varan i varukorgen? Pusha paketet till GitHub.</p>
       </li>
 
