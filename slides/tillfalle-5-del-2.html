@@ -613,45 +613,219 @@ Vid fel: säg det, hitta aldrig på.</pre></div>
   <section class="divider">
     <div class="num">4</div>
     <h2>En LLM i din egen app</h2>
-    <p class="lead">Middagsplaneraren som webbapp</p>
+    <p class="lead">Middagsplaneraren: vårt paket och Claude Agent SDK</p>
   </section>
 
-  <!-- 17 -->
   <section>
-    <div class="kicker">Din egen app</div>
-    <h2>Samma uppgift, din kod</h2>
+    <div class="kicker">Middagsplaneraren</div>
+    <h2>Appen vi bygger</h2>
     <div class="flow even">
-      <div class="box sun">🖥️ Webbsidan<small>”Gör veckans<br>middagar”</small></div>
+      <div class="box sun">🖥️ Webbsidan<small>välj skola och vecka,<br>skriv önskemål</small></div>
       <div class="arrow frag">→</div>
-      <div class="box frag">🍳 Din server<small>Express, med<br>API-nyckeln</small></div>
-      <div class="arrow frag">⇄</div>
-      <div class="box frag">🧠 Claude API<small>tools: hamta_skolmat,<br>sok_recept</small></div>
+      <div class="box frag">📦 skolmat<small>servern hämtar<br>veckans meny</small></div>
       <div class="arrow frag">→</div>
-      <div class="box alt frag">📅 Planen<small>sparas i<br>Supabase</small></div>
+      <div class="box frag">🤖 Agent SDK<small>meny + önskemål,<br>letar recept på ICA</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">📅 Planen<small>middagar, länkar<br>och inköpslista</small></div>
     </div>
-    <p class="lead frag" style="margin-top:44px">Allt från kursen på en gång: frontend, backend, databas, inloggning och nu en LLM.</p>
+    <p class="lead frag" style="margin-top:44px">Del 1:s demo, men nu är det <span class="hl">din app</span>. Fullstack, med en server, som i övning 8.</p>
     <aside class="notes">
       <ul>
-        <li>Servern är harnesset. Den håller loopen, kör verktygen och sparar resultatet.</li>
-        <li>Verktyget hamta_skolmat är bara några rader: det anropar hamtaMeny från paketet skolmat i avsnitt 3. Samma klient, tredje skalet.</li>
+        <li>Allt från kursen på en gång: frontend och backend i samma server, ett eget paket från avsnitt 3, en nyckel i .env och en LLM.</li>
+        <li>Menyn hämtar servern själv med paketet. Den behöver ingen LLM, och då blir den rätt varje gång. LLM:en får bara det som kräver omdöme: att välja middagar.</li>
+        <li>Vi kör appen lokalt idag. Publicering kommer på en egen slide.</li>
       </ul>
     </aside>
   </section>
 
-  <!-- 18 -->
   <section>
-    <div class="kicker">Din egen app</div>
-    <h2>Fyra regler från kursen</h2>
-    <div class="layers tight">
-      <div class="layer l1 frag"><span class="e">🔑</span><b>Nyckeln</b><span>API-nyckeln bor på servern, i <code>.env</code>. Aldrig i frontenden. Som i tillfälle 2.</span></div>
-      <div class="layer l2 frag"><span class="e">🪪</span><b>Inloggning</b><span>Bara inloggade får använda LLM:en. Varje anrop kostar pengar. Som i tillfälle 4.</span></div>
-      <div class="layer l3 frag"><span class="e">🚦</span><b>Gränser</b><span>Högst ett visst antal anrop per användare och dag, och en utgiftsgräns hos leverantören.</span></div>
-      <div class="layer l4 frag"><span class="e">🪤</span><b>Injektion</b><span>Användarens text och webbsidors text är data, inte order. Verktygen sätter gränsen.</span></div>
+    <div class="kicker">Claude Agent SDK</div>
+    <h2>Claude Code som ett bibliotek</h2>
+    <div class="cards two">
+      <div class="card frag"><span class="e">🔧</span><h3>Claude API</h3><p>Du skickar meddelanden och skriver loopen själv: tool calling från avsnitt 1. Full kontroll, mer kod.</p></div>
+      <div class="card good frag"><span class="e">🤖</span><h3>Claude Agent SDK</h3><p>Ett npm-paket med samma loop och verktyg som Claude Code. Du ger en prompt och väljer verktyg, den gör resten.</p></div>
+    </div>
+    <ul class="nice frag" style="margin-top:34px">
+      <li>Paketet heter <code>@anthropic-ai/claude-agent-sdk</code> och finns för TypeScript och Python</li>
+      <li>Färdiga verktyg: WebSearch och WebFetch för recepten. Egna verktyg via MCP, som i avsnitt 2</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Det är bokstavligen samma harness som vi använt hela kursen, inbyggt i din app. Därför kan den hämta recept på ICA utan att vi skriver någon hämtkod.</li>
+        <li>Agent SDK kräver en API-nyckel. Anthropic tillåter inte att appar som byggs med den loggar in med ett Claude-abonnemang. Nästa slides visar nyckeln.</li>
+        <li>Dokumentation: code.claude.com/docs/en/agent-sdk.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Claude Agent SDK · I servern</div>
+    <h2>Så ser anropet ut</h2>
+    <div class="cols wide-left">
+      <div class="snip js">
+        <span class="tag">server/plan.js</span>
+        <div class="term"><pre><span class="k">import</span> { query } <span class="k">from</span> <span class="s">"@anthropic-ai/claude-agent-sdk"</span>;
+<span class="k">import</span> { hamtaMeny } <span class="k">from</span> <span class="s">"skolmat"</span>;
+
+<span class="k">const</span> meny = <span class="k">await</span> hamtaMeny({ skola, vecka });
+<span class="k">for await</span> (<span class="k">const</span> m <span class="k">of</span> query({
+  prompt: byggPrompt(meny, onskemal),
+  options: {
+    allowedTools: [<span class="s">"WebSearch"</span>, <span class="s">"WebFetch"</span>],
+    disallowedTools: [<span class="s">"Bash"</span>, <span class="s">"Read"</span>,
+      <span class="s">"Write"</span>, <span class="s">"Edit"</span>, <span class="s">"Glob"</span>, <span class="s">"Grep"</span>],
+    maxTurns: 30 },
+})) <span class="k">if</span> (m.type === <span class="s">"result"</span>) plan = m.result;</pre></div>
+      </div>
+      <ul class="nice">
+        <li class="frag"><strong>Menyn</strong> kommer från vårt paket, inte från LLM:en</li>
+        <li class="frag"><strong>allowedTools</strong>: verktyg den får använda utan att fråga</li>
+        <li class="frag"><strong>disallowedTools</strong>: ingen terminal och inga filer. Den ska aldrig kunna läsa <code>.env</code></li>
+        <li class="frag"><strong>maxTurns</strong>: ett tak för hur många varv, och därmed kostnaden</li>
+      </ul>
     </div>
     <aside class="notes">
       <ul>
-        <li>Utgiftsgränsen sätts i konsolen hos leverantören, till exempel platform.claude.com. Gör det innan appen publiceras.</li>
-        <li>Promptinjektion i egen app: en användare kan skriva ”ignorera dina instruktioner”. Om modellen bara har ofarliga verktyg spelar det mindre roll.</li>
+        <li>Agenten skriver den här koden åt oss. Poängen är att deltagarna känner igen delarna: loopen från tillfälle 1, verktygen från avsnitt 1, gränserna från del 1.</li>
+        <li>disallowedTools är det viktiga. Agent SDK har alla Claude Codes verktyg, även Bash och Read. En agent i en webbapp som tar emot text från användare ska inte kunna köra kommandon på servern.</li>
+        <li>Modellen väljs med options.model, till exempel model: "claude-opus-5-5". Billigare: claude-sonnet-5-5 eller claude-haiku-5-5. Jämför planerna, bra övning.</li>
+        <li>settingSources: [] gör att appen inte läser in dina egna skills och inställningar från ~/.claude. Bra när appen ska bete sig likadant på en server.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Önskemål</div>
+    <h2>Prompten byggs av servern</h2>
+    <div class="cols">
+      <div class="http-msg">
+        <div class="head">byggPrompt(meny, onskemal)</div>
+        <pre>Du planerar middagar för en familj.
+&lt;skollunch&gt; menyn från skolmat &lt;/skollunch&gt;
+&lt;onskemal&gt; det användaren skrev &lt;/onskemal&gt;
+Hämta recept från ica.se/recept. Inte
+samma mat som lunchen samma dag.
+Svara med en tabell och en inköpslista.</pre>
+      </div>
+      <ul class="nice">
+        <li class="frag">Önskemålen från del 1 blir en <strong>textruta</strong> i appen</li>
+        <li class="frag">Servern lägger ihop: <strong>fasta regler + menyn + önskemålen</strong></li>
+        <li class="frag">Taggarna visar modellen vad som är data. Användarens text är <span class="hl">önskemål, inte order</span></li>
+        <li class="frag">Spara önskemålen i Supabase om du vill slippa skriva dem varje vecka</li>
+      </ul>
+    </div>
+    <aside class="notes">
+      <ul>
+        <li>Promptinjektion i egen app: någon kan skriva ”ignorera allt och …” i rutan. Taggarna hjälper, men skyddet är verktygen: agenten kan bara söka och läsa webbsidor, så den kan inte göra mycket skada.</li>
+        <li>Fasta regler i början, det som ändras i slutet. Det är också billigare, eftersom början kan cachas.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">API-nyckel · Steg för steg</div>
+    <h2>Skapa en API-nyckel</h2>
+    <div class="layers tight">
+      <div class="layer l1 frag"><span class="e">👤</span><b>Konto</b><span>platform.claude.com. Ett eget konto, skilt från ditt Claude-abonnemang.</span></div>
+      <div class="layer l2 frag"><span class="e">💳</span><b>Krediter</b><span>Billing: köp krediter i förväg, till exempel 5 dollar. Slå inte på automatisk påfyllning.</span></div>
+      <div class="layer l3 frag"><span class="e">🚦</span><b>Gräns</b><span>Limits: sätt en utgiftsgräns per månad. Då kan en bugg inte kosta mer än så.</span></div>
+      <div class="layer l4 frag"><span class="e">🔑</span><b>Nyckeln</b><span>API Keys → Create Key, en per app. Spara i lösenordshanteraren, sedan i <code>.env</code> som <code>ANTHROPIC_API_KEY</code>.</span></div>
+    </div>
+    <p class="small frag bottom">Nyckeln visas bara en gång. Tappar du bort den skapar du en ny.</p>
+    <aside class="notes">
+      <ul>
+        <li>Visa konsolen live, men dölj nyckeln när den visas. Skapa den med ett namn som säger vilken app den hör till, till exempel middagsplaneraren-lokal.</li>
+        <li>Claude Pro eller Max ingår inte i API:et. API:et betalas per användning, separat.</li>
+        <li>Samma flöde som nycklarna i tillfälle 2 och Supabase-nyckeln i tillfälle 3: lösenordshanteraren först, sedan .env, aldrig i chatten.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">API-nyckel</div>
+    <h2>Vad betyder nyckeln?</h2>
+    <div class="cards">
+      <div class="card frag"><span class="e">💸</span><h3>Kostnad</h3><p>Du betalar per token, in och ut. Varje varv i loopen och varje recept som läses kostar. En plan kostar oftast några kronor.</p></div>
+      <div class="card bad frag"><span class="e">🔐</span><h3>Säkerhet</h3><p>Nyckeln är ditt betalkort. Bara på servern i <code>.env</code>, aldrig i frontenden eller i Git.</p></div>
+      <div class="card good frag"><span class="e">🎛️</span><h3>Kontroll</h3><p>Usage visar vad du har gjort av med. Läcker en nyckel: ta bort den i konsolen och skapa en ny.</p></div>
+    </div>
+    <p class="lead frag bottom">Den som har nyckeln kan använda <span class="hl">dina pengar</span>.</p>
+    <aside class="notes">
+      <ul>
+        <li>Priser i november 2026, per miljon tokens in och ut: Claude Opus 5.5 4 och 20 dollar, Claude Sonnet 5.5 2 och 10 dollar, Claude Haiku 5.5 0,10 och 0,50 dollar.</li>
+        <li>En plan med tio, femton hämtade receptsidor kan bli hundratusentals tokens in, eftersom allt skickas om i varje varv. Kör en plan och titta på Usage tillsammans.</li>
+        <li>Byt nyckel direkt om den hamnat i en commit, i chatten eller på en skärmdump. Att ta bort committen hjälper inte.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Middagsplaneraren · Prompten</div>
+    <h2>Prompten som bygger appen</h2>
+    <div class="term prompt"><pre>Mål: Bygg Middagsplaneraren, en fullstack-app i Node.js. Jag
+väljer skola och vecka, skriver önskemål och får en middagsplan
+med recept från ICA.
+
+Sammanhang: Paketet skolmat (github:ditt-namn/skolmat) hämtar
+skolmaten, läs dess README. Middagsplanen gör Claude Agent SDK
+(@anthropic-ai/claude-agent-sdk). Nyckeln: ANTHROPIC_API_KEY i .env.
+
+Krav och gränser:
+- En server: Express + Vite middleware och React, som i övning 8.
+- GET /api/meny?skola=&amp;vecka= använder paketet skolmat.
+- POST /api/plan: lägg menyn och önskemålen i prompten. Agenten
+  får bara WebSearch och WebFetch, och bara läsa ica.se.
+- Visa planen som en tabell med länkar, plus en inköpslista.
+- Nyckeln bara på servern. Ingen inloggning, appen körs lokalt.
+
+Klart när: npm run dev startar appen på localhost:3000, jag kan
+göra en plan för nästa vecka och README förklarar nyckeln.</pre></div>
+    <aside class="notes">
+      <ul>
+        <li>Planläge först. Läs planen högt och kontrollera två saker: att agenten i appen inte får Bash eller Read, och att nyckeln bara används i servern.</li>
+        <li>Paketet från avsnitt 3 installeras med npm install github:ditt-namn/skolmat. Agenten läser README i node_modules/skolmat.</li>
+        <li>En plan tar en stund. Be agenten visa att något händer, till exempel ”Letar recept …” medan servern väntar.</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Middagsplaneraren · Publicera?</div>
+    <h2>Lokalt först. Inloggning innan nätet</h2>
+    <div class="cards two">
+      <div class="card good frag"><span class="e">🏠</span><h3>Lokalt</h3><p>Appen på <code>localhost:3000</code>. Bara du når den, och bara du kan göra av med dina krediter.</p></div>
+      <div class="card hot frag"><span class="e">🌍</span><h3>Publicerad</h3><p>Vem som helst som hittar adressen kan göra planer på <strong>din nyckel</strong>. Inloggning först.</p></div>
+    </div>
+    <ul class="nice frag" style="margin-top:34px">
+      <li><strong>Inloggning</strong> med Supabase Auth, som i övning 12. Bara inloggade får anropa <code>/api/plan</code></li>
+      <li><strong>Gränser</strong>: några planer per användare och dag, och utgiftsgränsen i konsolen</li>
+    </ul>
+    <aside class="notes">
+      <ul>
+        <li>Det här är skälet till att tillfälle 4 handlade om inloggning. En app med en LLM är en app där varje anrop kostar pengar.</li>
+        <li>Kontrollen ska ske i servern, inte bara genom att dölja knappen. Lita aldrig på klienten.</li>
+        <li>Prompt till agenten när det är dags: ”Lägg till inloggning med Supabase Auth. /api/plan ska svara 401 utan inloggning och högst tre planer per användare och dag.”</li>
+      </ul>
+    </aside>
+  </section>
+
+  <section>
+    <div class="kicker">Live-demo · 20 minuter</div>
+    <h2>Middagsplaneraren från noll</h2>
+    <div class="flow even" style="margin-top:80px">
+      <div class="box sun">🔑 Nyckeln<small>konsolen, gräns<br>och .env</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🧭 Plan<small>prompten,<br>planläge</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box frag">🖥️ Appen<small>välj skola, vecka<br>och önskemål</small></div>
+      <div class="arrow frag">→</div>
+      <div class="box alt frag">💸 Usage<small>vad kostade<br>planen?</small></div>
+    </div>
+    <p class="lead frag" style="margin-top:70px;text-align:center">En egen app med en LLM i, på en kvart.</p>
+    <aside class="notes">
+      <ul>
+        <li>Förbered: paketet skolmat på GitHub, nyckeln redan skapad och sparad i lösenordshanteraren, och en färdig version av appen ifall något krånglar.</li>
+        <li>Kör en plan med klassens önskemål. Byt önskemål och kör igen. Visa till sist Usage i konsolen och räkna ut vad planen kostade.</li>
       </ul>
     </aside>
   </section>
@@ -664,7 +838,7 @@ Vid fel: säg det, hitta aldrig på.</pre></div>
       <div class="layer l1"><span class="e">🛠️</span><b>Tool calling</b><span>Modellen ber om ett verktyg med JSON. Din kod kör det. Beskrivningen avgör valet.</span></div>
       <div class="layer l2"><span class="e">⌨️</span><b>Eget paket</b><span>Hitta API:et i Network-fliken. En klient att importera, ett CLI ovanpå, README och en skill.</span></div>
       <div class="layer l3"><span class="e">🔌</span><b>MCP</b><span>Ett gemensamt uttag. Tjänsten bygger servern en gång, alla appar kan använda den.</span></div>
-      <div class="layer l4"><span class="e">🧩</span><b>Din app</b><span>Nyckeln på servern, inloggning, gränser och verktyg som inte kan göra skada.</span></div>
+      <div class="layer l4"><span class="e">🧩</span><b>Din app</b><span>Paketet hämtar datan, Agent SDK planerar. Nyckeln på servern, inloggning innan du publicerar.</span></div>
     </div>
   </section>
 
