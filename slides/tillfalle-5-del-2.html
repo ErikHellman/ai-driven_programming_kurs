@@ -864,6 +864,7 @@ göra en plan för nästa vecka och README förklarar nyckeln.</pre></div>
         <li>Lösenordet går från formuläret till den egna servern på localhost och vidare till Willys, aldrig till Claude. Agenten får bara verktyg som använder sessionen. Samma tanke som i del 1: agenten lånar inloggningen.</li>
         <li>Det finns inget verktyg för att betala. Det är den bästa gränsen.</li>
         <li>Påminn om att kopierade frågor från Network-fliken innehåller cookies och lösenord. De ska bytas ut innan agenten får se dem.</li>
+        <li>När paketet byggs ligger användarnamn och lösenord i .env (WILLYS_ANVANDARE, WILLYS_LOSENORD). Agenten använder dem via process.env för att lära sig inloggningen, men läser aldrig filen och skriver aldrig ut lösenordet.</li>
       </ul>
     </aside>
   </section>
