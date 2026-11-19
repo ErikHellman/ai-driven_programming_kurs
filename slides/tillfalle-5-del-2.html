@@ -36,7 +36,7 @@
     <div class="kicker">Där vi är</div>
     <h2>En LLM kan bara skriva text</h2>
     <div class="cards">
-      <div class="card frag"><span class="e">🚫</span><h3>Den surfar inte</h3><p>Modellen kan inte öppna skolmat.se. Den har ingen webbläsare, inget nätverk, ingen hårddisk.</p></div>
+      <div class="card frag"><span class="e">🚫</span><h3>Den surfar inte</h3><p>Modellen kan inte öppna skolmaten.se. Den har ingen webbläsare, inget nätverk, ingen hårddisk.</p></div>
       <div class="card frag"><span class="e">✍️</span><h3>Den ber om hjälp</h3><p>Den skriver en <strong>begäran</strong>: ”hämta den här sidan åt mig”.</p></div>
       <div class="card hot frag"><span class="e">🤝</span><h3>Programmet gör jobbet</h3><p>Claude Code, Claude-appen eller <strong>din app</strong> utför begäran och skickar tillbaka svaret.</p></div>
     </div>
@@ -270,7 +270,7 @@ content: [{
       </div>
       <ul class="nice">
         <li class="frag">Startar en egen Chromium i bakgrunden, utan dina inloggningar</li>
-        <li class="frag">Kör JavaScript, så skolmat.se fungerar</li>
+        <li class="frag">Kör JavaScript, så skolmaten.se fungerar</li>
         <li class="frag">Claude-appen: Settings → Connectors → lägg till en egen connector med adressen till en fjärrserver</li>
         <li class="frag">Kolla vad som är inkopplat: <code>/mcp</code></li>
       </ul>
@@ -278,7 +278,7 @@ content: [{
     <aside class="notes">
       <ul>
         <li>Visa live: lägg till Playwright, starta om sessionen, skriv /mcp och visa verktygen (browser_navigate, browser_snapshot och så vidare).</li>
-        <li>Kör middagsprompten igen med ”Använd Playwright för att läsa skolmat.se”. Samma resultat som med Chrome, men med en webbläsare som inte är din egen.</li>
+        <li>Kör middagsprompten igen med ”Använd Playwright för att läsa skolmaten.se”. Samma resultat som med Chrome, men med en webbläsare som inte är din egen.</li>
         <li>Fjärrservrar läggs till med claude mcp add --transport http namn adress.</li>
       </ul>
     </aside>
@@ -337,7 +337,7 @@ content: [{
     <p class="lead frag bottom">Sidan hämtar menyn från någonstans. <span class="hl">Den adressen</span> kan vi använda själva.</p>
     <aside class="notes">
       <ul>
-        <li>Minns del 1: skolmat.se byggs i webbläsaren. Det betyder att JavaScript hämtar menyn från ett API, precis som vår egen app hämtar fikorna från Supabase.</li>
+        <li>Minns del 1: skolmaten.se byggs i webbläsaren. Det betyder att JavaScript hämtar menyn från ett API, precis som vår egen app hämtar fikorna från Supabase.</li>
         <li>CLI betyder command line interface: ett program man kör i terminalen. git, gh och npm är CLI:er.</li>
       </ul>
     </aside>
@@ -371,15 +371,15 @@ content: [{
     <div class="kicker">Reverse engineering · Steg för steg</div>
     <h2>Hitta API:et i Network-fliken</h2>
     <div class="layers tight">
-      <div class="layer l1 frag"><span class="e">🛠️</span><b>Öppna</b><span>skolmat.se i Chrome, F12, fliken Network och filtret Fetch/XHR.</span></div>
-      <div class="layer l2 frag"><span class="e">🏫</span><b>Klicka</b><span>Välj län, kommun och skola. Titta vilka frågor som dyker upp.</span></div>
+      <div class="layer l1 frag"><span class="e">🛠️</span><b>Öppna</b><span>skolmaten.se i Chrome, F12, fliken Network och filtret Fetch/XHR.</span></div>
+      <div class="layer l2 frag"><span class="e">🏫</span><b>Klicka</b><span>Leta upp skolan och öppna menyn. Titta vilka frågor som dyker upp.</span></div>
       <div class="layer l3 frag"><span class="e">📦</span><b>Leta</b><span>Klicka på frågorna. Under Response: vilken av dem innehåller menyn som JSON?</span></div>
       <div class="layer l4 frag"><span class="e">📋</span><b>Kopiera</b><span>Högerklick → Copy → Copy as cURL. Klistra in i en fil åt agenten.</span></div>
     </div>
     <p class="small frag bottom">Eller låt agenten göra det: med Chrome eller Playwright kan den själv läsa vilka frågor sidan skickar.</p>
     <aside class="notes">
       <ul>
-        <li>Gör det här live. Det brukar vara några frågor: en för listan med kommuner, en för skolorna, en för menyn. Läs adresserna högt och se vad som ändras när man byter vecka eller skola.</li>
+        <li>Gör det här live. Det brukar vara några frågor: en för att hitta skolan och en för menyn. Skolan har ett id (en lång UUID) som syns i adressen, till exempel skolmaten.se/menu/…?school=… Läs adresserna högt och se vad som ändras när man byter vecka eller skola.</li>
         <li>Kör den kopierade curl-frågan i terminalen. Kommer samma JSON tillbaka? Då behövs ingen webbläsare.</li>
         <li>Klistra inte in cookies från en inloggad sida i en fil åt agenten. Här behövs ingen inloggning.</li>
       </ul>
@@ -459,7 +459,7 @@ Accept: application/json</pre>
     <div class="term prompt"><pre>Mål: Bygg paketet skolmat i Node.js: en klient som andra
 projekt kan använda, och ett CLI som använder klienten.
 
-Sammanhang: I curl.txt finns frågan som skolmat.se skickar.
+Sammanhang: I curl.txt finns frågan som skolmaten.se skickar.
 API:et saknar dokumentation.
 
 Krav och gränser:
@@ -603,7 +603,7 @@ Vid fel: säg det, hitta aldrig på.</pre></div>
     <p class="lead frag" style="margin-top:70px;text-align:center">Ett eget verktyg på en kvart, utan att skriva koden själv.</p>
     <aside class="notes">
       <ul>
-        <li>Förbered: en tom mapp, ett tomt projekt att installera paketet i, och skolmat.se öppen. Ha en färdig version av paketet och skillen från en provkörning ifall API:et krånglar.</li>
+        <li>Förbered: en tom mapp, ett tomt projekt att installera paketet i, och skolmaten.se öppen. Ha en färdig version av paketet och skillen från en provkörning ifall API:et krånglar.</li>
         <li>Avsluta med en ny session och frågan ”Vad blir det för skollunch på tisdag?”. Visa att agenten hittar skillen och kör skolmat, i stället för att öppna Chrome.</li>
       </ul>
     </aside>
