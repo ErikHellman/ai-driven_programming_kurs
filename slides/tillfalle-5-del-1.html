@@ -83,7 +83,7 @@
     <div class="kicker">Live-demo</div>
     <h2>Uppgiften</h2>
     <div class="cards">
-      <div class="card frag"><span class="e">🏫</span><h3>Läs skolmaten</h3><p>Välj barnens skola på <strong>skolmat.se</strong> och läs ut nästa veckas lunchmeny.</p></div>
+      <div class="card frag"><span class="e">🏫</span><h3>Läs skolmaten</h3><p>Välj barnens skola på <strong>skolmaten.se</strong> och läs ut nästa veckas lunchmeny.</p></div>
       <div class="card frag"><span class="e">🧑‍🍳</span><h3>Hitta recept</h3><p>Leta middagar på <strong>ica.se/recept</strong> som inte krockar med lunchen.</p></div>
       <div class="card hot frag"><span class="e">📅</span><h3>Gör en veckomeny</h3><p>Variation varje dag och mat som passar barn som är 10 och 13 år.</p></div>
     </div>
@@ -104,10 +104,10 @@
 
 Sammanhang: Mina barn är 10 och 13 år och äter lunch i skolan.
 Skolan är [SKOLANS NAMN] i [KOMMUN], [LÄN].
-På https://www.skolmat.se/ väljer du län, sedan kommun och skola.
+På https://skolmaten.se/ letar du upp skolan.
 
 Krav och gränser:
-- Läs nästa veckas lunchmeny på skolmat.se först.
+- Läs nästa veckas lunchmeny på skolmaten.se först.
 - Hämta recept från https://www.ica.se/recept/
 - Inte samma typ av mat till lunch och middag samma dag.
 - Variation: inte samma protein två dagar i rad.
@@ -117,7 +117,7 @@ Klart när: Du har skrivit middagsplan.md med en tabell:
 dag, skollunch, middag, länk till receptet och tid.
 Lägg till en samlad inköpslista längst ned.
 
-Arbetssätt: Berätta vad du läste på skolmat.se innan du
+Arbetssätt: Berätta vad du läste på skolmaten.se innan du
 letar recept, så att jag kan kontrollera menyn.</pre></div>
     <aside class="notes">
       <ul>
@@ -135,7 +135,7 @@ letar recept, så att jag kan kontrollera menyn.</pre></div>
     <div class="flow even">
       <div class="box sun">🔎 Söka<small>vilken adress har<br>skolans meny?</small></div>
       <div class="arrow frag">→</div>
-      <div class="box frag">🌐 Hämta<small>läsa sidan<br>på skolmat.se</small></div>
+      <div class="box frag">🌐 Hämta<small>läsa sidan<br>på skolmaten.se</small></div>
       <div class="arrow frag">→</div>
       <div class="box frag">🧑‍🍳 Hämta<small>tio, tjugo<br>recept från ICA</small></div>
       <div class="arrow frag">→</div>
@@ -223,7 +223,7 @@ letar recept, så att jag kan kontrollera menyn.</pre></div>
       <ul class="emoji">
         <li class="frag"><span class="e">1️⃣</span><span>Installera <strong>Claude in Chrome</strong> från Chrome Web Store och logga in med ditt Claude-konto</span></li>
         <li class="frag"><span class="e">2️⃣</span><span>I terminalen: starta med <code>claude --chrome</code>, eller skriv <code>/chrome</code> i en session</span></li>
-        <li class="frag"><span class="e">3️⃣</span><span>Kör samma prompt igen. Lägg till: <em>”Använd Chrome för att läsa skolmat.se.”</em></span></li>
+        <li class="frag"><span class="e">3️⃣</span><span>Kör samma prompt igen. Lägg till: <em>”Använd Chrome för att läsa skolmaten.se.”</em></span></li>
         <li class="frag"><span class="e">👀</span><span>Titta på Chrome: flikarna öppnas och sidan skrollas medan du tittar</span></li>
       </ul>
       <div class="card sun frag">
@@ -234,7 +234,7 @@ letar recept, så att jag kan kontrollera menyn.</pre></div>
     </div>
     <aside class="notes">
       <ul>
-        <li>Förbered: tillägget installerat och inloggat, och skolmat.se och ica.se tillåtna så att demon inte stannar på varje fråga.</li>
+        <li>Förbered: tillägget installerat och inloggat, och skolmaten.se och ica.se tillåtna så att demon inte stannar på varje fråga.</li>
         <li>I Code-fliken i appen kan du i stället använda appens egen webbläsare, panelen Browser (Ctrl+Shift+B, Cmd+Shift+B på Mac).</li>
         <li>Visa skillnaden: nu kommer menyn med dagar och rätter. Låt agenten fortsätta och skriva middagsplan.md.</li>
         <li>Om något krånglar: ha en färdig middagsplan.md från en provkörning att visa.</li>
@@ -248,7 +248,7 @@ letar recept, så att jag kan kontrollera menyn.</pre></div>
     <h2>Granska som en beställare</h2>
     <table class="rest">
       <tr><th>Fråga</th><th>Hur du kollar</th></tr>
-      <tr class="frag"><td>🏫 Stämmer lunchen?</td><td>Öppna skolmat.se själv och jämför två dagar</td></tr>
+      <tr class="frag"><td>🏫 Stämmer lunchen?</td><td>Öppna skolmaten.se själv och jämför två dagar</td></tr>
       <tr class="frag"><td>🔗 Finns recepten?</td><td>Klicka på två länkar. Påhittade länkar ger 404</td></tr>
       <tr class="frag"><td>🔁 Variation?</td><td>Fisk, kyckling, vegetariskt, pasta … inte samma två dagar i rad</td></tr>
       <tr class="frag"><td>⏱️ Tiden?</td><td>Står det 30 minuter på ICA, eller hittade agenten på?</td></tr>
@@ -311,7 +311,7 @@ letar recept, så att jag kan kontrollera menyn.</pre></div>
     <div class="kicker">Claude-appen · Säkerhet</div>
     <h2>Vilka sajter får agenten använda?</h2>
     <div class="cards">
-      <div class="card good frag"><span class="e">✅</span><h3>Tillåt alltid</h3><p>skolmat.se och ica.se. Läsa menyer och recept är ofarligt.</p></div>
+      <div class="card good frag"><span class="e">✅</span><h3>Tillåt alltid</h3><p>skolmaten.se och ica.se. Läsa menyer och recept är ofarligt.</p></div>
       <div class="card frag"><span class="e">🤔</span><h3>Fråga varje gång</h3><p>Sajter där du är inloggad och där något kan hända: beställa, boka, skicka.</p></div>
       <div class="card bad frag"><span class="e">🛑</span><h3>Aldrig</h3><p>Banken, mejlen, sajter med kortuppgifter.</p></div>
     </div>
